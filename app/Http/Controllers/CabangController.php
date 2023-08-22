@@ -15,7 +15,7 @@ class CabangController extends Controller
     public function index()
     {
         $data['cabang'] = Cabang::all();
-        return view('master-data\cabang', compact('data'));
+        return view('master-data.cabang', compact('data'));
     }
 
     /**
