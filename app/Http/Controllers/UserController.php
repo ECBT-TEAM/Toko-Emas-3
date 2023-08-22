@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\role;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Cabang;
 use App\Http\Requests\StoreUserRequest;
