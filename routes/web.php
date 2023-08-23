@@ -10,6 +10,7 @@ use App\Http\Controllers\KondisiController;
 use App\Http\Controllers\KotakController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 
@@ -24,8 +25,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
+route::get('/', [LoginController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
+route::post('auth/login', [LoginController::class, 'auth'])->name('auth.login');
+route::get('auth/logout', [LoginController::class, 'logout'])->name('auth.logout');
 route::get('login', [LoginController::class, 'index'])->name('login');
-route::post('auth/login', [LoginController::class, 'auth'])->name('login.auth');
 
 
 Route::prefix('store')->as('store.')->group(function () {
@@ -39,6 +42,7 @@ Route::prefix('store')->as('store.')->group(function () {
     Route::post('karat', [KaratController::class, 'store'])->name('karat');
     Route::post('harga_ref', [HargaRefController::class, 'store'])->name('harga_ref');
     Route::post('kondisi', [KondisiController::class, 'store'])->name('kondisi');
+    Route::post('produk', [ProdukController::class, 'store'])->name('produk');
 });
 
 Route::prefix('update')->as('update.')->group(function () {
@@ -53,6 +57,7 @@ Route::prefix('update')->as('update.')->group(function () {
     Route::put('harga_ref/{harga_ref}', [HargaRefController::class, 'update'])->name('harga_ref');
     Route::get('harga_ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
     Route::put('kondisi/{kondisi}', [KondisiController::class, 'update'])->name('kondisi');
+    Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('produk');
 });
 
 Route::prefix('destroy')->as('destroy.')->group(function () {
@@ -66,6 +71,11 @@ Route::prefix('destroy')->as('destroy.')->group(function () {
     Route::get('karat/{karat}', [KaratController::class, 'destroy'])->name('karat');
     Route::get('harga_ref/{harga_ref}', [HargaRefController::class, 'destroy'])->name('harga_ref');
     Route::get('kondisi/{kondisi}', [KondisiController::class, 'destroy'])->name('kondisi');
+    Route::get('produk/{produk}', [ProdukController::class, 'destroy'])->name('produk');
+});
+
+Route::prefix('produk')->as('produk.')->middleware(['auth', 'role:1'])->group(function () {
+    route::get('tambah', [ProdukController::class, 'index'])->name('tambah');
 });
 
 Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])->group(function () {

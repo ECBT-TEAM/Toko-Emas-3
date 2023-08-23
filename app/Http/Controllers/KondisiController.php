@@ -15,7 +15,7 @@ class KondisiController extends Controller
     public function index()
     {
         $data['kondisi'] = Kondisi::all();
-        return view('master-data.barang.kondisi', compact('data'));
+        return view('master-data.barang.kondisi.index', compact('data'));
     }
 
     /**
@@ -51,7 +51,7 @@ class KondisiController extends Controller
     public function edit(Kondisi $kondisi)
     {
         $data['kondisi'] = $kondisi;
-        return view('master-data.barang.kondisi-edit', compact('data'));
+        return view('master-data.barang.kondisi.edit', compact('data'));
     }
 
     /**

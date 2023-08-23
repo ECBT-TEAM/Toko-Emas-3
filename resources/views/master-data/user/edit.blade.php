@@ -102,50 +102,6 @@
 @push('css')
 @endpush
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function deleteUser(userId) {
-            var url = "{{ route('destroy.cabang', ['cabang' => 'userId']) }}";
-            url = url.replace('userId', userId);
-
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function(data) {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sukses',
-                            text: 'Data berhasil dihapus.',
-                            showCancelButton: false,
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Gagal menghapus data.'
-                        });
-                    }
-                },
-                error: function(error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Terjadi kesalahan saat menghapus data.'
-                    });
-                }
-            });
-        }
-    </script>
     <script>
         $('.select2').select2({
             theme: 'bootstrap4'

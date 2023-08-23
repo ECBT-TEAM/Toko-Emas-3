@@ -15,7 +15,7 @@ class KaratController extends Controller
     public function index()
     {
         $data['karat'] = Karat::with('harga_ref')->get();
-        return view('master-data.barang.karat', compact('data'));
+        return view('master-data.barang.karat.index', compact('data'));
     }
 
     /**
@@ -43,7 +43,7 @@ class KaratController extends Controller
     public function show(Karat $karat)
     {
         $data['karat'] = $karat->harga_ref()->orderBy('harga', 'asc')->get();
-        return view('master-data.barang.karat-detail', compact('data'));
+        return view('master-data.barang.karat.detail', compact('data'));
     }
 
     /**
@@ -52,7 +52,7 @@ class KaratController extends Controller
     public function edit(Karat $karat)
     {
         $data['karat'] = $karat;
-        return view('master-data.barang.karat-edit', compact('data'));
+        return view('master-data.barang.karat.edit', compact('data'));
     }
 
     /**

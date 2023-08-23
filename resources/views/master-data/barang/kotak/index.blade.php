@@ -13,7 +13,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for=""class="form-label">Blok</label>
-                                <select name="blok" id="blok" class="form-control select2">
+                                <select name="blok" id="blok" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['blok'] as $blok)
                                         <option value="{{ $blok->id }}">Blok {{ $blok->nomor }}</option>
                                     @endforeach
@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group">
                                 <label for=""class="form-label">Kategori</label>
-                                <select name="kategori" id="kategori" class="form-control select2">
+                                <select name="kategori" id="kategori" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['kategori'] as $kategori)
                                         <option value="{{ $kategori->id }}">{{ ucwords($kategori->nama) }}</option>
                                     @endforeach
@@ -48,9 +48,9 @@
                             </div>
                             <div class="form-group">
                                 <label for=""class="form-label">Jenis</label>
-                                <select name="jenis" id="jenis" class="form-control select2">
+                                <select name="jenis" id="jenis" class="form-control select2bs4" style="width: 100%;">
                                     <option value="Kotak">Kotak</option>
-                                    <option value="Kalung">Kalung</option>
+                                    <option value="Patung">Patung</option>
                                 </select>
                                 @error('jenis')
                                     <small class="text-danger">{{ $message }}</small>
@@ -111,7 +111,7 @@
 @endpush
 @push('js')
     <script>
-        $('.select2').select2({
+        $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
         $('#example1').DataTable({

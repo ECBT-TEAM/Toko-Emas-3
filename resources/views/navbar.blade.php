@@ -1,3 +1,27 @@
+<li class="nav-item">
+    <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Dashboard</p>
+    </a>
+</li>
+<li class="nav-header">MENU ADMIN</li>
+<li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-box-open"></i>
+        <p>
+            Produk
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah</p>
+            </a>
+        </li>
+    </ul>
+</li>
 <li class="nav-item {{ Route::is('master-data.*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link {{ Route::is('master-data*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-database"></i>
@@ -82,4 +106,11 @@
             </ul>
         </li>
     </ul>
+</li>
+<li class="nav-header">MENU KASIR</li>
+<li class="nav-item">
+    <a href="{{ route('auth.logout') }}" class="nav-link">
+        <i class="nav-icon fas fa-sign-out-alt"></i>
+        <p>Logout</p>
+    </a>
 </li>

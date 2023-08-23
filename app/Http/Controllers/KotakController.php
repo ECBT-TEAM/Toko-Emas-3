@@ -6,8 +6,8 @@ use App\Models\Blok;
 use App\Models\Kotak;
 use App\Models\Kategori;
 use App\Http\Requests\StoreKotakRequest;
-use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\UpdateKotakRequest;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KotakController extends Controller
 {
@@ -19,7 +19,7 @@ class KotakController extends Controller
         $data['kotak'] = Kategori::withCount('kotak')->get();
         $data['blok'] = Blok::all();
         $data['kategori'] = Kategori::all();
-        return view('master-data.barang.kotak', compact('data'));
+        return view('master-data.barang.kotak.index', compact('data'));
     }
 
     /**

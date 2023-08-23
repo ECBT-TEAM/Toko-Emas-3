@@ -16,7 +16,7 @@ class MemberController extends Controller
     {
         $data['member'] = Member::all();
 
-        return view('master-data.member', compact('data'));
+        return view('master-data.member.index', compact('data'));
     }
 
     /**
@@ -52,7 +52,7 @@ class MemberController extends Controller
     public function edit(Member $member)
     {
         $data['member'] = $member;
-        return view('master-data.member-edit', compact('data'));
+        return view('master-data.member.edit', compact('data'));
     }
 
     /**

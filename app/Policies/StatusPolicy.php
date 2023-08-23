@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Status;
 use App\Models\User;
-use App\Models\HargaRef;
 use Illuminate\Auth\Access\Response;
 
-class HargaRefPolicy
+class StatusPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class HargaRefPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, HargaRef $hargaRef): bool
+    public function view(User $user, Status $status): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class HargaRefPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, HargaRef $hargaRef): bool
+    public function update(User $user, Status $status): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class HargaRefPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, HargaRef $hargaRef): bool
+    public function delete(User $user, Status $status): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class HargaRefPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, HargaRef $hargaRef): bool
+    public function restore(User $user, Status $status): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class HargaRefPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, HargaRef $hargaRef): bool
+    public function forceDelete(User $user, Status $status): bool
     {
         //
     }

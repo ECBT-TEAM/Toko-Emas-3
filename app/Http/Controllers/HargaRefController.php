@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\harga_ref;
+use App\Models\HargaRef;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Storeharga_refRequest;
 use App\Http\Requests\Updateharga_refRequest;
@@ -31,7 +31,7 @@ class HargaRefController extends Controller
     public function store(Storeharga_refRequest $request)
     {
         $validated = $request->validated();
-        harga_ref::create([
+        HargaRef::create([
             'harga' => rupiahToInt($validated['harga']),
             'karat_id' => $validated['karat'],
         ]);
@@ -42,7 +42,7 @@ class HargaRefController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(harga_ref $harga_ref)
+    public function show(HargaRef $harga_ref)
     {
         //
     }
@@ -50,7 +50,7 @@ class HargaRefController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(harga_ref $harga_ref)
+    public function edit(HargaRef $harga_ref)
     {
         //
     }
@@ -58,7 +58,7 @@ class HargaRefController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updateharga_refRequest $request, harga_ref $harga_ref)
+    public function update(Updateharga_refRequest $request, HargaRef $harga_ref)
     {
         $validated = $request->validated();
         $validated['harga'] = rupiahToInt($validated['harga']);
@@ -70,7 +70,7 @@ class HargaRefController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateStatus(harga_ref $harga_ref)
+    public function updateStatus(HargaRef $harga_ref)
     {
 
         $harga_ref->status = $harga_ref->status == 1 ? 0 : 1;
@@ -82,7 +82,7 @@ class HargaRefController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(harga_ref $harga_ref)
+    public function destroy(HargaRef $harga_ref)
     {
         $harga_ref->delete();
         Alert::success('Sukses', 'Status berhasil dihapus.');

@@ -15,7 +15,7 @@ class KategoriController extends Controller
     public function index()
     {
         $data['kategori'] = Kategori::all();
-        return view('master-data.barang.kategori', compact('data'));
+        return view('master-data.barang.kategori.index', compact('data'));
     }
 
     /**
@@ -51,7 +51,7 @@ class KategoriController extends Controller
     public function edit(Kategori $kategori)
     {
         $data['kategori'] = $kategori;
-        return view('master-data\barang\kategori-edit', compact('data'));
+        return view('master-data.barang.kategori.edit', compact('data'));
     }
 
     /**

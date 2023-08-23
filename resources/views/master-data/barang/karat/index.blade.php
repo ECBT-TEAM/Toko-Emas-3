@@ -45,7 +45,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for=""class="form-label">Karat</label>
-                                <select name="karat" id="karat" class="form-control select2">
+                                <select name="karat" id="karat" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['karat'] as $karat)
                                         <option value="{{ $karat->id }}">
                                             {{ strtoupper($karat->kode) . ' - ' . $karat->nama }}k
@@ -137,7 +137,7 @@
             var formattedRupiah = formatRupiah(numericValue);
             $(this).val(formattedRupiah);
         });
-        $('.select2').select2({
+        $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
         $('#example1').DataTable({

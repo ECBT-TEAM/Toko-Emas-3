@@ -19,7 +19,7 @@ class UserController extends Controller
         $data['user'] = User::with(['cabang', 'role'])->get();
         $data['cabang'] = Cabang::all();
         $data['role'] = Role::all();
-        return view('master-data.user', compact('data'));
+        return view('master-data.user.index', compact('data'));
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
         $data['cabang'] = Cabang::all();
         $data['role'] = Role::all();
         $data['user'] = $user;
-        return view('master-data.user-edit', compact('data'));
+        return view('master-data.user.edit', compact('data'));
     }
 
     /**

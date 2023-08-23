@@ -13,12 +13,17 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
+
     public function auth(Request $request)
     {
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('master-data.user.index');
+            return redirect()->route('dashboard');
         } else {
             Alert::warning('Gagal', 'Username atau password tidak ditemukan')->persistent(true);
             return redirect()->back();

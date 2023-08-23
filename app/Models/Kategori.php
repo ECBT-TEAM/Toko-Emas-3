@@ -15,4 +15,9 @@ class Kategori extends Model
     {
         return $this->hasMany(Kotak::class, 'kategori_id');
     }
+
+    public function tipe()
+    {
+        return $this->hasMany(Tipe::class, 'kategori_id');
+    }
 }

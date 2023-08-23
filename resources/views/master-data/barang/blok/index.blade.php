@@ -30,7 +30,7 @@
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
-                                                    onclick="deleteBlok({{ $blok->id }})">
+                                                    onclick="window.location.href='{{ route('destroy.blok', ['blok' => $blok->id]) }}'">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
@@ -50,50 +50,6 @@
 @push('css')
 @endpush
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function deleteBlok(blokId) {
-            var url = "{{ route('destroy.blok', ['blok' => 'blokId']) }}";
-            url = url.replace('blokId', blokId);
-
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function(data) {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sukses',
-                            text: 'Data berhasil dihapus.',
-                            showCancelButton: false,
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Gagal menghapus data.'
-                        });
-                    }
-                },
-                error: function(error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Terjadi kesalahan saat menghapus data.'
-                    });
-                }
-            });
-        }
-    </script>
     <script>
         $('#example1').DataTable({
             "lengthChange": false,

@@ -15,7 +15,7 @@ class SupplierController extends Controller
     public function index()
     {
         $data['supplier'] = Supplier::all();
-        return view('master-data.supplier', compact('data'));
+        return view('master-data.supplier.index', compact('data'));
     }
 
     /**
@@ -51,7 +51,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         $data['supplier'] = $supplier;
-        return view('master-data.supplier-edit', compact('data'));
+        return view('master-data.supplier.edit', compact('data'));
     }
 
     /**

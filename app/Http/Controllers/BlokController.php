@@ -16,7 +16,7 @@ class BlokController extends Controller
     public function index()
     {
         $data['blok'] = Blok::all();
-        return view('master-data.barang.blok', compact('data'));
+        return view('master-data.barang.blok.index', compact('data'));
     }
 
     /**
@@ -59,7 +59,7 @@ class BlokController extends Controller
     public function edit(Blok $blok)
     {
         $data['blok'] = $blok;
-        return view('master-data.barang.blok-edit', compact('data'));
+        return view('master-data.barang.blok.edit', compact('data'));
     }
 
     /**

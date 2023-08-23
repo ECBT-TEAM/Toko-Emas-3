@@ -24,7 +24,7 @@ class StoreKotakRequest extends FormRequest
         return [
             'nama' => 'required|string|max:255',
             'berat' => 'required|numeric|min:0',
-            'jenis' => 'required|in:Kotak,Kalung',
+            'jenis' => 'required|in:Kotak,Patung',
             'blok' => 'required|integer|exists:bloks,id',
             'kategori' => 'required|integer|exists:kategoris,id'
         ];
@@ -40,7 +40,7 @@ class StoreKotakRequest extends FormRequest
             'berat.numeric' => 'Kolom berat harus berupa angka.',
             'berat.min' => 'Kolom berat harus memiliki nilai minimum :min.',
             'jenis.required' => 'Kolom jenis wajib diisi.',
-            'jenis.in' => 'Kolom jenis harus salah satu dari: Kotak, Kalung.',
+            'jenis.in' => 'Kolom jenis harus salah satu dari: Kotak, Patung.',
             'blok.required' => 'Kolom blok wajib diisi.',
             'blok.integer' => 'Kolom blok harus berupa bilangan bulat.',
             'blok.exists' => 'Blok yang dipilih tidak valid.',

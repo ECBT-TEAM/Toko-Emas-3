@@ -29,7 +29,7 @@
                             </div>
                             <div class="form-group">
                                 <label for=""class="form-label">Cabang</label>
-                                <select name="cabang" id="cabang" class="form-control select2">
+                                <select name="cabang" id="cabang" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['cabang'] as $cabang)
                                         <option value="{{ $cabang->id }}">{{ $cabang->nama }}</option>
                                     @endforeach
@@ -40,7 +40,7 @@
                             </div>
                             <div class="form-group">
                                 <label for=""class="form-label">Role</label>
-                                <select name="role" id="role" class="form-control select2">
+                                <select name="role" id="role" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['role'] as $role)
                                         <option value="{{ $role->id }}">{{ ucwords($role->nama) }}</option>
                                     @endforeach
@@ -119,7 +119,7 @@
 @endpush
 @push('js')
     <script>
-        $('.select2').select2({
+        $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
         $('#example1').DataTable({

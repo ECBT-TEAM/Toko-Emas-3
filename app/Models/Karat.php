@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\HargaRefController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +13,11 @@ class Karat extends Model
 
     public function harga_ref()
     {
-        return $this->hasMany(harga_ref::class, 'karat_id');
+        return $this->hasMany(HargaRef::class, 'karat_id');
+    }
+
+    public function produk()
+    {
+        return $this->hasMany(produk::class, 'karat_id');
     }
 }

@@ -328,6 +328,21 @@
     <script src="{{ url('template') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="{{ url('template') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="{{ url('template') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButtons = document.querySelectorAll('form button[type="submit"]');
+
+            submitButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (!this.classList.contains('disabled')) {
+                        this.classList.add('disabled');
+                        this.disabled = true;
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
     <!-- Format Rupiah -->
     <script>
         function formatRupiah(angka) {
