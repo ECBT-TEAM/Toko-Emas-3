@@ -15,7 +15,7 @@ class BlokController extends Controller
      */
     public function index()
     {
-        $data['blok'] = Blok::all();
+        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->get();
         return view('master-data.barang.blok.index', compact('data'));
     }
 
@@ -58,6 +58,12 @@ class BlokController extends Controller
      */
     public function edit(Blok $blok)
     {
+        $authCabangId = Auth::user()->cabang_id;
+
+        if ($blok->cabang_id != $authCabangId) {
+            abort(404);
+        }
+
         $data['blok'] = $blok;
         return view('master-data.barang.blok.edit', compact('data'));
     }
@@ -67,6 +73,13 @@ class BlokController extends Controller
      */
     public function update(UpdateBlokRequest $request, Blok $blok)
     {
+
+        $authCabangId = Auth::user()->cabang_id;
+
+        if ($blok->cabang_id != $authCabangId) {
+            abort(404);
+        }
+
         $validated = $request->validated();
         $blok->update($validated);
         Alert::success('Sukses', 'Data berhasil diubah.');
@@ -78,6 +91,13 @@ class BlokController extends Controller
      */
     public function destroy(Blok $blok)
     {
+
+        $authCabangId = Auth::user()->cabang_id;
+
+        if ($blok->cabang_id != $authCabangId) {
+            abort(404);
+        }
+
         $blok->delete();
         Alert::success('Sukses', 'Data berhasil dihapus.');
         return redirect()->back();

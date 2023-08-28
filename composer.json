@@ -28,7 +28,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/CurrencyConverter.php"
+            "app/Helpers/CurrencyConverter.php",
+            "app/Helpers/KodeProdukGenerator.php"
         ]
     },
     "autoload-dev": {

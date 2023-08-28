@@ -44,6 +44,7 @@ class ProdukController extends Controller
         $tipe = Tipe::firstOrCreate([
             'id' => $validated['model'],
         ], [
+            'kode_tipe' => generateKodeProduk($validated['kategori']),
             'nama' => $validated['model'],
             'kategori_id' => $validated['kategori'],
         ]);

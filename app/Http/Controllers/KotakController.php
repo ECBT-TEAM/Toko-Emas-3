@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Blok;
 use App\Models\Kotak;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKotakRequest;
 use App\Http\Requests\UpdateKotakRequest;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class KotakController extends Controller
 {
@@ -16,8 +17,13 @@ class KotakController extends Controller
      */
     public function index()
     {
-        $data['kotak'] = Kategori::withCount('kotak')->get();
-        $data['blok'] = Blok::all();
+        $authCabangId = Auth::user()->cabang_id;
+        $data['kotak'] = Kategori::withCount(['kotak' => function ($query) use ($authCabangId) {
+            $query->whereHas('blok', function ($query) use ($authCabangId) {
+                $query->where('cabang_id', $authCabangId);
+            });
+        }])->get();
+        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->get();
         $data['kategori'] = Kategori::all();
         return view('master-data.barang.kotak.index', compact('data'));
     }
@@ -57,17 +63,29 @@ class KotakController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Kotak $kotak)
+    public function show($kategoriId)
     {
-        //
+        $data['kotak'] = Kotak::with('blok')
+            ->withCount('produk')
+            ->whereHas('blok', function ($query) {
+                $query->where('cabang_id', Auth::user()->cabang_id);
+            })
+            ->where('kategori_id', $kategoriId)
+            ->get();
+        $data['kategoriId'] = $kategoriId;
+        return view('master-data.barang.kotak.detail', compact('data'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kotak $kotak)
+    public function edit($kategoriId, Kotak $kotak)
     {
-        //
+        $data['kotak'] = $kotak;
+        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->get();
+        $data['kategori'] = Kategori::all();
+        $data['kategoriId'] = $kategoriId;
+        return view('master-data.barang.kotak.edit', compact('data'));
     }
 
     /**
@@ -75,7 +93,16 @@ class KotakController extends Controller
      */
     public function update(UpdateKotakRequest $request, Kotak $kotak)
     {
-        //
+        $validated = $request->validated();
+        $kotak->update([
+            'nomor' => $validated['nomor'],
+            'jenis' => $validated['jenis'],
+            'berat' => $validated['berat'],
+            'blok_id' => $validated['blok'],
+            'kategori_id' => $validated['kategori'],
+        ]);
+        Alert::success('Sukses', 'Data berhasil diubah.');
+        return redirect()->back();
     }
 
     /**
@@ -83,6 +110,8 @@ class KotakController extends Controller
      */
     public function destroy(Kotak $kotak)
     {
-        //
+        $kotak->delete();
+        Alert::success('Sukses', 'Data berhasil dihapus.');
+        return redirect()->back();
     }
 }

@@ -12,11 +12,11 @@ class Tipe extends Model
 
     public function kategori()
     {
-        return $this->hasMany(Kategori::class, 'kategori_id');
+        return $this->hasMany(Kategori::class, 'id', 'kategori_id');
     }
 
     public function produk()
     {
-        return $this->belongsTo(Produk::class, 'tipe_id');
+        return $this->hasMany(Produk::class, 'tipe_id');
     }
 }

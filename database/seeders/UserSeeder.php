@@ -21,6 +21,13 @@ class UserSeeder extends Seeder
                 'cabang_id' => 1,
                 'role_id' => 1,
                 'status' => 1,
+            ], [
+                'nama' => 'Admin2',
+                'username' => 'admin2',
+                'password' => bcrypt('admin1234'),
+                'cabang_id' => 2,
+                'role_id' => 1,
+                'status' => 1,
             ],
         ];
 

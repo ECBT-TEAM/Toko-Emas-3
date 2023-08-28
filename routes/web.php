@@ -60,7 +60,7 @@ Route::prefix('update')->as('update.')->group(function () {
     Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('produk');
 });
 
-Route::prefix('destroy')->as('destroy.')->group(function () {
+Route::prefix('delete')->as('destroy.')->group(function () {
     Route::get('kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori');
     Route::get('cabang/{cabang}', [CabangController::class, 'destroy'])->name('cabang');
     Route::get('user/{user}', [UserController::class, 'destroy'])->name('user');
@@ -81,33 +81,34 @@ Route::prefix('produk')->as('produk.')->middleware(['auth', 'role:1'])->group(fu
 Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])->group(function () {
 
     route::get('user', [UserController::class, 'index'])->name('user.index');
-    route::get('user/{user}', [UserController::class, 'edit'])->name('user.edit');
+    route::get('user/edit/{user}', [UserController::class, 'edit'])->name('user.edit');
 
     route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index');
-    route::get('supplier/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
+    route::get('supplier/edit/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
 
     route::get('member', [MemberController::class, 'index'])->name('member.index');
-    route::get('member/{member}', [MemberController::class, 'edit'])->name('member.edit');
+    route::get('member/edit/{member}', [MemberController::class, 'edit'])->name('member.edit');
 
     route::get('cabang', [CabangController::class, 'index'])->name('cabang.index');
-    route::get('cabang/{cabang}', [CabangController::class, 'edit'])->name('cabang.edit');
+    route::get('cabang/edit/{cabang}', [CabangController::class, 'edit'])->name('cabang.edit');
 
     Route::prefix('barang')->as('barang.')->group(function () {
 
         route::get('blok', [BlokController::class, 'index'])->name('blok.index');
-        route::get('blok/{blok}', [BlokController::class, 'edit'])->name('blok.edit');
+        route::get('blok/edit/{blok}', [BlokController::class, 'edit'])->name('blok.edit');
 
         route::get('kategori', [KategoriController::class, 'index'])->name('kategori.index');
-        route::get('kategori/{kategori}', [KategoriController::class, 'edit'])->name('kategori.edit');
+        route::get('kategori/edit/{kategori}', [KategoriController::class, 'edit'])->name('kategori.edit');
 
         route::get('kotak', [KotakController::class, 'index'])->name('kotak.index');
-        route::get('kotak/{kotak}', [KotakController::class, 'edit'])->name('kotak.edit');
+        route::get('kotak/detail/{kategoriId}', [KotakController::class, 'show'])->name('kotak.detail');
+        route::get('kotak/edit/{kategori}/{kotak}', [KotakController::class, 'edit'])->name('kotak.edit');
 
         route::get('karat', [KaratController::class, 'index'])->name('karat.index');
-        route::get('karat/{karat}', [KaratController::class, 'edit'])->name('karat.edit');
-        route::get('karat/detail-harga/{karat}', [KaratController::class, 'show'])->name('karat.detail');
+        route::get('karat/edit/{karat}', [KaratController::class, 'edit'])->name('karat.edit');
+        route::get('karat/detail/harga/{karat}', [KaratController::class, 'show'])->name('karat.detail');
 
         route::get('kondisi', [KondisiController::class, 'index'])->name('kondisi.index');
-        route::get('kondisi/{kondisi}', [KondisiController::class, 'edit'])->name('kondisi.edit');
+        route::get('kondisi/edit/{kondisi}', [KondisiController::class, 'edit'])->name('kondisi.edit');
     });
 });

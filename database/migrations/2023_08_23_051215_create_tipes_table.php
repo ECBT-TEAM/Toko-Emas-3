@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tipes', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_tipe', '15')->unique();
             $table->string('nama', '125');
             $table->unsignedBigInteger('kategori_id');
             $table->timestamps();
