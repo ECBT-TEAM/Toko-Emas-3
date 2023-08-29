@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Produk extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'uuid';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
     protected $fillable = ['id', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'kotak_id', 'status_id'];
 

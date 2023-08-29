@@ -15,6 +15,12 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
+            <a href="{{ route('produk.index') }}" class="nav-link {{ Route::is('produk.index*') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>List</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tambah</p>

@@ -75,7 +75,10 @@ Route::prefix('delete')->as('destroy.')->group(function () {
 });
 
 Route::prefix('produk')->as('produk.')->middleware(['auth', 'role:1'])->group(function () {
-    route::get('tambah', [ProdukController::class, 'index'])->name('tambah');
+    route::get('list', [ProdukController::class, 'index'])->name('index');
+    route::get('list/detail/{kategori}', [ProdukController::class, 'show'])->name('index.detail');
+    route::get('list/detail/{kategori}/produk/{kotak}', [ProdukController::class, 'showProuk'])->name('index.detail.produk');
+    route::get('tambah', [ProdukController::class, 'create'])->name('tambah');
 });
 
 Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])->group(function () {
