@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->double('berat', $places = 2);
+            $table->string('harga_rugi')->nullable();
             $table->unsignedBigInteger('tipe_id');
             $table->unsignedBigInteger('karat_id');
             $table->unsignedBigInteger('supplier_id');

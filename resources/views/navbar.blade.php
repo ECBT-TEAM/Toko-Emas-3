@@ -113,7 +113,105 @@
         </li>
     </ul>
 </li>
+<li class="nav-header">MENU MANAGER</li>
+{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-clipboard-list"></i>
+        <p>
+            Laporan Penjualan
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Histori</p>
+            </a>
+        </li>
+    </ul>
+</li> --}}
 <li class="nav-header">MENU KASIR</li>
+<li class="nav-item {{ Route::is('kasir.jual.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('kasir.jual*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-shopping-basket"></i>
+        <p>
+            Jual
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('kasir.jual.index') }}"
+                class="nav-link {{ Route::is('kasir.jual.index') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('kasir.jual.histori') }}"
+                class="nav-link {{ Route::is('kasir.jual.histori') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Histori</p>
+            </a>
+        </li>
+    </ul>
+</li>
+{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-cart-arrow-down"></i>
+        <p>
+            Balen
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Histori</p>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-retweet"></i>
+        <p>
+            Tukar Tambah
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}"
+                class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('produk.tambah') }}"
+                class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Histori</p>
+            </a>
+        </li>
+    </ul>
+</li> --}}
+<li class="nav-header">SISTEM</li>
 <li class="nav-item">
     <a href="{{ route('auth.logout') }}" class="nav-link">
         <i class="nav-icon fas fa-sign-out-alt"></i>

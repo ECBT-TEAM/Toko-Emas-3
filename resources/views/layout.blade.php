@@ -343,7 +343,6 @@
             });
         });
     </script>
-    <!-- Format Rupiah -->
     <script>
         function formatRupiah(angka) {
             var rupiah = "Rp " + angka.toLocaleString('id-ID');

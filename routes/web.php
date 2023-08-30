@@ -12,6 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -31,7 +32,7 @@ route::get('auth/logout', [LoginController::class, 'logout'])->name('auth.logout
 route::get('login', [LoginController::class, 'index'])->name('login');
 
 
-Route::prefix('store')->as('store.')->group(function () {
+Route::prefix('store')->as('store.')->middleware(['auth'])->group(function () {
     Route::post('kategori', [KategoriController::class, 'store'])->name('kategori');
     Route::post('cabang', [CabangController::class, 'store'])->name('cabang');
     Route::post('user', [UserController::class, 'store'])->name('user');
@@ -45,7 +46,7 @@ Route::prefix('store')->as('store.')->group(function () {
     Route::post('produk', [ProdukController::class, 'store'])->name('produk');
 });
 
-Route::prefix('update')->as('update.')->group(function () {
+Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () {
     Route::put('kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori');
     Route::put('cabang/{cabang}', [CabangController::class, 'update'])->name('cabang');
     Route::put('user/{user}', [UserController::class, 'update'])->name('user');
@@ -57,10 +58,9 @@ Route::prefix('update')->as('update.')->group(function () {
     Route::put('harga_ref/{harga_ref}', [HargaRefController::class, 'update'])->name('harga_ref');
     Route::get('harga_ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
     Route::put('kondisi/{kondisi}', [KondisiController::class, 'update'])->name('kondisi');
-    Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('produk');
 });
 
-Route::prefix('delete')->as('destroy.')->group(function () {
+Route::prefix('delete')->as('destroy.')->middleware(['auth'])->group(function () {
     Route::get('kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori');
     Route::get('cabang/{cabang}', [CabangController::class, 'destroy'])->name('cabang');
     Route::get('user/{user}', [UserController::class, 'destroy'])->name('user');
@@ -114,4 +114,17 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
         route::get('kondisi', [KondisiController::class, 'index'])->name('kondisi.index');
         route::get('kondisi/edit/{kondisi}', [KondisiController::class, 'edit'])->name('kondisi.edit');
     });
+});
+
+
+Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
+
+    route::get('jual', [TransaksiController::class, 'jual'])->name('jual.index');
+    route::get('jual/histori', [TransaksiController::class, 'edit'])->name('jual.histori');
+
+    route::get('balen', [TransaksiController::class, 'balen'])->name('balen.index');
+    route::get('balen/histori', [TransaksiController::class, 'edit'])->name('balen.histori');
+
+    route::get('tukar-tambah', [TransaksiController::class, 'tukarTambah'])->name('tukar-tambah.index');
+    route::get('tukar-tambah/histori', [TransaksiController::class, 'edit'])->name('tukar-tambah.histori');
 });

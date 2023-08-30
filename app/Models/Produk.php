@@ -22,7 +22,6 @@ class Produk extends Model
         });
     }
 
-    // Define relationships
     public function tipe()
     {
         return $this->belongsTo(Tipe::class, 'tipe_id');
@@ -30,21 +29,26 @@ class Produk extends Model
 
     public function karat()
     {
-        return $this->belongsTo(Karat::class);
+        return $this->belongsTo(Karat::class, 'karat_id');
     }
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
     public function kotak()
     {
-        return $this->belongsTo(Kotak::class);
+        return $this->belongsTo(Kotak::class, 'kotak_id');
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
+    public function service()
+    {
+        return $this->hasMany(Service::class, 'produk_id');
     }
 }

@@ -112,6 +112,7 @@
                     delay: 300,
                     url: function(params) {
                         let search = params.term != null ? params.term : '';
+                        console.log(apiUrl + $('#kategori').val() + `/${search}`)
                         return apiUrl + $('#kategori').val() + `/${search}`;
                     },
                     dataType: 'json',
@@ -143,7 +144,7 @@
             });
         }
 
-        initializeSelect2(true, '#model', 'Silahkan pilih model', 'http://127.0.0.1:8000/api/model/');
-        initializeSelect2(false, '#kotak', 'Silahkan pilih kotak', 'http://127.0.0.1:8000/api/kotak/');
+        initializeSelect2(true, '#model', 'Silahkan pilih model', "{{ url('/api/model/') }}/");
+        initializeSelect2(false, '#kotak', 'Silahkan pilih kotak', "{{ url('/api/kotak/') }}/");
     </script>
 @endpush

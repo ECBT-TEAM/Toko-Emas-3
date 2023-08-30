@@ -63,11 +63,6 @@
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button
-                                                    onclick="window.location.href='{{ route('update.produk', ['produk' => $produk->id]) }}'"
-                                                    type="button" class="btn btn-info">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button
                                                     onclick="window.location.href='{{ route('destroy.produk', ['produk' => $produk->id]) }}'"
                                                     type="button" class="btn btn-danger">
                                                     <i class="fas fa-trash"></i>
