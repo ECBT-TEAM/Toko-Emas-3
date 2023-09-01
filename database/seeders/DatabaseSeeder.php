@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(KondisiSeeder::class);
         $this->call(StatusSeeder::class);
         $this->call(JenisTransaksiSeeder::class);
+        $this->call(BlokSeeder::class);
     }
 }

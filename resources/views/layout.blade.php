@@ -59,7 +59,7 @@
     @stack('css')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed sidebar-collapse">
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->

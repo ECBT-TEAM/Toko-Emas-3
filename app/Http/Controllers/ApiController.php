@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kotak;
 use App\Models\Tipe;
+use App\Models\Kotak;
+use App\Models\Member;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
@@ -56,6 +58,44 @@ class ApiController extends Controller
         return response()->json([
             'status' => $status,
             'data' => $tipes
+        ]);
+    }
+
+    public function searchProduk($produk = null)
+    {
+        $split = explode('-', $produk);
+        $kodeTipe = $split[0];
+        $produkId = $split[1];
+
+        $searchProduk = Produk::with('tipe', 'karat.harga_ref')
+            ->where('id', 'LIKE', "$produkId%")
+            ->where('status_id',  1)
+            ->whereHas('tipe', fn ($query) => $query->where('kode_tipe', $kodeTipe))
+            ->whereHas('karat.harga_ref', fn ($query) => $query->where('status', 1))
+            ->first();
+
+        $status = $searchProduk ? 'Found' : 'Not Found';
+
+        return response()->json([
+            'status' => $status,
+            'data' => $searchProduk ? [
+                'id' => $searchProduk->id,
+                'tipe' => ucwords($searchProduk->tipe->nama),
+                'berat' => $searchProduk->berat,
+                'karat' => $searchProduk->karat->nama,
+                'harga_ref' => $searchProduk->karat->harga_ref->pluck('harga')
+            ] : null
+        ]);
+    }
+
+    public function searchMember($member = null)
+    {
+        $dataMember = Member::where('hp', $member)->first();
+        $status = $dataMember ? 'Found' : 'Not Found';
+
+        return response()->json([
+            'status' => $status,
+            'data' => $dataMember
         ]);
     }
 }

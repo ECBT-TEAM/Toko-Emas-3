@@ -3,13 +3,25 @@
 namespace App\Models;
 
 use Ramsey\Uuid\Uuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaksi extends Model
 {
     use HasFactory;
-    protected $fillable = ['kode_transaksi', 'member_id', 'kasir_id', 'jenis_transaksi_id'];
+
+    protected $primaryKey = 'kode_transaksi';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected $fillable = [
+        'metode_pembayaran',
+        'norek',
+        'member_id',
+        'kasir_id',
+        'cabang_id',
+        'jenis_transaksi_id',
+    ];
 
     protected static function boot()
     {
@@ -22,7 +34,7 @@ class Transaksi extends Model
 
     public function transaksiDetail()
     {
-        return $this->hasMany(TransaksiDetail::class, 'kode_transaksi');
+        return $this->hasMany(TransaksiDetail::class, 'kode_transaksi', 'kode_transaksi');
     }
 
     public function member()
@@ -30,13 +42,18 @@ class Transaksi extends Model
         return $this->belongsTo(Member::class, 'member_id');
     }
 
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
+    }
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'kasir_id');
+        return $this->belongsTo(User::class, 'kasir_id');
     }
 
     public function jenisTransaksi()
     {
-        return $this->belongsTo(jenisTransaksi::class, 'jenis_transaksi_id');
+        return $this->belongsTo(JenisTransaksi::class, 'jenis_transaksi_id');
     }
 }

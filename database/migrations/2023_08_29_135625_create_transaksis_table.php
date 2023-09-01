@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->uuid('kode_transaksi')->primary();
+            $table->string('metode_pembayaran');
+            $table->string('norek')->nullable();
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('kasir_id');
+            $table->unsignedBigInteger('cabang_id');
             $table->unsignedBigInteger('jenis_transaksi_id');
             $table->timestamps();
 
@@ -26,6 +29,11 @@ return new class extends Migration
             $table->foreign('kasir_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('restrict');
+
+            $table->foreign('cabang_id')
+                ->references('id')
+                ->on('cabangs')
                 ->onDelete('restrict');
 
             $table->foreign('jenis_transaksi_id')

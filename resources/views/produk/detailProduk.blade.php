@@ -45,6 +45,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Nomor</th>
+                                    <th scope="col">Kode Produk</th>
                                     <th scope="col">Model</th>
                                     <th scope="col">Berat</th>
                                     <th scope="col">Karat</th>
@@ -56,6 +57,7 @@
                                 @foreach ($data['produk'] as $index => $produk)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $produk->tipe->kode_tipe . '-' . explode('-', $produk->id)[0] }}</td>
                                         <td>{{ ucwords($produk->tipe->nama) }}</td>
                                         <td class="text-center">{{ $produk->berat . 'g' }}</td>
                                         <td class="text-center">{{ $produk->karat->nama . 'k' }}</td>

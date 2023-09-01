@@ -6,6 +6,7 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\HargaRefController;
 use App\Http\Controllers\KaratController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\KondisiController;
 use App\Http\Controllers\KotakController;
 use App\Http\Controllers\LoginController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Models\Transaksi;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +46,8 @@ Route::prefix('store')->as('store.')->middleware(['auth'])->group(function () {
     Route::post('harga_ref', [HargaRefController::class, 'store'])->name('harga_ref');
     Route::post('kondisi', [KondisiController::class, 'store'])->name('kondisi');
     Route::post('produk', [ProdukController::class, 'store'])->name('produk');
+    Route::post('keranjang', [KeranjangController::class, 'store'])->name('keranjang');
+    Route::post('storeJual', [TransaksiController::class, 'storeJual'])->name('transaksi.jual');
 });
 
 Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () {
@@ -72,6 +76,7 @@ Route::prefix('delete')->as('destroy.')->middleware(['auth'])->group(function ()
     Route::get('harga_ref/{harga_ref}', [HargaRefController::class, 'destroy'])->name('harga_ref');
     Route::get('kondisi/{kondisi}', [KondisiController::class, 'destroy'])->name('kondisi');
     Route::get('produk/{produk}', [ProdukController::class, 'destroy'])->name('produk');
+    Route::get('keranjang/{keranjang}', [KeranjangController::class, 'destroy'])->name('keranjang');
 });
 
 Route::prefix('produk')->as('produk.')->middleware(['auth', 'role:1'])->group(function () {
@@ -120,7 +125,8 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
 Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
 
     route::get('jual', [TransaksiController::class, 'jual'])->name('jual.index');
-    route::get('jual/histori', [TransaksiController::class, 'edit'])->name('jual.histori');
+    route::get('jual/histori', [TransaksiController::class, 'jualHistori'])->name('jual.histori');
+    route::get('jual/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistori'])->name('jual.histori.detail');
 
     route::get('balen', [TransaksiController::class, 'balen'])->name('balen.index');
     route::get('balen/histori', [TransaksiController::class, 'edit'])->name('balen.histori');
