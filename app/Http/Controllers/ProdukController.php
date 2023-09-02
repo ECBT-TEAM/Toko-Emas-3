@@ -98,6 +98,8 @@ class ProdukController extends Controller
      */
     public function showProuk($kategoriId, $kotakId)
     {
+        $userCabangId = Auth::user()->cabang_id;
+
         $commonConditions = function ($query) use ($kategoriId) {
             $query->where('kategori_id', $kategoriId);
         };
@@ -107,8 +109,8 @@ class ProdukController extends Controller
             ->join('tipes', 'produks.tipe_id', '=', 'tipes.id')
             ->where('status_id', 1)
             ->whereHas('tipe', $commonConditions)
-            ->whereHas('kotak.blok', function ($query) {
-                $query->where('cabang_id', Auth::user()->cabang_id);
+            ->whereHas('kotak.blok', function ($query) use ($userCabangId) {
+                $query->where('cabang_id', $userCabangId);
             })
             ->where('kotak_id', $kotakId)
             ->orderBy('tipes.nama')
@@ -116,8 +118,8 @@ class ProdukController extends Controller
 
         $data['beratProduk'] = Produk::whereHas('tipe', $commonConditions)
             ->where('status_id', 1)
-            ->whereHas('kotak.blok', function ($query) {
-                $query->where('cabang_id', Auth::user()->cabang_id);
+            ->whereHas('kotak.blok', function ($query) use ($userCabangId) {
+                $query->where('cabang_id', $userCabangId);
             })
             ->sum('berat');
 
