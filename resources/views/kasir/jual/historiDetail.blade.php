@@ -30,7 +30,7 @@
                                                 {{ $transaksi->produk->karat->nama }}k</span>
                                         </td>
                                         <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
-                                        <td>{{ formatRupiah($transaksi->harga) }}</td>
+                                        <td id="hargaJual">{{ formatRupiah($transaksi->harga) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -143,11 +143,6 @@
                                         <td style="width:1%">:</td>
                                         <td><strong id="total">Rp 0</strong></td>
                                     </tr>
-                                    <tr class="text-danger h2">
-                                        <th style="width:28%">Kembali</th>
-                                        <td style="width:1%">:</td>
-                                        <td><strong id="kembali">Rp 0</strong></td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -162,4 +157,13 @@
 @push('css')
 @endpush
 @push('js')
+    <script>
+        var totalHargaJual = 0;
+        $('#example1 tbody tr').each(function() {
+            var hargaJual = rupiahToInt($(this).find('#hargaJual').text())
+            totalHargaJual += hargaJual;
+        });
+        $('#subtotal').text(formatRupiah(totalHargaJual));
+        $('#total').text(formatRupiah(totalHargaJual));
+    </script>
 @endpush
