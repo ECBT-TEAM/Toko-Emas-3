@@ -31,7 +31,8 @@ class UpdateKotakRequest extends FormRequest
                     ->where('blok_id', request()->input('blok'))
                     ->whereIn('jenis', ['Kotak', 'Patung'])
                     ->ignore($this->kotak)
-            ],            'nama' => 'required|string|max:255',
+            ],
+            'nama' => 'required|string|max:255',
             'berat' => 'required|numeric|min:0',
             'jenis' => 'required|in:Kotak,Patung',
             'blok' => 'required|integer|exists:bloks,id',
