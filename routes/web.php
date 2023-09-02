@@ -15,7 +15,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
-use App\Models\Transaksi;
+use Illuminate\Support\Facades\Artisan;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,11 @@ route::get('/', [LoginController::class, 'dashboard'])->middleware(['auth'])->na
 route::post('auth/login', [LoginController::class, 'auth'])->name('auth.login');
 route::get('auth/logout', [LoginController::class, 'logout'])->name('auth.logout');
 route::get('login', [LoginController::class, 'index'])->name('login');
+
+route::get('reset-db', function () {
+    Artisan::call('migrate:refresh', ['--seed' => true]);
+    return 'Database telah di-reset.';
+})->name('reset.db');
 
 
 Route::prefix('store')->as('store.')->middleware(['auth'])->group(function () {

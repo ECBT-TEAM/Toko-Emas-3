@@ -73,6 +73,9 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{{ url('template') }}/" target="_blank" class="nav-link">Template</a>
                 </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ route('reset.db') }}/" target="_blank" class="nav-link">Reset Database</a>
+                </li>
             </ul>
 
             <!-- Right navbar links -->
