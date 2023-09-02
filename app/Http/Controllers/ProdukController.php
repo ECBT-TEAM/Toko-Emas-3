@@ -84,8 +84,11 @@ class ProdukController extends Controller
                 $query->where('status_id', 1);
             })
             ->where('kategori_id', $kategoriId)
-            ->withCount('produk')
-            ->get();
+            ->withCount([
+                'produk as produk_count' => function ($query) {
+                    $query->where('status_id', 1);
+                }
+            ])->get();
         $data['kategoriId'] = $kategoriId;
         return view('produk.detail', compact('data'));
     }
