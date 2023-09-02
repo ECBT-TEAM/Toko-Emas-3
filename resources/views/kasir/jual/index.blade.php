@@ -421,7 +421,9 @@
         $('#searchProduk').click(function() {
             var kodeBarcode = $('#kodeBarcode').val();
             if (kodeBarcode != '') {
-                handleAjaxRequest('http://127.0.0.1:8000/api/produk/' + kodeBarcode, function(data) {
+                var url = "{{ route('searchProduk', ['kodeProduk' => 'kodeProduk']) }}";
+                url = url.replace('kodeProduk', kodeBarcode);
+                handleAjaxRequest(url, function(data) {
                     if (data.status == 'Found') {
                         var hargaRefSelect = $('#hargaRef');
                         hargaRefSelect.empty();
@@ -448,7 +450,9 @@
 
         $('#searchMember').click(function() {
             var hp = $('#hp').val();
-            handleAjaxRequest('http://127.0.0.1:8000/api/member/' + hp, function(data) {
+            var url = "{{ route('searchMember', ['member' => 'member']) }}";
+            url = url.replace('member', hp);
+            handleAjaxRequest(url, function(data) {
                 if (data.status == 'Found') {
                     $('#nama').val(data.data.nama);
                     $('#alamat').val(data.data.alamat);

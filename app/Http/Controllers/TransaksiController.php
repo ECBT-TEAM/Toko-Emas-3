@@ -32,7 +32,7 @@ class TransaksiController extends Controller
     public function jualHistori()
     {
         $today = Carbon::now()->toDateString();
-        $data['transaksi'] = Transaksi::with('member', 'user')->where('jenis_transaksi_id', 1)->whereDate('created_at', $today)->get();
+        $data['transaksi'] = Transaksi::with('member', 'user')->where('cabang_id', Auth::user()->cabang_id)->where('jenis_transaksi_id', 1)->whereDate('created_at', $today)->get();
         return view('kasir.jual.histori', compact('data'));
     }
 

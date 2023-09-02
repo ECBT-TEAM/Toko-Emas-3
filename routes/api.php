@@ -23,4 +23,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('model/{kategori}/{search?}', [ApiController::class, 'searchModel'])->middleware(['auth:web', 'role:1'])->name('searchModel');
 Route::get('kotak/{kategori}/{search?}', [ApiController::class, 'searchKotak'])->middleware(['auth:web', 'role:1'])->name('searchKotak');
 Route::get('produk/{kodeProduk}', [ApiController::class, 'searchProduk'])->middleware(['auth:web', 'role:1'])->name('searchProduk');
-Route::get('member/{kodeProduk}', [ApiController::class, 'searchMember'])->middleware(['auth:web', 'role:1'])->name('searchMember');
+Route::get('member/{member}', [ApiController::class, 'searchMember'])->middleware(['auth:web', 'role:1'])->name('searchMember');
