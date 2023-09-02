@@ -99,7 +99,7 @@ class ProdukController extends Controller
         $data['produk'] = Produk::with(['kotak', 'tipe', 'karat', 'supplier'])
             ->select('produks.*')
             ->join('tipes', 'produks.tipe_id', '=', 'tipes.id')
-            ->where('status', 1)
+            ->where('status_id', 1)
             ->whereHas('tipe', $commonConditions)
             ->whereHas('kotak.blok', function ($query) {
                 $query->where('cabang_id', Auth::user()->cabang_id);
