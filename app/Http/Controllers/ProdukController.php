@@ -77,7 +77,6 @@ class ProdukController extends Controller
     public function show($kategoriId)
     {
         $data['kotak'] = Kotak::with('blok')
-            ->withCount('produk')
             ->whereHas('blok', function ($query) {
                 $query->where('cabang_id', Auth::user()->cabang_id);
             })
@@ -85,6 +84,7 @@ class ProdukController extends Controller
                 $query->where('status_id', 1);
             })
             ->where('kategori_id', $kategoriId)
+            ->withCount('produk')
             ->get();
         $data['kategoriId'] = $kategoriId;
         return view('produk.detail', compact('data'));
@@ -112,7 +112,7 @@ class ProdukController extends Controller
             ->get();
 
         $data['beratProduk'] = Produk::whereHas('tipe', $commonConditions)
-            ->produk('status_id', 1)
+            ->where('status_id', 1)
             ->whereHas('kotak.blok', function ($query) {
                 $query->where('cabang_id', Auth::user()->cabang_id);
             })
