@@ -42,7 +42,7 @@ class KotakController extends Controller
     public function store(StoreKotakRequest $request)
     {
         $validated = $request->validated();
-
+        dd($validated);
         $lastKotak = Kotak::where('jenis', $validated['jenis'])
             ->where('blok_id', $validated['blok'])
             ->max('nomor');
