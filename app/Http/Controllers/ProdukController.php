@@ -80,9 +80,6 @@ class ProdukController extends Controller
             ->whereHas('blok', function ($query) {
                 $query->where('cabang_id', Auth::user()->cabang_id);
             })
-            ->whereHas('produk', function ($query) {
-                $query->where('status_id', 1);
-            })
             ->where('kategori_id', $kategoriId)
             ->withCount([
                 'produk as produk_count' => function ($query) {

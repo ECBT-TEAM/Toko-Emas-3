@@ -114,29 +114,63 @@
     </ul>
 </li>
 <li class="nav-header">MENU MANAGER</li>
-{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+<li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('laporan*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-clipboard-list"></i>
         <p>
-            Laporan Penjualan
+            Laporan
             <i class="right fas fa-angle-left"></i>
         </p>
     </a>
     <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+        <li class="nav-item {{ Route::is('laporan.jual*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('laporan.jual*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Tambah</p>
+                <p>
+                    Penjualan
+                    <i class="right fas fa-angle-left"></i>
+                </p>
             </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Histori</p>
-            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('laporan.jual.index') }}"
+                        class="nav-link {{ Route::is('laporan.jual.index*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Semua</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.jual.kategori') }}"
+                        class="nav-link {{ Route::is('laporan.jual.kategori*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Kategori</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.jual.model') }}"
+                        class="nav-link {{ Route::is('laporan.jual.model*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Model</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.jual.supplier') }}"
+                        class="nav-link {{ Route::is('laporan.jual.supplier') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Supplier</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.jual.konsumen') }}"
+                        class="nav-link {{ Route::is('laporan.jual.konsumen*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Konsumen</p>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
-</li> --}}
+</li>
 <li class="nav-header">MENU KASIR</li>
 <li class="nav-item {{ Route::is('kasir.jual.*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link {{ Route::is('kasir.jual*') ? 'active' : '' }}">

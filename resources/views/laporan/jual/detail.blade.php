@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <button onclick="window.location.href='{{ route('kasir.jual.histori') }}'" type="button"
+        <button onclick="window.location.href='{{ route('laporan.jual.index') }}'" type="button"
             class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i> Kembali</button>
         <div class="row row-cols-1">
             <div class="col">
@@ -12,7 +12,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Kode Produk</th>
-                                    <th scope="col">kategori</th>
+                                    <th scope="col">Kategori</th>
                                     <th scope="col">Produk</th>
                                     <th scope="col">Harga Rugi</th>
                                     <th scope="col">Harga Jual</th>
@@ -21,8 +21,7 @@
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
                                     <tr>
-                                        <td>
-                                            {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
+                                        <td>{{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
                                         </td>
                                         <td>
                                             {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}

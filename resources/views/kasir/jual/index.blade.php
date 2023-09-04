@@ -140,6 +140,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Kode Produk</th>
+                                    <th scope="col">Kategori</th>
                                     <th scope="col">Produk</th>
                                     <th scope="col">Harga Rugi</th>
                                     <th scope="col">Harga Jual</th>
@@ -150,6 +151,9 @@
                                 @foreach ($data['keranjang'] as $keranjang)
                                     <tr>
                                         <td>{{ $keranjang->produk->tipe->kode_tipe . '-' . explode('-', $keranjang->produk_id)[0] }}
+                                        </td>
+                                        <td>
+                                            {{ $keranjang->produk->tipe->kategori->first()->nama }}
                                         </td>
                                         <td>
                                             {{ ucwords($keranjang->produk->tipe->nama) }}
@@ -421,8 +425,8 @@
         $('#searchProduk').click(function() {
             var kodeBarcode = $('#kodeBarcode').val();
             if (kodeBarcode != '') {
-                var url = "{{ route('searchProduk', ['kodeProduk' => 'kodeProduk']) }}";
-                url = url.replace('kodeProduk', kodeBarcode);
+                var url = "{{ route('searchProduk', ['kodeProduk' => ':kodeProduk']) }}";
+                url = url.replace(':kodeProduk', kodeBarcode);
                 handleAjaxRequest(url, function(data) {
                     if (data.status == 'Found') {
                         var hargaRefSelect = $('#hargaRef');
@@ -450,8 +454,8 @@
 
         $('#searchMember').click(function() {
             var hp = $('#hp').val();
-            var url = "{{ route('searchMember', ['member' => 'member']) }}";
-            url = url.replace('member', hp);
+            var url = "{{ route('searchMember', ['member' => ':member']) }}";
+            url = url.replace(':member', hp);
             handleAjaxRequest(url, function(data) {
                 if (data.status == 'Found') {
                     $('#nama').val(data.data.nama);

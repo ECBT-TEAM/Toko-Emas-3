@@ -99,6 +99,8 @@ class TransaksiController extends Controller
                 'kode_transaksi' => $transaksi->kode_transaksi,
                 'harga' => $item->harga,
                 'produk_id' => $item->produk_id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             Produk::where('id', $item->produk_id)->update(['status_id' => 3]);

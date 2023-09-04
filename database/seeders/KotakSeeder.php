@@ -22,7 +22,7 @@ class KotakSeeder extends Seeder
                 'kategori_id' => 1
             ],
             [
-                'nomor' => 1,
+                'nomor' => 2,
                 'jenis' => 'Kotak',
                 'berat' => 200,
                 'blok_id' => 2,
@@ -35,7 +35,7 @@ class KotakSeeder extends Seeder
                 'kategori_id' => 2
             ],
             [
-                'nomor' => 1,
+                'nomor' => 2,
                 'jenis' => 'Kotak',
                 'berat' => 200,
                 'blok_id' => 2,

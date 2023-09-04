@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\KondisiController;
 use App\Http\Controllers\KotakController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProdukController;
@@ -93,7 +94,6 @@ Route::prefix('produk')->as('produk.')->middleware(['auth', 'role:1'])->group(fu
 });
 
 Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])->group(function () {
-
     route::get('user', [UserController::class, 'index'])->name('user.index');
     route::get('user/edit/{user}', [UserController::class, 'edit'])->name('user.edit');
 
@@ -107,7 +107,6 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
     route::get('cabang/edit/{cabang}', [CabangController::class, 'edit'])->name('cabang.edit');
 
     Route::prefix('barang')->as('barang.')->group(function () {
-
         route::get('blok', [BlokController::class, 'index'])->name('blok.index');
         route::get('blok/edit/{blok}', [BlokController::class, 'edit'])->name('blok.edit');
 
@@ -127,9 +126,20 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
     });
 });
 
+Route::prefix('laporan')->as('laporan.')->middleware(['auth', 'role:1'])->group(function () {
+    Route::prefix('penjualan')->as('jual.')->group(function () {
+        route::get('/', [LaporanController::class, 'index'])->name('index');
+        route::get('/cari/{awal}/{akhir}', [LaporanController::class, 'index'])->name('cari');
+
+        route::get('kategori', [LaporanController::class, 'indexKategori'])->name('kategori');
+        route::get('model', [LaporanController::class, 'indexModel'])->name('model');
+        route::get('supplier', [LaporanController::class, 'indexSupplier'])->name('supplier');
+        route::get('konsumen', [LaporanController::class, 'indexKonsumen'])->name('konsumen');
+    });
+    route::get('transaksi/detail/{transaksi}', [LaporanController::class, 'show'])->name('detail');
+});
 
 Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
-
     route::get('jual', [TransaksiController::class, 'jual'])->name('jual.index');
     route::get('jual/histori', [TransaksiController::class, 'jualHistori'])->name('jual.histori');
     route::get('jual/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistori'])->name('jual.histori.detail');
