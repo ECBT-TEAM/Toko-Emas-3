@@ -51,9 +51,10 @@ class KotakController extends Controller
         Kotak::firstOrCreate([
             'nomor' => $lastKotak,
             'jenis' => $validated['jenis'],
+            'kategori_id' => $validated['kategori'],
+        ], [
             'berat' => $validated['berat'],
             'blok_id' => $validated['blok'],
-            'kategori_id' => $validated['kategori'],
         ]);
 
         Alert::success('Sukses', 'Data berhasil disimpan.');
