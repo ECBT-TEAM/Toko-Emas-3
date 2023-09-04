@@ -44,7 +44,7 @@ class KotakController extends Controller
         $validated = $request->validated();
 
         $lastKotak = Kotak::where('jenis', $validated['jenis'])
-            ->where('blok_id', $validated['blok'])
+            ->where('kategori_id', $validated['kategori'])
             ->max('nomor');
         $lastKotak = $lastKotak !== null ? $lastKotak + 1 : 1;
 
