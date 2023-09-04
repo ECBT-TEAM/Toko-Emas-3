@@ -170,6 +170,54 @@
             </ul>
         </li>
     </ul>
+    <ul class="nav nav-treeview">
+        <li class="nav-item {{ Route::is('laporan.beli*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Route::is('laporan.beli*') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>
+                    Balen
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('laporan.beli.index') }}"
+                        class="nav-link {{ Route::is('laporan.beli.index*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Semua</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.beli.kategori') }}"
+                        class="nav-link {{ Route::is('laporan.beli.kategori*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Kategori</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.beli.model') }}"
+                        class="nav-link {{ Route::is('laporan.beli.model*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Model</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.beli.supplier') }}"
+                        class="nav-link {{ Route::is('laporan.beli.supplier') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Supplier</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.beli.konsumen') }}"
+                        class="nav-link {{ Route::is('laporan.beli.konsumen*') ? 'active' : '' }}">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Per Konsumen</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </li>
 <li class="nav-header">MENU KASIR</li>
 <li class="nav-item {{ Route::is('kasir.jual.*') ? 'menu-open' : '' }}">
@@ -197,8 +245,8 @@
         </li>
     </ul>
 </li>
-{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+<li class="nav-item {{ Route::is('kasir.beli.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('kasir.beli*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-cart-arrow-down"></i>
         <p>
             Balen
@@ -207,20 +255,22 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+            <a href="{{ route('kasir.beli.index') }}"
+                class="nav-link {{ Route::is('kasir.beli.index') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tambah</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}" class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+            <a href="{{ route('kasir.beli.histori') }}"
+                class="nav-link {{ Route::is('kasir.beli.histori') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Histori</p>
             </a>
         </li>
     </ul>
 </li>
-<li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
+{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-retweet"></i>
         <p>

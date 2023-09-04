@@ -8,24 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKeranjangRequest;
 use App\Http\Requests\UpdateKeranjangRequest;
+use App\Models\TransaksiDetail;
 
 class KeranjangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,29 +24,31 @@ class KeranjangController extends Controller
         $searchProduk = Produk::with('tipe', 'karat.harga_ref')
             ->where('id', 'LIKE', "$produkId%")
             ->whereHas('tipe', fn ($query) => $query->where('kode_tipe', $kodeTipe))
+            ->where('status_id', 1)
             ->first();
 
         if ($searchProduk) {
-            if ($searchProduk->status_id == 1) {
+            $hargaRugi = rupiahToInt($validated['hargaRugi']);
+            $harga = rupiahToInt($validated['harga']);
+
+            $keranjang = Keranjang::firstOrCreate(
+                ['produk_id' => $searchProduk->id],
+                [
+                    'harga' => $harga,
+                    'jenis_transaksi_id' => 1,
+                    'user_id' => Auth::user()->id
+                ]
+            );
+
+            if ($keranjang->wasRecentlyCreated) {
                 $searchProduk->update([
                     'status_id' => 2,
-                    'harga_rugi' => rupiahToInt($validated['hargaRugi'])
+                    'harga_rugi' => $hargaRugi
                 ]);
-
-                Keranjang::firstOrCreate(
-                    [
-                        'produk_id' => $searchProduk->id,
-                    ],
-                    [
-                        'harga' => rupiahToInt($validated['harga']),
-                        'jenis_transaksi_id' => $validated['jenisTransaksi'],
-                        'user_id' => Auth::user()->id
-                    ]
-                );
 
                 Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang')->persistent(true);
             } else {
-                Alert::warning('Gagal', $searchProduk->status_id == 2 ? 'Produk sudah ada dikeranjang' : 'Produk tidak ditemukan')->persistent(true);
+                Alert::warning('Gagal', 'Produk sudah ada dikeranjang')->persistent(true);
             }
         } else {
             Alert::warning('Gagal', 'Produk tidak ditemukan')->persistent(true);
@@ -69,20 +57,47 @@ class KeranjangController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Keranjang $keranjang)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Keranjang $keranjang)
+    public function storeByKodeProduk($kodeTransaksi, $kodeProduk)
     {
-        //
+        $transaksiDetail = TransaksiDetail::where('kode_transaksi', $kodeTransaksi)
+            ->where('produk_id', $kodeProduk)
+            ->with('produk.status')
+            ->first();
+
+        if (!$transaksiDetail || $transaksiDetail->produk->status_id != 3) {
+            $produkStatus = $transaksiDetail ? 'Status produk : ' . $transaksiDetail->produk->status->nama : 'Produk tidak ditemukan';
+            Alert::warning('Gagal', $produkStatus)->persistent(true);
+            return redirect()->back();
+        }
+
+        $harga = $transaksiDetail->harga - $transaksiDetail->produk->harga_rugi;
+
+        $keranjang = Keranjang::firstOrCreate(
+            [
+                'produk_id' => $transaksiDetail->produk->id,
+            ],
+            [
+                'harga' => $harga,
+                'jenis_transaksi_id' => 2,
+                'user_id' => Auth::user()->id
+            ]
+        );
+
+        if ($keranjang->wasRecentlyCreated) {
+            $transaksiDetail->produk->update([
+                'status_id' => 2,
+            ]);
+
+            Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang')->persistent(true);
+        } else {
+            Alert::warning('Gagal', 'Produk sudah ada dikeranjang')->persistent(true);
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -98,9 +113,18 @@ class KeranjangController extends Controller
      */
     public function destroy(Keranjang $keranjang)
     {
-        $keranjang->produk->update(['status_id' => 1]);
-        $keranjang->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
+        $status = [
+            '1' => 1,
+            '2' => 3,
+        ][$keranjang->jenis_transaksi_id] ?? null;
+
+        if ($status !== null) {
+            $keranjang->produk->update(['status_id' => $status]);
+            $keranjang->delete();
+            Alert::success('Sukses', 'Data berhasil dihapus.');
+        } else {
+            Alert::warning('Gagal', 'Status tidak sesuai')->persistent(true);
+        }
         return redirect()->back();
     }
 }

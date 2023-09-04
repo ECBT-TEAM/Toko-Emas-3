@@ -5,7 +5,7 @@
             <div class="col">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Keranjang</h3>
+                        <h3 class="card-title">Scan Barcode Surat</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
@@ -16,116 +16,80 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ route('store.keranjang') }}" method="POST">
-                            @csrf
-                            <div class="row row-cols-lg-1 row-cols-1">
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Kode Barcode</label>
-
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input class="form-control" name="kodeBarcode" id="kodeBarcode"
-                                                    value="{{ old('kodeBarcode') }}">
-                                                <span class="input-group-append">
-                                                    <button type="button" class="btn btn-info btn-flat" id="searchProduk">
-                                                        <i class="fas fa-search"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            @error('kodeBarcode')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
+                        <div class="row row-cols-lg-1 row-cols-1">
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Kode Barcode</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input class="form-control" name="kodeTransaksi" id="kodeTransaksi"
+                                                value="{{ $data['kodeTransaksi'] }}">
+                                            <span class="input-group-append">
+                                                <button type="button" class="btn btn-info btn-flat" id="searchTransaksi">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </span>
                                         </div>
+                                        @error('kodeBarcode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Nama Barang</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="model" id="model"
-                                                readonly>
-                                            @error('model')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">
-                                            Berat
-                                            <small>
-                                                <i>Satuan : gram(g)</i>
-                                            </small>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="berat" id="berat"
-                                                readonly>
-                                            @error('berat')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Karat</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="karat" id="karat"
-                                                readonly>
-                                            @error('karat')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Harga Ref</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control select2bs4" style="width: 100%;" name="hargaRef"
-                                                id="hargaRef">
-                                            </select>
-                                            @error('hargaRef')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Quantity</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" name="qty" id="qty"
-                                                    value="1" readonly>
-                                                <span class="input-group-append">
-                                                    <button type="button" id="totalStok" name="totalStok"
-                                                        class="btn btn-success btn-flat" value="20">
-                                                        Stok : 0
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Total Harga</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="harga" id="harga">
-                                            @error('harga')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Harga Rugi</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="hargaRugi" id="hargaRugi">
-                                            @error('hargaRugi')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-info btn-block">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        Tambah
-                                    </button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col">
+                <div class="card ">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode Produk</th>
+                                    <th scope="col">Kategori</th>
+                                    <th scope="col">Produk</th>
+                                    <th scope="col">Harga Rugi</th>
+                                    <th scope="col">Harga Jual</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data['detailTransaksi'] as $detailTransaksi)
+                                    <tr>
+                                        <td>{{ $detailTransaksi->produk->tipe->kode_tipe . '-' . explode('-', $detailTransaksi->produk_id)[0] }}
+                                        </td>
+                                        <td>
+                                            {{ $detailTransaksi->produk->tipe->kategori->first()->nama }}
+                                        </td>
+                                        <td>
+                                            {{ ucwords($detailTransaksi->produk->tipe->nama) }}
+                                            <span class="badge badge-info">Berat:
+                                                {{ $detailTransaksi->produk->berat }}g</span>
+                                            <span class="badge badge-warning">Karat:
+                                                {{ $detailTransaksi->produk->karat->nama }}k</span>
+                                        </td>
+                                        <td>{{ formatRupiah($detailTransaksi->produk->harga_rugi) }}</td>
+                                        <td class="hargaBeli">{{ formatRupiah($detailTransaksi->harga) }}</td>
+                                        <td>
+                                            @if ($detailTransaksi->produk->status_id == 3)
+                                                <button class="btn btn-sm btn-info"
+                                                    onclick="window.location.href='{{ route('store.keranjang.produk', ['transaksi' => $data['kodeTransaksi'], 'produk' => $detailTransaksi->produk_id]) }}'">
+                                                    <i class="fas fa-check-square"></i>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -141,8 +105,7 @@
                                     <th scope="col">Kode Produk</th>
                                     <th scope="col">Kategori</th>
                                     <th scope="col">Produk</th>
-                                    <th scope="col">Harga Rugi</th>
-                                    <th scope="col">Harga Jual</th>
+                                    <th scope="col">Harga Beli</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -161,8 +124,7 @@
                                             <span class="badge badge-warning">Karat:
                                                 {{ $keranjang->produk->karat->nama }}k</span>
                                         </td>
-                                        <td>{{ formatRupiah($keranjang->produk->harga_rugi) }}</td>
-                                        <td id="hargaJual">{{ formatRupiah($keranjang->harga) }}</td>
+                                        <td id="hargaBeli">{{ formatRupiah($keranjang->harga) }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-danger"
                                                 onclick="window.location.href='{{ route('destroy.keranjang', ['keranjang' => $keranjang->id]) }}'">
@@ -179,7 +141,7 @@
                 <!-- /.card -->
             </div>
         </div>
-        <form action="{{ route('store.transaksi.jual') }}" method="POST">
+        <form action="{{ route('store.transaksi.beli') }}" method="POST">
             @csrf
             <div class="row row-cols-1">
                 <div class="col">
@@ -381,7 +343,7 @@
         function getSubTotal() {
             var totalHargaJual = 0;
             $('#example1 tbody tr').each(function() {
-                var hargaJual = rupiahToInt($(this).find('#hargaJual').text())
+                var hargaJual = rupiahToInt($(this).find('#hargaBeli').text())
                 totalHargaJual += hargaJual;
             });
             $('#subtotal').text(formatRupiah(totalHargaJual));
@@ -397,9 +359,9 @@
 
         $('#bayar').on('input', formatAndCalculate);
 
-        $('#hargaRugi, #harga').on('input', function() {
-            $(this).val(formatRupiah(rupiahToInt($(this).val())))
-        });
+        // $('#hargaRugi, #harga').on('input', function() {
+        //     $(this).val(formatRupiah(rupiahToInt($(this).val())))
+        // });
 
         $('#hargaRef').on('change', function() {
             $('#harga').val(formatRupiah($(this).val() * $('#berat').val()));
@@ -421,34 +383,12 @@
             }
         });
 
-        $('#searchProduk').click(function() {
-            var kodeBarcode = $('#kodeBarcode').val();
-            if (kodeBarcode != '') {
-                var url = "{{ route('searchProduk', ['kodeProduk' => ':kodeProduk']) }}";
-                url = url.replace(':kodeProduk', kodeBarcode);
-                handleAjaxRequest(url, function(data) {
-                    if (data.status == 'Found') {
-                        var hargaRefSelect = $('#hargaRef');
-                        hargaRefSelect.empty();
-                        $.each(data.data.harga_ref, function(index, item) {
-                            hargaRefSelect.append(new Option(formatRupiah(rupiahToInt(item)),
-                                item));
-                        });
-                        hargaRefSelect.trigger('change');
-                        $('#model').val(data.data.tipe);
-                        $('#berat').val(data.data.berat);
-                        $('#karat').val(data.data.karat);
-                        $('#harga').val(formatRupiah($('#hargaRef').val() * data.data.berat));
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Produk tidak ditemukan.',
-                            confirmButtonColor: '#17a2b8',
-                        });
-                    }
-                });
-            }
+        $('#searchTransaksi').click(function() {
+            var kodeTransaksi = $('#kodeTransaksi').val();
+            var url = "{{ route('kasir.beli.index', ['transaksi' => ':transaksi']) }}";
+            url = url.replace(':transaksi', kodeTransaksi);
+
+            window.location.href = url
         });
 
         $('#searchMember').click(function() {

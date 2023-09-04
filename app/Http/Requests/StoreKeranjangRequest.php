@@ -25,7 +25,6 @@ class StoreKeranjangRequest extends FormRequest
             'kodeBarcode' => 'required',
             'harga' => 'required',
             'hargaRugi' => 'required',
-            'jenisTransaksi' => 'required|exists:jenis_transaksis,id'
         ];
     }
 
@@ -35,8 +34,6 @@ class StoreKeranjangRequest extends FormRequest
             'kodeBarcode.required' => 'Kode Barcode harus diisi.',
             'harga.required' => 'Harga harus diisi.',
             'hargaRugi.required' => 'Harga Rugi harus diisi.',
-            'jenisTransaksi.required' => 'Jenis Transaksi harus dipilih.',
-            'jenisTransaksi.exists' => 'Jenis Transaksi yang dipilih tidak valid.',
         ];
     }
 }
