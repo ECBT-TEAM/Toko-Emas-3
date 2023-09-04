@@ -128,7 +128,14 @@
         })
 
         $('#cariButton').click(function() {
-            var kodeTransaksi = $('#kodeTransaksi').val();
+            var dateRange = $('#tanggal').val();
+
+            var dateRangeParts = dateRange.split(' - ');
+            var tanggalAwal = dateRangeParts[0];
+            var tanggalAkhir = dateRangeParts[1];
+
+            var timestampAwal = new Date(tanggalAwal).getTime() / 1000;
+            var timestampAkhir = new Date(tanggalAkhir).getTime() / 1000;
 
             var url =
                 "{{ route('laporan.jual.cari', ['awal' => ':awal', 'akhir' => ':akhir']) }}";
@@ -140,7 +147,6 @@
 
         $('#cariTransaksi').click(function() {
             var kodeTransaksi = $('#kodeTransaksi').val();
-
 
             var url =
                 "{{ route('laporan.detail', ['transaksi' => ':transaksi']) }}";
