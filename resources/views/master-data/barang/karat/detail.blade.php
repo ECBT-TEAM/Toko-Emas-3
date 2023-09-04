@@ -97,12 +97,14 @@
 @endpush
 @push('js')
     <script>
-        $("#harga").on("input", function() {
+        $("input[name='harga']").on("input", function() {
             var inputValue = $(this).val();
             var numericValue = rupiahToInt(inputValue);
             var formattedRupiah = formatRupiah(numericValue);
             $(this).val(formattedRupiah);
         });
+
+
         $('#example1').DataTable({
             "lengthChange": false,
             "searching": true,

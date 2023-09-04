@@ -115,6 +115,7 @@ class ProdukController extends Controller
 
         $data['beratProduk'] = Produk::whereHas('tipe', $commonConditions)
             ->where('status_id', 1)
+            ->where('kotak_id', $kotakId)
             ->whereHas('kotak.blok', function ($query) use ($userCabangId) {
                 $query->where('cabang_id', $userCabangId);
             })
