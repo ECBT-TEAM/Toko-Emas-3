@@ -262,6 +262,13 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('kasir.beli.manual') }}"
+                class="nav-link {{ Route::is('kasir.beli.manual') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tambah Manual</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('kasir.beli.histori') }}"
                 class="nav-link {{ Route::is('kasir.beli.histori') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>

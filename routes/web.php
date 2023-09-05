@@ -156,6 +156,7 @@ Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
     route::get('jual/histori', [TransaksiController::class, 'jualHistori'])->name('jual.histori');
 
     route::get('balen', [TransaksiController::class, 'beli'])->name('beli.index');
+    route::get('balen/manual', [TransaksiController::class, 'beliManual'])->name('beli.manual');
     route::get('balen/histori', [TransaksiController::class, 'beliHistori'])->name('beli.histori');
     route::get('balen/{transaksi?}', [TransaksiController::class, 'beli'])->name('beli.index');
 
