@@ -25,6 +25,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('') }}/">
     <meta property="og:image" content="{{ url('') }}/logo.png">
+    <meta property="og:image:width" content="1332">
+    <meta property="og:image:height" content="815">
     <meta property="og:image:alt" content="Toko Emas Murni">
     <meta property="og:site_name" content="Toko Emas Murni">
 
@@ -34,6 +36,8 @@
     <meta name="twitter:description"
         content="Temukan berbagai koleksi perhiasan emas berkualitas tinggi dan desain eksklusif untuk gaya Anda di Toko Emas Murni. Kunjungi toko kami sekarang!">
     <meta name="twitter:image" content="{{ url('') }}/logo.png">
+    <meta name="twitter:image:width" content="1332">
+    <meta name="twitter:image:height" content="815">
 
     <link rel="icon" href="{{ url('') }}/logo2.png" type="image/png">
 
