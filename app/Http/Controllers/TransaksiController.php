@@ -176,7 +176,7 @@ class TransaksiController extends Controller
                 return redirect()->back();
             }
 
-            $member = Transaksi::where('kode_transaksi', $kodeTransaksi)->first()->produk_id;
+            $member = Transaksi::where('kode_transaksi', $kodeTransaksi)->first()->member_id;
 
             DB::beginTransaction();
 
