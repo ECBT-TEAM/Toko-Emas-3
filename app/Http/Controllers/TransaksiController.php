@@ -213,12 +213,15 @@ class TransaksiController extends Controller
 
             $produkIds = $keranjang->pluck('produk_id')->toArray();
             $sisaProduk = TransaksiDetail::whereNotIn('produk_id', $produkIds)
+                ->wherehas('Transaksi', function ($query) {
+                    $query->where('jenis_transaksi_id', 3);
+                })
                 ->where('kode_transaksi', $kodeTransaksi)
                 ->get()
                 ->pluck('produk_id')
                 ->toArray();
 
-            $oldProduk = Produk::whereIn('id', $sisaProduk)->where('jenis_transaksi_id', 3)->get();
+            $oldProduk = Produk::whereIn('id', $sisaProduk)->get();
 
             if (!$oldProduk->isEmpty()) {
                 foreach ($oldProduk as $produk) {
