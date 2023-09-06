@@ -13,9 +13,11 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Models\Service;
 use Illuminate\Support\Facades\Artisan;
 
 
@@ -53,10 +55,11 @@ Route::prefix('store')->as('store.')->middleware(['auth'])->group(function () {
     Route::post('harga_ref', [HargaRefController::class, 'store'])->name('harga_ref');
     Route::post('kondisi', [KondisiController::class, 'store'])->name('kondisi');
     Route::post('produk', [ProdukController::class, 'store'])->name('produk');
-    Route::post('keranjang', [KeranjangController::class, 'store'])->name('keranjang');
-    Route::get('keranjang/{transaksi}/{produk}', [KeranjangController::class, 'storeByKodeProduk'])->name('keranjang.produk');
+    Route::post('keranjang', [KeranjangController::class, 'storeJual'])->name('keranjang');
+    Route::get('keranjang/{transaksi}/{produk}', [KeranjangController::class, 'storeBeli'])->name('keranjang.produk');
     Route::post('storeJual', [TransaksiController::class, 'storeJual'])->name('transaksi.jual');
-    Route::post('storeBeli', [TransaksiController::class, 'storeBeli'])->name('transaksi.beli');
+    Route::post('storeBeli/{transaksi}', [TransaksiController::class, 'storeBeli'])->name('transaksi.beli');
+    Route::post('service/{produk}', [ServiceController::class, 'store'])->name('service');
 });
 
 Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () {
@@ -152,17 +155,21 @@ Route::prefix('laporan')->as('laporan.')->middleware(['auth', 'role:1'])->group(
 });
 
 Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
-    route::get('jual', [TransaksiController::class, 'jual'])->name('jual.index');
-    route::get('jual/histori', [TransaksiController::class, 'jualHistori'])->name('jual.histori');
+    Route::prefix('jual')->as('jual.')->group(function () {
+        route::get('/', [TransaksiController::class, 'jual'])->name('index');
+        route::get('/histori', [TransaksiController::class, 'jualHistori'])->name('histori');
+        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriJual'])->name('histori.detail');
+    });
 
-    route::get('balen', [TransaksiController::class, 'beli'])->name('beli.index');
-    route::get('balen/manual', [TransaksiController::class, 'beliManual'])->name('beli.manual');
-    route::get('balen/histori', [TransaksiController::class, 'beliHistori'])->name('beli.histori');
-    route::get('balen/{transaksi?}', [TransaksiController::class, 'beli'])->name('beli.index');
+    Route::prefix('beli')->as('beli.')->group(function () {
+        route::get('/', [TransaksiController::class, 'beli'])->name('index');
+        route::get('/manual', [TransaksiController::class, 'beliManual'])->name('manual');
+        route::get('/histori', [TransaksiController::class, 'beliHistori'])->name('histori');
+        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriBeli'])->name('histori.detail');
+        route::get('/{transaksi?}', [TransaksiController::class, 'beli'])->name('index');
+    });
+
 
     route::get('tukar-tambah', [TransaksiController::class, 'tukarTambah'])->name('tukar-tambah.index');
     route::get('tukar-tambah/histori', [TransaksiController::class, 'edit'])->name('tukar-tambah.histori');
-
-
-    route::get('histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistori'])->name('jual.histori.detail');
 });

@@ -12,6 +12,7 @@ class Produk extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     protected $fillable = ['id', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'harga_rugi', 'kotak_id', 'status_id'];
+    public $incrementing = false;
 
     protected static function boot()
     {

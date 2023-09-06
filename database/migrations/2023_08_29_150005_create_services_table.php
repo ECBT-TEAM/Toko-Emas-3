@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->uuid('produk_id');
+            $table->string('harga');
             $table->unsignedBigInteger('kondisi_id');
             $table->timestamps();
 

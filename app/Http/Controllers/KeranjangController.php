@@ -16,7 +16,7 @@ class KeranjangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKeranjangRequest $request)
+    public function storeJual(StoreKeranjangRequest $request)
     {
         $validated = $request->validated();
         list($kodeTipe, $produkId) = explode('-', $validated['kodeBarcode']);
@@ -61,7 +61,7 @@ class KeranjangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function storeByKodeProduk($kodeTransaksi, $kodeProduk)
+    public function storeBeli($kodeTransaksi, $kodeProduk)
     {
         $transaksiDetail = TransaksiDetail::where('kode_transaksi', $kodeTransaksi)
             ->where('produk_id', $kodeProduk)
@@ -74,7 +74,7 @@ class KeranjangController extends Controller
             return redirect()->back();
         }
 
-        $harga = $transaksiDetail->harga - $transaksiDetail->produk->harga_rugi;
+        $harga = $transaksiDetail->harga - ($transaksiDetail->produk->harga_rugi * $transaksiDetail->produk->berat);
 
         $keranjang = Keranjang::firstOrCreate(
             [

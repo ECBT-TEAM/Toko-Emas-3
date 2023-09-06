@@ -11,7 +11,7 @@ class StoreServiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,21 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'kondisi' => 'required|array|min:1',
+            'kondisi.*' => 'exists:kondisis,id|required',
+            'harga' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'kondisi.required' => 'Kondisi wajib diisi.',
+            'kondisi.array' => 'Kondisi harus dalam format array.',
+            'kondisi.min' => 'Minimal satu kondisi harus dipilih.',
+            'kondisi.*.exists' => 'Salah satu kondisi yang dipilih tidak valid.',
+            'kondisi.*.required' => 'Setiap kondisi harus diisi.',
+            'harga.required' => 'Harga wajib diisi.',
         ];
     }
 }

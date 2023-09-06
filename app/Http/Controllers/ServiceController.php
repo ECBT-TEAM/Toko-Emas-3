@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 
@@ -27,9 +28,21 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreServiceRequest $request)
+    public function store(StoreServiceRequest $request, $produkId)
     {
-        //
+        $validated = $request->validated();
+
+        foreach ($validated['kondisi'] as $kondisi) {
+            Service::firstOrcreate([
+                'produk_id' => $produkId,
+                'kondisi_id' => $kondisi,
+            ], [
+                'harga' => rupiahToInt($validated['harga'])
+            ]);
+        }
+
+        Alert::success('success', 'Data berhasil disimpan.');
+        return redirect()->back();
     }
 
     /**

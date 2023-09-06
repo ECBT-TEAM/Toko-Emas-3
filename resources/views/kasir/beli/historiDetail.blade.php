@@ -1,14 +1,66 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <button onclick="window.location.href='{{ route('kasir.jual.histori') }}'" type="button"
+        <button onclick="window.location.href='{{ route('kasir.beli.histori') }}'" type="button"
             class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i> Kembali</button>
         <div class="row row-cols-1">
             <div class="col">
-                <div class="card ">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">List Beli</h3>
+                    </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode Produk</th>
+                                    <th scope="col">kategori</th>
+                                    <th scope="col">Produk</th>
+                                    <th scope="col">Kerusakan</th>
+                                    <th scope="col">Harga Rugi</th>
+                                    <th scope="col">Total Kerusakan</th>
+                                    <th scope="col">Harga Beli</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data['transaksi']->transaksiDetail as $transaksi)
+                                    @if (in_array($transaksi->produk->status_id, [4, 5]))
+                                        <tr>
+                                            <td>
+                                                {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
+                                            </td>
+                                            <td>
+                                                {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}
+                                            </td>
+                                            <td>
+                                                {{ ucwords($transaksi->produk->tipe->nama) }}
+                                                <span class="badge badge-info">Berat:
+                                                    {{ $transaksi->produk->berat }}g</span>
+                                                <span class="badge badge-warning">Karat:
+                                                    {{ $transaksi->produk->karat->nama }}k</span>
+                                            </td>
+                                            <td></td>
+                                            <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
+                                            <td>{{ formatRupiah($transaksi->harga) }}</td>
+                                            <td id="hargaJual">{{ formatRupiah($transaksi->harga) }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">List Pinda Nota</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Kode Produk</th>
@@ -20,23 +72,25 @@
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    <tr>
-                                        <td>
-                                            {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
-                                        </td>
-                                        <td>
-                                            {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}
-                                        </td>
-                                        <td>
-                                            {{ ucwords($transaksi->produk->tipe->nama) }}
-                                            <span class="badge badge-info">Berat:
-                                                {{ $transaksi->produk->berat }}g</span>
-                                            <span class="badge badge-warning">Karat:
-                                                {{ $transaksi->produk->karat->nama }}k</span>
-                                        </td>
-                                        <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
-                                        <td id="hargaJual">{{ formatRupiah($transaksi->harga) }}</td>
-                                    </tr>
+                                    @if (in_array($transaksi->produk->status_id, [4, 5]))
+                                        <tr>
+                                            <td>
+                                                {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
+                                            </td>
+                                            <td>
+                                                {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}
+                                            </td>
+                                            <td>
+                                                {{ ucwords($transaksi->produk->tipe->nama) }}
+                                                <span class="badge badge-info">Berat:
+                                                    {{ $transaksi->produk->berat }}g</span>
+                                                <span class="badge badge-warning">Karat:
+                                                    {{ $transaksi->produk->karat->nama }}k</span>
+                                            </td>
+                                            <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
+                                            <td>{{ formatRupiah($transaksi->harga) }}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -44,7 +98,6 @@
                     <!-- /.card-body -->
                 </div>
             </div>
-            <!-- /.card -->
             <div class="col">
                 <div class="card">
                     <!-- /.card-header -->
