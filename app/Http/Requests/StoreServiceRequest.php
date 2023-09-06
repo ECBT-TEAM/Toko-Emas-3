@@ -22,6 +22,7 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => 'required|in:Rusak Ringan,Rusak Sedang,Rusak Berat',
             'kondisi' => 'required|array|min:1',
             'kondisi.*' => 'exists:kondisis,id|required',
             'harga' => 'required',
@@ -31,6 +32,8 @@ class StoreServiceRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'status.required' => 'Status harus diisi.',
+            'status.in' => 'Status harus salah satu dari: Rusak Ringan, Rusak Sedang, Rusak Berat.',
             'kondisi.required' => 'Kondisi wajib diisi.',
             'kondisi.array' => 'Kondisi harus dalam format array.',
             'kondisi.min' => 'Minimal satu kondisi harus dipilih.',

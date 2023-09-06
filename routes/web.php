@@ -74,6 +74,7 @@ Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () 
     Route::put('harga_ref/{harga_ref}', [HargaRefController::class, 'update'])->name('harga_ref');
     Route::get('harga_ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
     Route::put('kondisi/{kondisi}', [KondisiController::class, 'update'])->name('kondisi');
+    Route::get('servis/{produk}', [ServiceController::class, 'update'])->name('servis');
 });
 
 Route::prefix('delete')->as('destroy.')->middleware(['auth'])->group(function () {
@@ -129,6 +130,12 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
         route::get('kondisi', [KondisiController::class, 'index'])->name('kondisi.index');
         route::get('kondisi/edit/{kondisi}', [KondisiController::class, 'edit'])->name('kondisi.edit');
     });
+});
+
+Route::prefix('servis')->as('servis.')->middleware(['auth', 'role:1'])->group(function () {
+    Route::get('{status}', [ServiceController::class, 'index'])
+        ->where('status', 'rusak-ringan|rusak-sedang|rusak-berat|cuci')
+        ->name('index');
 });
 
 Route::prefix('laporan')->as('laporan.')->middleware(['auth', 'role:1'])->group(function () {

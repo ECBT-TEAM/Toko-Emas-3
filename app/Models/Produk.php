@@ -11,7 +11,7 @@ class Produk extends Model
     use HasFactory;
     protected $primaryKey = 'id';
     protected $keyType = 'string';
-    protected $fillable = ['id', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'harga_rugi', 'kotak_id', 'status_id'];
+    protected $fillable = ['id', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'harga_rugi', 'kotak_id', 'status_id', 'kondisi'];
     public $incrementing = false;
 
     protected static function boot()

@@ -196,6 +196,7 @@ class TransaksiController extends Controller
                 $copiedProduct = new Produk($item->produk->toArray());
                 $copiedProduct->id = Uuid::uuid4()->toString();
                 $copiedProduct->status_id = 5;
+                $copiedProduct->kotak_id = null;
                 $copiedProduct->save();
 
                 $item->produk->status_id = 4;
@@ -210,6 +211,7 @@ class TransaksiController extends Controller
                     'updated_at' => now(),
                 ];
 
+                Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
                 Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
             }
 

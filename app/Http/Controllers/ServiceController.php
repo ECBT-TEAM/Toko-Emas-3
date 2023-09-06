@@ -6,15 +6,27 @@ use App\Models\Service;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Models\Produk;
 
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($statusSlug)
     {
-        //
+        $statusSlug = $statusSlug == 'cuci' ? null : $statusSlug;
+        
+        $data['servis'] = Service::with(['produk', 'kondisi'])
+            ->groupBy('produk_id')
+            ->select('produk_id')
+            ->whereHas('produk', function ($query) use ($statusSlug) {
+                $kondisi = ucwords(str_replace('-', ' ', $statusSlug));
+                $query->where('kondisi', $kondisi);
+            })
+            ->get();
+
+        return view('servis.index', compact('data'));
     }
 
     /**
@@ -42,6 +54,10 @@ class ServiceController extends Controller
             ]);
         }
 
+        Produk::where('id', $produkId)->update([
+            'kondisi' => $validated['status']
+        ]);
+
         Alert::success('success', 'Data berhasil disimpan.');
         return redirect()->back();
     }
@@ -65,9 +81,13 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceRequest $request, Service $service)
+    public function update(Produk $produk)
     {
-        //
+        $produk->kondisi = null;
+        $produk->status_id = 3;
+        $produk->save();
+        Alert::success('success', 'Data berhasil disimpan.');
+        return redirect()->back();
     }
 
     /**

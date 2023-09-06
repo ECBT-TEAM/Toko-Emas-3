@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(JenisTransaksiSeeder::class);
         $this->call(BlokSeeder::class);
         $this->call(KotakSeeder::class);
+        $this->call(KaratSeeder::class);
+        $this->call(HargaRefSeeder::class);
     }
 }

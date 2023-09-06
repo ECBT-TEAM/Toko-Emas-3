@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('tipe_id');
             $table->unsignedBigInteger('karat_id');
             $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('kotak_id');
+            $table->unsignedBigInteger('kotak_id')->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
+            $table->string('kondisi')->nullable();
             $table->timestamps();
 
             $table->foreign('tipe_id')

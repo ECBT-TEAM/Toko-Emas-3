@@ -47,12 +47,12 @@ class KeranjangController extends Controller
                     'harga_rugi' => $hargaRugi
                 ]);
 
-                Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang')->persistent(true);
+                Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang');
             } else {
-                Alert::warning('Gagal', 'Produk sudah ada dikeranjang')->persistent(true);
+                Alert::warning('Gagal', 'Produk sudah ada dikeranjang');
             }
         } else {
-            Alert::warning('Gagal', 'Produk tidak ditemukan')->persistent(true);
+            Alert::warning('Gagal', 'Produk tidak ditemukan');
         }
 
         return redirect()->back();
@@ -71,7 +71,7 @@ class KeranjangController extends Controller
 
         if (!$transaksiDetail || $transaksiDetail->produk->status_id != 3) {
             $produkStatus = $transaksiDetail ? 'Status produk : ' . $transaksiDetail->produk->status->nama : 'Produk tidak ditemukan';
-            Alert::warning('Gagal', $produkStatus)->persistent(true);
+            Alert::warning('Gagal', $produkStatus);
             return redirect()->back();
         }
 
@@ -93,9 +93,9 @@ class KeranjangController extends Controller
                 'status_id' => 2,
             ]);
 
-            Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang')->persistent(true);
+            Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang');
         } else {
-            Alert::warning('Gagal', 'Produk sudah ada dikeranjang')->persistent(true);
+            Alert::warning('Gagal', 'Produk sudah ada dikeranjang');
         }
 
         return redirect()->back();
@@ -120,12 +120,12 @@ class KeranjangController extends Controller
         ][$keranjang->jenis_transaksi_id] ?? null;
 
         if ($status !== null) {
-            $keranjang->produk->update(['status_id' => $status]);
+            $keranjang->produk->update(['status_id' => $status, 'kondisi' => null]);
             Service::where('produk_id', $keranjang->produk_id)->delete();
             $keranjang->delete();
             Alert::success('Sukses', 'Data berhasil dihapus.');
         } else {
-            Alert::warning('Gagal', 'Status tidak sesuai')->persistent(true);
+            Alert::warning('Gagal', 'Status tidak sesuai');
         }
         return redirect()->back();
     }

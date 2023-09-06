@@ -114,6 +114,45 @@
     </ul>
 </li>
 <li class="nav-header">MENU MANAGER</li>
+<li class="nav-item {{ Route::is('servis.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('servis*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-toolbox"></i>
+        <p>
+            Servis
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('servis.index', ['status' => 'cuci']) }}"
+                class="nav-link {{ Route::is('servis.index') && request('status') == 'cuci' ? 'active' : '' }} ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Cuci</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('servis.index', ['status' => 'rusak-ringan']) }}"
+                class="nav-link {{ Route::is('servis.index') && request('status') == 'rusak-ringan' ? 'active' : '' }} ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Rusak Ringan</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('servis.index', ['status' => 'rusak-sedang']) }}"
+                class="nav-link {{ Route::is('servis.index') && request('status') == 'rusak-sedang' ? 'active' : '' }} ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Rusak Sedang</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('servis.index', ['status' => 'rusak-berat']) }}"
+                class="nav-link {{ Route::is('servis.index') && request('status') == 'rusak-berat' ? 'active' : '' }} ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Rusak Berat</p>
+            </a>
+        </li>
+    </ul>
+</li>
 <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link {{ Route::is('laporan*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-clipboard-list"></i>

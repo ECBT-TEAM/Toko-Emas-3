@@ -287,6 +287,18 @@
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
+                                <label for="" class="form-label">Status</label>
+                                <select class="form-control" style="width: 100%;" name="status" id="status"
+                                    required>
+                                    <option value="Rusak Ringan">Rusak Ringan</option>
+                                    <option value="Rusak Sedang">Rusak Sedang</option>
+                                    <option value="Rusak Berat">Rusak Berat</option>
+                                </select>
+                                @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="" class="form-label">Kondisi</label>
                                 <select multiple="multiple" class="form-control select2bs4" style="width: 100%;"
                                     name="kondisi[]" id="kondisi" required>
