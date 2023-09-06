@@ -121,7 +121,7 @@ class KeranjangController extends Controller
 
         if ($status !== null) {
             $keranjang->produk->update(['status_id' => $status]);
-            Service::where('produk_id', $keranjang->produk_id);
+            Service::where('produk_id', $keranjang->produk_id)->delete();
             $keranjang->delete();
             Alert::success('Sukses', 'Data berhasil dihapus.');
         } else {

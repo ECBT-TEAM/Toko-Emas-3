@@ -152,51 +152,6 @@
             <form action="{{ route('store.transaksi.beli', ['transaksi' => $data['kodeTransaksi']]) }}" method="POST">
                 <div class="row row-cols-1">
                     @csrf
-                    <div class="col">
-                        <div class="card">
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Hp</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="hp" id="hp"
-                                                placeholder="+6282139900446" value="{{ old('hp') }}">
-                                            <span class="input-group-append">
-                                                <button type="button" class="btn btn-info btn-flat" id="searchMember">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                        @error('hp')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Nama</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="nama" id="nama"
-                                            value="{{ old('nama') }}" placeholder="Nama Lengkap">
-                                        @error('nama')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Alamat</label>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control" name="alamat" id="alamat" placeholder="Alamat">{{ old('alamat') }}</textarea>
-                                        @error('alamat')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
                     <div class="col-12 col-lg-6">
                         <div class="card">
                             <!-- /.card-header -->
@@ -438,25 +393,6 @@
             url = url.replace(':transaksi', kodeTransaksi);
 
             window.location.href = url
-        });
-
-        $('#searchMember').click(function() {
-            var hp = $('#hp').val();
-            var url = "{{ route('searchMember', ['member' => ':member']) }}";
-            url = url.replace(':member', hp);
-            handleAjaxRequest(url, function(data) {
-                if (data.status == 'Found') {
-                    $('#nama').val(data.data.nama);
-                    $('#alamat').val(data.data.alamat);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: 'Member tidak ditemukan.',
-                        confirmButtonColor: '#17a2b8',
-                    });
-                }
-            });
         });
     </script>
 @endpush

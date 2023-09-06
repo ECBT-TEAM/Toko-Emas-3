@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreTransaksiRequest;
+use App\Http\Requests\StoreTransaksiRequestBeli;
 use App\Http\Requests\UpdateTransaksiRequest;
 
 class TransaksiController extends Controller
@@ -162,7 +163,7 @@ class TransaksiController extends Controller
     /**
      * Store a newly created sales transaction in storage.
      */
-    public function storeBeli(StoreTransaksiRequest $request, $kodeTransaksi)
+    public function storeBeli(StoreTransaksiRequestBeli $request, $kodeTransaksi)
     {
         try {
             $validated = $request->validated();
@@ -175,17 +176,14 @@ class TransaksiController extends Controller
                 return redirect()->back();
             }
 
-            $member = Member::firstOrCreate(
-                ['hp' => $validated['hp'], 'nama' => $validated['nama']],
-                ['alamat' => $validated['alamat']]
-            );
+            $member = Transaksi::where('kode_transaksi', $kodeTransaksi)->first()->produk_id;
 
             DB::beginTransaction();
 
             $transaksi = Transaksi::create([
                 'metode_pembayaran' => $validated['metodeBayar'],
                 'norek' => $validated['norek'],
-                'member_id' => $member->id,
+                'member_id' => $member,
                 'kasir_id' => $validated['seller'],
                 'cabang_id' => Auth::user()->cabang_id,
                 'jenis_transaksi_id' => 2,
