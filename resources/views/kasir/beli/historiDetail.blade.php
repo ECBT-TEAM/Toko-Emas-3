@@ -40,10 +40,20 @@
                                                 <span class="badge badge-warning">Karat:
                                                     {{ $transaksi->produk->karat->nama }}k</span>
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <ol>
+                                                    @foreach ($transaksi->produk->service as $kondisi)
+                                                        <li>{{ $kondisi->kondisi->nama }}</li>
+                                                    @endforeach
+                                                </ol>
+                                            </td>
                                             <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
-                                            <td>{{ formatRupiah($transaksi->harga) }}</td>
-                                            <td id="hargaJual">{{ formatRupiah($transaksi->harga) }}</td>
+                                            <td>
+                                                {{ formatRupiah($transaksi->produk->service->first()->harga ?? 0) }}
+                                            </td>
+                                            <td id="hargaJual">
+                                                {{ formatRupiah($transaksi->harga - ($transaksi->produk->service->first()->harga ?? 0)) }}
+                                            </td>
                                         </tr>
                                     @endif
                                 @endforeach
@@ -72,7 +82,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if (in_array($transaksi->produk->status_id, [4, 5]))
+                                    @if ($transaksi->produk->status_id == 3)
                                         <tr>
                                             <td>
                                                 {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}

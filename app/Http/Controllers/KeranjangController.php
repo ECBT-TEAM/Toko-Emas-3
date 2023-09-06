@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Service;
 use App\Models\Keranjang;
+use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKeranjangRequest;
 use App\Http\Requests\UpdateKeranjangRequest;
-use App\Models\TransaksiDetail;
 
 class KeranjangController extends Controller
 {
@@ -120,6 +121,7 @@ class KeranjangController extends Controller
 
         if ($status !== null) {
             $keranjang->produk->update(['status_id' => $status]);
+            Service::where('produk_id', $keranjang->produk_id);
             $keranjang->delete();
             Alert::success('Sukses', 'Data berhasil dihapus.');
         } else {

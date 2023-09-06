@@ -197,7 +197,6 @@ class TransaksiController extends Controller
                 $copiedProduct = new Produk($item->produk->toArray());
                 $copiedProduct->id = Uuid::uuid4()->toString();
                 $copiedProduct->status_id = 5;
-                $copiedProduct->harga_rugi = null;
                 $copiedProduct->save();
 
                 $item->produk->status_id = 4;

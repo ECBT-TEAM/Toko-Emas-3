@@ -127,7 +127,7 @@
                                                     {{ $keranjang->produk->karat->nama }}k</span>
                                             </td>
                                             <td id="hargaBeli">
-                                                {{ formatRupiah($keranjang->harga - $keranjang->produk->service->first()->harga) }}
+                                                {{ formatRupiah($keranjang->harga - ($keranjang->produk->service->first()->harga ?? 0)) }}
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger" type="button"
@@ -348,7 +348,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Potongan Harga Rusak</label>
                                 <input type="text" class="form-control" name="harga" id="harga"
-                                    value="{{ formatRupiah($keranjang->produk->service->first()->harga) }}">
+                                    value="{{ formatRupiah($keranjang->produk->service->first()->harga ?? 0) }}">
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">

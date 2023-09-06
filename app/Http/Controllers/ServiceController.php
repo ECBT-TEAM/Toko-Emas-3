@@ -32,11 +32,12 @@ class ServiceController extends Controller
     {
         $validated = $request->validated();
 
+        Service::where('produk_id', $produkId)->delete();
+
         foreach ($validated['kondisi'] as $kondisi) {
-            Service::firstOrcreate([
+            Service::create([
                 'produk_id' => $produkId,
                 'kondisi_id' => $kondisi,
-            ], [
                 'harga' => rupiahToInt($validated['harga'])
             ]);
         }
