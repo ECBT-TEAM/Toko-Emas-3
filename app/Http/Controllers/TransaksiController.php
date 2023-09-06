@@ -214,7 +214,7 @@ class TransaksiController extends Controller
             $produkIds = $keranjang->pluck('produk_id')->toArray();
             $sisaProduk = TransaksiDetail::whereNotIn('produk_id', $produkIds)
                 ->wherehas('transaksi', function ($query) {
-                    $query->where('jenis_transaksi_id', 3);
+                    $query->where('jenis_transaksi_id', 1);
                 })
                 ->where('kode_transaksi', $kodeTransaksi)
                 ->get()
