@@ -12,7 +12,7 @@ class TransaksiDetail extends Model
         'kode_transaksi',
         'produk_id',
         'harga',
-        'status',
+        'jenis_transaksi_id',
     ];
 
     public function transaksi()
@@ -23,5 +23,10 @@ class TransaksiDetail extends Model
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id');
+    }
+
+    public function jenisTransaksi()
+    {
+        return $this->belongsTo(Status::class, 'jenis_transaksi_id');
     }
 }

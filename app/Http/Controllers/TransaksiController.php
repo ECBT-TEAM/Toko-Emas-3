@@ -147,6 +147,7 @@ class TransaksiController extends Controller
                 'kode_transaksi' => $transaksi->kode_transaksi,
                 'harga' => $item->harga,
                 'produk_id' => $item->produk_id,
+                'jenis_transaksi_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -204,6 +205,7 @@ class TransaksiController extends Controller
                     'kode_transaksi' => $transaksi->kode_transaksi,
                     'harga' => $item->harga,
                     'produk_id' => $copiedProduct->id,
+                    'jenis_transaksi_id' => 2,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -237,6 +239,7 @@ class TransaksiController extends Controller
                     $newTransaksi = $oldTransaksi->replicate();
                     $newTransaksi->produk_id = $copiedProductId;
                     $newTransaksi->kode_transaksi = $transaksi->kode_transaksi;
+                    $newTransaksi->jenis_transaksi_id = 4;
                     $newTransaksi->save();
                 }
             }

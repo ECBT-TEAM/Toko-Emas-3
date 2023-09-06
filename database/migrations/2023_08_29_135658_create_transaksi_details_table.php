@@ -16,8 +16,13 @@ return new class extends Migration
             $table->uuid('kode_transaksi');
             $table->uuid('produk_id');
             $table->string('harga');
-            $table->integer('status')->nullable();
+            $table->unsignedBigInteger('jenis_transaksi_id');
             $table->timestamps();
+
+            $table->foreign('jenis_transaksi_id')
+                ->references('id')
+                ->on('jenis_transaksis')
+                ->onDelete('restrict');
 
             $table->foreign('kode_transaksi')
                 ->references('kode_transaksi')

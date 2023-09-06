@@ -25,7 +25,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if (in_array($transaksi->produk->status_id, [4, 5]))
+                                    @if ($transaksi->jenis_transaksi_id == 2)
                                         <tr>
                                             <td>
                                                 {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
@@ -82,7 +82,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if ($transaksi->produk->status_id == 3)
+                                    @if (in_array($transaksi->jenis_transaksi_id, [4, 1]))
                                         <tr>
                                             <td>
                                                 {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
