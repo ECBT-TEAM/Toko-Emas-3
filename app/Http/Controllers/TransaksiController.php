@@ -218,7 +218,7 @@ class TransaksiController extends Controller
                 ->pluck('produk_id')
                 ->toArray();
 
-            $oldProduk = Produk::whereIn('id', $sisaProduk)->get();
+            $oldProduk = Produk::whereIn('id', $sisaProduk)->where('jenis_transaksi_id', 3)->get();
 
             if (!$oldProduk->isEmpty()) {
                 foreach ($oldProduk as $produk) {
