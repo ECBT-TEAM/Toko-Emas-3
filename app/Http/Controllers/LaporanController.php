@@ -146,9 +146,7 @@ class LaporanController extends Controller
             $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($category) {
                 $query->where('id', $category->id);
             })
-                ->whereHas('transaksi', function ($query) use ($category) {
-                    $query->where('jenis_transaksi_id', 2);
-                })
+                ->where('jenis_transaksi_id', 2)
                 ->count();
 
             return [
@@ -175,9 +173,7 @@ class LaporanController extends Controller
                 $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($category) {
                     $query->where('id', $category->id);
                 })
-                    ->whereHas('transaksi', function ($query) use ($category) {
-                        $query->where('jenis_transaksi_id', 2);
-                    })
+                    ->where('jenis_transaksi_id', 2)
                     ->whereDate('created_at', $sevenDaysAgo->copy()->addDays($i)->format('Y-m-d'))
                     ->count();
 
