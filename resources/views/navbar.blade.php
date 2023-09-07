@@ -124,6 +124,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
+            <a href="{{ route('servis.selesai') }}"
+                class="nav-link {{ Route::is('servis.selesai') ? 'active' : '' }} ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Selesai Servis</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('servis.index', ['status' => 'cuci']) }}"
                 class="nav-link {{ Route::is('servis.index') && request('status') == 'cuci' ? 'active' : '' }} ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>

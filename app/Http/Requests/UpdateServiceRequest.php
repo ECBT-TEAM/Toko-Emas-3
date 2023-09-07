@@ -11,7 +11,7 @@ class UpdateServiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'kotak' => 'exists:kotaks,id|required'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'kotak.exists' => 'Kolom kotak yang Anda pilih tidak valid.',
+            'kotak.required' => 'Kolom kotak harus diisi.'
         ];
     }
 }

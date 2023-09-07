@@ -16,7 +16,7 @@ class ServiceController extends Controller
     public function index($statusSlug)
     {
         $statusSlug = $statusSlug == 'cuci' ? null : $statusSlug;
-        
+
         $data['servis'] = Service::with(['produk', 'kondisi'])
             ->groupBy('produk_id')
             ->select('produk_id')
@@ -27,6 +27,22 @@ class ServiceController extends Controller
             ->get();
 
         return view('servis.index', compact('data'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function selesai()
+    {
+        $data['servis'] = Service::with(['produk', 'kondisi'])
+            ->groupBy('produk_id')
+            ->select('produk_id')
+            ->whereHas('produk', function ($query) {
+                $query->where('kondisi', null)->where('kotak_id', null);
+            })
+            ->get();
+
+        return view('servis.selesai', compact('data'));
     }
 
     /**
@@ -85,6 +101,18 @@ class ServiceController extends Controller
     {
         $produk->kondisi = null;
         $produk->status_id = 3;
+        $produk->save();
+        Alert::success('success', 'Data berhasil disimpan.');
+        return redirect()->back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function selesaiServis(UpdateServiceRequest $request, Produk $produk)
+    {
+        $validated = $request->validated();
+        $produk->kotak_id = $validated['kotak'];
         $produk->save();
         Alert::success('success', 'Data berhasil disimpan.');
         return redirect()->back();

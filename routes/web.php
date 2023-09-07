@@ -75,6 +75,7 @@ Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () 
     Route::get('harga_ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
     Route::put('kondisi/{kondisi}', [KondisiController::class, 'update'])->name('kondisi');
     Route::get('servis/{produk}', [ServiceController::class, 'update'])->name('servis');
+    Route::put('servis/selesai/{produk}', [ServiceController::class, 'selesaiServis'])->name('servis.selesai');
 });
 
 Route::prefix('delete')->as('destroy.')->middleware(['auth'])->group(function () {
@@ -133,6 +134,7 @@ Route::prefix('master-data')->as('master-data.')->middleware(['auth', 'role:1'])
 });
 
 Route::prefix('servis')->as('servis.')->middleware(['auth', 'role:1'])->group(function () {
+    Route::get('selesai', [ServiceController::class, 'selesai'])->name('selesai');
     Route::get('{status}', [ServiceController::class, 'index'])
         ->where('status', 'rusak-ringan|rusak-sedang|rusak-berat|cuci')
         ->name('index');
