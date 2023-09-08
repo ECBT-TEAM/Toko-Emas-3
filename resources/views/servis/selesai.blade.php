@@ -1,8 +1,6 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <button onclick="window.location.href='{{ route('store.blok') }}'" type="button" class="btn btn-info mb-4"><i
-                class="fas fa-plus-square"></i> Tambah Blok</button>
         <div class="row row-cols-1">
             <div class="col">
                 <div class="card card-info">
