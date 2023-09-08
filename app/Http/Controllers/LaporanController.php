@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Tipe;
+use App\Models\Member;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class LaporanController extends Controller
@@ -184,7 +186,36 @@ class LaporanController extends Controller
      */
     public function indexKonsumen()
     {
-        //
+        $categories = Kategori::all();
+        $data = [];
+        foreach ($categories as $category) {
+            $categoryName = $category->nama;
+            $topBuyers = Member::withCount([
+                'transaksi' => function ($query) use ($category) {
+                    $query->whereHas('transaksiDetail', function ($query) use ($category) {
+                        $query->whereHas('produk.tipe', function ($query) use ($category) {
+                            $query->where('kategori_id', $category->id);
+                        });
+                    })->where('jenis_transaksi_id', 1);
+                }
+            ])
+                ->orderBy('transaksi_count', 'desc')
+                ->take(10)
+                ->get()
+                ->map(function ($member) {
+                    return [
+                        'nama' => $member->nama,
+                        'total' => $member->transaksi_count
+                    ];
+                })
+                ->toArray();
+
+            $data[] = [
+                'kategori' => $categoryName,
+                'top' => $topBuyers,
+            ];
+        }
+        return view('laporan.jual.supplier', compact('data'));
     }
 
     /**
@@ -357,7 +388,36 @@ class LaporanController extends Controller
      */
     public function indexKonsumenBeli()
     {
-        //
+        $categories = Kategori::all();
+        $data = [];
+        foreach ($categories as $category) {
+            $categoryName = $category->nama;
+            $topBuyers = Member::withCount([
+                'transaksi' => function ($query) use ($category) {
+                    $query->whereHas('transaksiDetail', function ($query) use ($category) {
+                        $query->whereHas('produk.tipe', function ($query) use ($category) {
+                            $query->where('kategori_id', $category->id);
+                        });
+                    })->where('jenis_transaksi_id', 2);
+                }
+            ])
+                ->orderBy('transaksi_count', 'desc')
+                ->take(10)
+                ->get()
+                ->map(function ($member) {
+                    return [
+                        'nama' => $member->nama,
+                        'total' => $member->transaksi_count
+                    ];
+                })
+                ->toArray();
+
+            $data[] = [
+                'kategori' => $categoryName,
+                'top' => $topBuyers,
+            ];
+        }
+        return view('laporan.jual.supplier', compact('data'));
     }
 
     /**

@@ -13,6 +13,6 @@ class Member extends Model
 
     public function Transaksi()
     {
-        return $this->hasMany(Transaksi::class, 'transaksi_id');
+        return $this->hasMany(Transaksi::class, 'member_id');
     }
 }
