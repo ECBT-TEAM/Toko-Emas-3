@@ -15,6 +15,8 @@ jobs:
 
       - name: SSH into Ubuntu Server and Pull Changes
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} root@203.175.11.72 'cd /var/www/Toko-Emas-3 && git pull'
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem root@203.175.11.72 'cd /var/www/Toko-Emas-3 && git pull'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
