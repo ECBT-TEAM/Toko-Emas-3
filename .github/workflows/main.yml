@@ -3,7 +3,7 @@ name: Auto Pull on Push
 on:
   push:
     branches:
-      - main  # Ganti dengan nama cabang yang sesuai
+      - main # Ganti dengan nama cabang yang sesuai
 
 jobs:
   pull:
