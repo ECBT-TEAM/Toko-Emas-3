@@ -1,0 +1,22 @@
+name: Auto Pull on Push
+
+on:
+  push:
+    branches:
+      - main # Ganti dengan nama cabang yang sesuai
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: SSH into Ubuntu Server and Pull Changes
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem root@203.175.11.72 'cd /var/www/Toko-Emas-3 && git pull'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
