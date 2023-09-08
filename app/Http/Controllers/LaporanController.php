@@ -187,16 +187,17 @@ class LaporanController extends Controller
     public function indexKonsumen()
     {
         $categories = Kategori::all();
+        $cabang = Auth::user()->cabang_id;
         $data = [];
         foreach ($categories as $category) {
             $categoryName = $category->nama;
             $topBuyers = Member::withCount([
-                'transaksi' => function ($query) use ($category) {
+                'transaksi' => function ($query) use ($category, $cabang) {
                     $query->whereHas('transaksiDetail', function ($query) use ($category) {
                         $query->whereHas('produk.tipe', function ($query) use ($category) {
                             $query->where('kategori_id', $category->id);
                         });
-                    })->where('jenis_transaksi_id', 1);
+                    })->where('jenis_transaksi_id', 1)->where('cabang_id', $cabang);
                 }
             ])
                 ->orderBy('transaksi_count', 'desc')
@@ -389,16 +390,17 @@ class LaporanController extends Controller
     public function indexKonsumenBeli()
     {
         $categories = Kategori::all();
+        $cabang = Auth::user()->cabang_id;
         $data = [];
         foreach ($categories as $category) {
             $categoryName = $category->nama;
             $topBuyers = Member::withCount([
-                'transaksi' => function ($query) use ($category) {
+                'transaksi' => function ($query) use ($category, $cabang) {
                     $query->whereHas('transaksiDetail', function ($query) use ($category) {
                         $query->whereHas('produk.tipe', function ($query) use ($category) {
                             $query->where('kategori_id', $category->id);
                         });
-                    })->where('jenis_transaksi_id', 2);
+                    })->where('jenis_transaksi_id', 2)->where('cabang_id', $cabang);
                 }
             ])
                 ->orderBy('transaksi_count', 'desc')
