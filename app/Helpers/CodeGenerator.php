@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Tipe;
 use App\Models\Kategori;
+use Intervention\Image\Facades\Image;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 function generateKodeProduk($kategoriId)
 {
@@ -14,4 +15,17 @@ function generateKodeProduk($kategoriId)
 
     $formattedNumber = $kode . str_pad($id, 5, '0', STR_PAD_LEFT);
     return $formattedNumber;
+}
+
+
+function generateBarcode($text)
+{
+    $generator = new BarcodeGeneratorPNG();
+
+    $barcode = $generator->getBarcode($text, $generator::TYPE_CODE_128);
+    $image = Image::make('data:image/png;base64,' . base64_encode($barcode));
+    $image->resize(400, 50);
+
+    // Mengembalikan gambar dalam bentuk data base64 yang lebih kecil
+    return $image->encode('data-url');
 }
