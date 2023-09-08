@@ -151,7 +151,7 @@ Route::prefix('laporan')->as('laporan.')->middleware(['auth', 'role:1'])->group(
 
         route::get('kategori', [LaporanController::class, 'indexKategori'])->name('kategori');
         route::get('model', [LaporanController::class, 'indexModel'])->name('model');
-        route::get('supplier', [LaporanController::class, 'indexSupplier'])->name('supplier');
+        route::get('supplier/{supplier?}', [LaporanController::class, 'indexSupplier'])->name('supplier');
         route::get('konsumen', [LaporanController::class, 'indexKonsumen'])->name('konsumen');
     });
 

@@ -6,7 +6,6 @@
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Tambah Keranjang</h3>
-
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
                                     class="fas fa-minus"></i>
@@ -22,7 +21,6 @@
                                 <div class="col">
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Kode Barcode</label>
-
                                         <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input class="form-control" name="kodeBarcode" id="kodeBarcode"
