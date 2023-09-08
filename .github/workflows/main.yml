@@ -1,9 +1,10 @@
-name: Auto Pull
+name: Auto Pull on Push
 
 on:
   push:
     branches:
-      - main  
+      - main  # Ganti dengan nama cabang yang sesuai
+
 jobs:
   pull:
     runs-on: ubuntu-latest
@@ -12,5 +13,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Pull changes
-        run: git pull
+      - name: SSH into Ubuntu Server and Pull Changes
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} root@203.175.11.72 'cd /var/www/Toko-Emas-3 && git pull'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
