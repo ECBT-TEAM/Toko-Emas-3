@@ -62,7 +62,7 @@ class KeranjangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function storeBeli($kodeTransaksi, $kodeProduk)
+    public function storeByKategori($kategori, $kodeTransaksi, $kodeProduk)
     {
         $transaksiDetail = TransaksiDetail::where('kode_transaksi', $kodeTransaksi)
             ->where('produk_id', $kodeProduk)
@@ -76,23 +76,18 @@ class KeranjangController extends Controller
         }
 
         $harga = $transaksiDetail->harga - ($transaksiDetail->produk->harga_rugi * $transaksiDetail->produk->berat);
+        $jenisTransaksi = $kategori == 'beli' ? '2' : '3';
 
-        $keranjang = Keranjang::firstOrCreate(
-            [
-                'produk_id' => $transaksiDetail->produk->id,
-            ],
-            [
-                'harga' => $harga,
-                'jenis_transaksi_id' => 2,
-                'user_id' => Auth::user()->id
-            ]
-        );
+        $keranjang = Keranjang::firstOrCreate([
+            'produk_id' => $transaksiDetail->produk->id,
+        ], [
+            'harga' => $harga,
+            'jenis_transaksi_id' => $jenisTransaksi,
+            'user_id' => Auth::user()->id
+        ]);
 
         if ($keranjang->wasRecentlyCreated) {
-            $transaksiDetail->produk->update([
-                'status_id' => 2,
-            ]);
-
+            $transaksiDetail->produk->update(['status_id' => 2,]);
             Alert::success('Sukses', 'Produk berhasil dimasukan kedalam keranjang');
         } else {
             Alert::warning('Gagal', 'Produk sudah ada dikeranjang');
@@ -117,6 +112,7 @@ class KeranjangController extends Controller
         $status = [
             '1' => 1,
             '2' => 3,
+            '3' => 3,
         ][$keranjang->jenis_transaksi_id] ?? null;
 
         if ($status !== null) {

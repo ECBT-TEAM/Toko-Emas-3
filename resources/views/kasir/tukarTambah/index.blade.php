@@ -79,7 +79,7 @@
                                             <td>
                                                 @if ($detailTransaksi->produk->status_id == 3)
                                                     <button class="btn btn-sm btn-info" type="button"
-                                                        onclick="window.location.href='{{ route('store.keranjang.produk', ['kategori' => 'beli', 'transaksi' => $data['kodeTransaksi'], 'produk' => $detailTransaksi->produk_id]) }}'">
+                                                        onclick="window.location.href='{{ route('store.keranjang.produk', ['kategori' => 'tukar-tambah', 'transaksi' => $data['kodeTransaksi'], 'produk' => $detailTransaksi->produk_id]) }}'">
                                                         <i class="fas fa-check-square"></i>
                                                     </button>
                                                 @else
@@ -98,7 +98,67 @@
                     <!-- /.card -->
                 </div>
                 <div class="col">
-                    <div class="card ">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">List Tukar Masuk</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive">
+                            <table id="example1" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Kode Produk</th>
+                                        <th scope="col">Kategori</th>
+                                        <th scope="col">Produk</th>
+                                        <th scope="col">Harga Beli</th>
+                                        <th scope="col">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data['keranjang'] as $keranjang)
+                                        <tr>
+                                            <td>{{ $keranjang->produk->tipe->kode_tipe . '-' . explode('-', $keranjang->produk_id)[0] }}
+                                            </td>
+                                            <td>
+                                                {{ $keranjang->produk->tipe->kategori->first()->nama }}
+                                            </td>
+                                            <td>
+                                                {{ ucwords($keranjang->produk->tipe->nama) }}
+                                                <span class="badge badge-info">Berat:
+                                                    {{ $keranjang->produk->berat }}g</span>
+                                                <span class="badge badge-warning">Karat:
+                                                    {{ $keranjang->produk->karat->nama }}k</span>
+                                            </td>
+                                            <td id="hargaBeli">
+                                                {{ formatRupiah($keranjang->harga - ($keranjang->produk->service->first()->harga ?? 0)) }}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" type="button"
+                                                    onclick="window.location.href='{{ route('destroy.keranjang', ['keranjang' => $keranjang->id]) }}'">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                                <button data-toggle="modal" data-target="#kerusakan-{{ $keranjang->id }}"
+                                                    class="btn btn-sm btn-warning" type="button">
+                                                    <i class="fas fa-toolbox"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col text-center">
+                    <button class="btn btn-lg btn-success mb-3 col-lg-2 col-12">Tambah Produk Tukar</button>
+                </div>
+                <div class="col">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">List Tukar Keluar</h3>
+                        </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive">
                             <table id="example1" class="table table-striped">
@@ -383,7 +443,7 @@
 
         $('#searchTransaksi').click(function() {
             var kodeTransaksi = $('#kodeTransaksi').val();
-            var url = "{{ route('kasir.beli.index', ['transaksi' => ':transaksi']) }}";
+            var url = "{{ route('kasir.tukar-tambah.index', ['transaksi' => ':transaksi']) }}";
             url = url.replace(':transaksi', kodeTransaksi);
 
             window.location.href = url

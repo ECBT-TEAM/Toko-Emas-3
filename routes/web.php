@@ -52,14 +52,18 @@ Route::prefix('store')->as('store.')->middleware(['auth'])->group(function () {
     Route::get('blok', [BlokController::class, 'store'])->name('blok');
     Route::post('kotak', [KotakController::class, 'store'])->name('kotak');
     Route::post('karat', [KaratController::class, 'store'])->name('karat');
-    Route::post('harga_ref', [HargaRefController::class, 'store'])->name('harga_ref');
+    Route::post('harga-ref', [HargaRefController::class, 'store'])->name('harga_ref');
     Route::post('kondisi', [KondisiController::class, 'store'])->name('kondisi');
     Route::post('produk', [ProdukController::class, 'store'])->name('produk');
     Route::post('keranjang', [KeranjangController::class, 'storeJual'])->name('keranjang');
-    Route::get('keranjang/{transaksi}/{produk}', [KeranjangController::class, 'storeBeli'])->name('keranjang.produk');
-    Route::post('storeJual', [TransaksiController::class, 'storeJual'])->name('transaksi.jual');
-    Route::post('storeBeli/{transaksi}', [TransaksiController::class, 'storeBeli'])->name('transaksi.beli');
+    // Route::get('keranjang/{transaksi}/{produk}', [KeranjangController::class, 'storeBeli'])->name('keranjang.produk');
+    Route::get('keranjang/{kategori}/{transaksi}/{produk}', [KeranjangController::class, 'storeByKategori'])
+        ->where('kategori', 'beli|tukar-tambah')
+        ->name('keranjang.produk');
     Route::post('service/{produk}', [ServiceController::class, 'store'])->name('service');
+    Route::post('store-jual', [TransaksiController::class, 'storeJual'])->name('transaksi.jual');
+    Route::post('store-beli/{transaksi}', [TransaksiController::class, 'storeBeli'])->name('transaksi.beli');
+    Route::post('store-tukar-tambah/{transaksi}', [TransaksiController::class, 'storeTukarTambah'])->name('transaksi.tukartTambah');
 });
 
 Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () {
@@ -71,8 +75,8 @@ Route::prefix('update')->as('update.')->middleware(['auth'])->group(function () 
     Route::put('blok/{blok}', [BlokController::class, 'update'])->name('blok');
     Route::put('kotak/{kotak}', [KotakController::class, 'update'])->name('kotak');
     Route::put('karat/{karat}', [KaratController::class, 'update'])->name('karat');
-    Route::put('harga_ref/{harga_ref}', [HargaRefController::class, 'update'])->name('harga_ref');
-    Route::get('harga_ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
+    Route::put('harga-ref/{harga_ref}', [HargaRefController::class, 'update'])->name('harga_ref');
+    Route::get('harga-ref/status/{harga_ref}', [HargaRefController::class, 'updateStatus'])->name('harga_ref.status');
     Route::put('kondisi/{kondisi}', [KondisiController::class, 'update'])->name('kondisi');
     Route::get('servis/{produk}', [ServiceController::class, 'update'])->name('servis');
     Route::put('servis/selesai/{produk}', [ServiceController::class, 'selesaiServis'])->name('servis.selesai');
@@ -178,7 +182,10 @@ Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
         route::get('/{transaksi?}', [TransaksiController::class, 'beli'])->name('index');
     });
 
-
-    route::get('tukar-tambah', [TransaksiController::class, 'tukarTambah'])->name('tukar-tambah.index');
-    route::get('tukar-tambah/histori', [TransaksiController::class, 'edit'])->name('tukar-tambah.histori');
+    Route::prefix('tukar-tambah')->as('tukar-tambah.')->group(function () {
+        route::get('/', [TransaksiController::class, 'tukarTambah'])->name('index');
+        route::get('/histori', [TransaksiController::class, 'tukarTambahHistori'])->name('histori');
+        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriBeli'])->name('histori.detail');
+        route::get('/{transaksi?}', [TransaksiController::class, 'tukarTambah'])->name('index');
+    });
 });

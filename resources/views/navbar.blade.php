@@ -323,8 +323,8 @@
         </li>
     </ul>
 </li>
-{{-- <li class="nav-item {{ Route::is('produk.*') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ Route::is('produk*') ? 'active' : '' }}">
+<li class="nav-item {{ Route::is('kasir.tukar-tambah.*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ Route::is('kasir.tukar-tambah*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-retweet"></i>
         <p>
             Tukar Tambah
@@ -333,21 +333,21 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}"
-                class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+            <a href="{{ route('kasir.tukar-tambah.index') }}"
+                class="nav-link {{ Route::is('kasir.tukar-tambah.index') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tambah</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('produk.tambah') }}"
-                class="nav-link {{ Route::is('produk.tambah') ? 'active' : '' }}">
+            <a href="{{ route('kasir.tukar-tambah.histori') }}"
+                class="nav-link {{ Route::is('kasir.tukar-tambah.histori') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Histori</p>
             </a>
         </li>
     </ul>
-</li> --}}
+</li>
 <li class="nav-header">SISTEM</li>
 <li class="nav-item">
     <a href="{{ route('auth.logout') }}" class="nav-link">

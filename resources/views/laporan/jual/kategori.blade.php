@@ -1,8 +1,8 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-6">
+        <div class="row row-cols-lg-2 row-cols-1">
+            <div class="col">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Grafik Jual per Kategori</h3>
@@ -16,7 +16,7 @@
                 </div>
                 <!-- /.card -->
             </div>
-            <div class="col-6">
+            <div class="col">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Grafik Jual per Kategori</h3>

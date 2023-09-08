@@ -112,9 +112,25 @@ class TransaksiController extends Controller
     /**
      * Display the view for exchange and addition transactions.
      */
-    public function tukarTambah()
+    public function tukarTambah($kodeTransaksi = null)
     {
-        //
+        $data['kondisi'] = Kondisi::all();
+        $data['kodeTransaksi'] = $kodeTransaksi;
+        $data['detailTransaksi'] = TransaksiDetail::with('produk')
+            ->where('kode_transaksi', $kodeTransaksi)
+            ->get();
+        $data['seller'] = User::where('role_id', 3)->get();
+        $data['keranjang'] = Keranjang::with('produk', 'produk.karat', 'produk.tipe')
+            ->where('user_id', Auth::user()->id)
+            ->where('jenis_transaksi_id', 3)
+            ->get();
+
+
+        if ($data['detailTransaksi']->isEmpty() && !empty($kodeTransaksi)) {
+            Alert::warning('warning', 'Transaksi tidak ditemukan.');
+            return redirect()->back();
+        }
+        return view('kasir.tukarTambah.index', compact('data'));
     }
 
     /**
