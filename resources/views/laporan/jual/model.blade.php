@@ -30,12 +30,12 @@
         var data = @json($data['piechart']);
 
         data.forEach(function(item, index) {
-            var color = generateRandomColor();
+            var color = generateRandomColors(item.tipe.length);
             var donutData = {
                 labels: item.tipe.map(item => item.nama),
                 datasets: [{
                     data: item.tipe.map(item => item.total),
-                    backgroundColor: [color, 'lightgray'],
+                    backgroundColor: color,
                 }]
             };
             var pieChartCanvas = $('#pieChart' + index)[0].getContext('2d');
@@ -52,8 +52,13 @@
             });
         });
 
-        function generateRandomColor() {
-            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+        function generateRandomColors(count) {
+            var randomColors = [];
+            for (var i = 0; i < count; i++) {
+                var color = tinycolor.random();
+                randomColors.push(color.toHexString());
+            }
+            return randomColors;
         }
     </script>
 @endpush
