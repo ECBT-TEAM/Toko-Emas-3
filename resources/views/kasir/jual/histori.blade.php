@@ -13,6 +13,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">No</th>
+                                    <th scope="col">Barcode</th>
                                     <th scope="col">Kode Transaksi</th>
                                     <th scope="col">Nama Pembeli</th>
                                     <th scope="col">Nama Seller</th>
@@ -24,6 +25,7 @@
                                 @foreach ($data['transaksi'] as $index => $transaksi)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td class="text-center">{{ generateBarcode($transaksi->kode_transaksi) }}</td>
                                         <td>{{ $transaksi->kode_transaksi }}</td>
                                         <td>{{ ucwords($transaksi->member->nama) }}</td>
                                         <td>{{ ucwords($transaksi->user->nama) }}</td>

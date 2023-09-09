@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Kategori;
-use Intervention\Image\Facades\Image;
-use Picqer\Barcode\BarcodeGeneratorPNG;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 function generateKodeProduk($kategoriId)
 {
@@ -18,14 +18,7 @@ function generateKodeProduk($kategoriId)
 }
 
 
-function generateBarcode($text)
+function generateBarcode($text, $size = 40)
 {
-    $generator = new BarcodeGeneratorPNG();
-
-    $barcode = $generator->getBarcode($text, $generator::TYPE_EAN_13);
-    $image = Image::make('data:image/png;base64,' . base64_encode($barcode));
-    $image->resize(300);
-
-    // Mengembalikan gambar dalam bentuk data base64 yang lebih kecil
-    return $image->encode('data-url');
+    return QrCode::size($size)->generate($text);
 }

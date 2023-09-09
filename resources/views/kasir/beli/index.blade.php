@@ -27,6 +27,11 @@
                                                 <button type="button" class="btn btn-info btn-flat" id="searchTransaksi">
                                                     <i class="fas fa-search"></i>
                                                 </button>
+                                                <button type="button"
+                                                    onclick="window.location.href='{{ route('kasir.beli.index') }}'"
+                                                    class="btn btn-warning btn-flat">
+                                                    <i class="fas fa-redo-alt"></i>
+                                                </button>
                                             </span>
                                         </div>
                                         @error('kodeBarcode')
@@ -381,11 +386,22 @@
             }
         });
 
+        $('#kodeTransaksi').focus();
+
+        $('#kodeTransaksi').on('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var kodeTransaksi = $(this).val();
+                var url = "{{ route('kasir.beli.index', ['transaksi' => ':transaksi']) }}";
+                url = url.replace(':transaksi', kodeTransaksi);
+                window.location.href = url
+            }
+        });
+
         $('#searchTransaksi').click(function() {
             var kodeTransaksi = $('#kodeTransaksi').val();
             var url = "{{ route('kasir.beli.index', ['transaksi' => ':transaksi']) }}";
             url = url.replace(':transaksi', kodeTransaksi);
-
             window.location.href = url
         });
     </script>

@@ -23,7 +23,7 @@
                                         <label class="col-sm-2 col-form-label">Kode Barcode</label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
-                                                <input class="form-control" name="kodeBarcode" id="kodeBarcode"
+                                                <input class="form-control" name="searchBarcode" id="searchBarcode"
                                                     value="{{ old('kodeBarcode') }}">
                                                 <span class="input-group-append">
                                                     <button type="button" class="btn btn-info btn-flat" id="searchProduk">
@@ -123,6 +123,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <input type="hidden" name="kodeBarcode" id="kodeBarcode">
                         </form>
                     </div>
                     <!-- /.card-body -->
@@ -387,6 +388,47 @@
             $('#bayar').val(formatRupiah(totalHargaJual));
         }
 
+        function searchProductByBarcode(kodeBarcode) {
+            if (kodeBarcode != '') {
+                var url = "{{ route('searchProduk', ['kodeProduk' => ':kodeProduk']) }}";
+                url = url.replace(':kodeProduk', kodeBarcode);
+                handleAjaxRequest(url, function(data) {
+                    if (data.status == 'Found') {
+                        var hargaRefSelect = $('#hargaRef');
+                        hargaRefSelect.empty();
+                        $.each(data.data.harga_ref, function(index, item) {
+                            hargaRefSelect.append(new Option(formatRupiah(rupiahToInt(item)), item));
+                        });
+                        hargaRefSelect.trigger('change');
+                        $('#model').val(data.data.tipe);
+                        $('#berat').val(data.data.berat);
+                        $('#karat').val(data.data.karat);
+                        $('#harga').val(formatRupiah($('#hargaRef').val() * data.data.berat));
+                        $('#kodeBarcode').val(kodeBarcode);
+
+                        $('#searchBarcode').val('');
+                        $('#searchBarcode').focus();
+                    } else {
+                        var hargaRefSelect = $('#hargaRef');
+                        hargaRefSelect.empty();
+                        $('#searchBarcode').val('');
+                        $('#model').val('');
+                        $('#berat').val('');
+                        $('#karat').val('');
+                        $('#harga').val('');
+                        $('#kodeBarcode').val(kodeBarcode);
+                        $('#searchBarcode').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Produk tidak ditemukan.',
+                            confirmButtonColor: '#17a2b8',
+                        });
+                    }
+                });
+            }
+        }
+
         getSubTotal();
 
         $('.select2bs4').select2({
@@ -419,34 +461,17 @@
             }
         });
 
-        $('#searchProduk').click(function() {
-            var kodeBarcode = $('#kodeBarcode').val();
-            if (kodeBarcode != '') {
-                var url = "{{ route('searchProduk', ['kodeProduk' => ':kodeProduk']) }}";
-                url = url.replace(':kodeProduk', kodeBarcode);
-                handleAjaxRequest(url, function(data) {
-                    if (data.status == 'Found') {
-                        var hargaRefSelect = $('#hargaRef');
-                        hargaRefSelect.empty();
-                        $.each(data.data.harga_ref, function(index, item) {
-                            hargaRefSelect.append(new Option(formatRupiah(rupiahToInt(item)),
-                                item));
-                        });
-                        hargaRefSelect.trigger('change');
-                        $('#model').val(data.data.tipe);
-                        $('#berat').val(data.data.berat);
-                        $('#karat').val(data.data.karat);
-                        $('#harga').val(formatRupiah($('#hargaRef').val() * data.data.berat));
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Produk tidak ditemukan.',
-                            confirmButtonColor: '#17a2b8',
-                        });
-                    }
-                });
+        $('#searchBarcode').on('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var kodeBarcode = $(this).val();
+                searchProductByBarcode(kodeBarcode);
             }
+        });
+
+        $('#searchProduk').click(function() {
+            var kodeBarcode = $('#searchBarcode').val();
+            searchProductByBarcode(kodeBarcode);
         });
 
         $('#searchMember').click(function() {

@@ -58,8 +58,8 @@
                                 @foreach ($data['produk'] as $index => $produk)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>
-                                            <img src="{{ generateBarcode($produk->barcode) }}" alt="">
+                                        <td class="text-center">
+                                            {{ generateBarcode($produk->tipe->kode_tipe . '-' . explode('-', $produk->id)[0]) }}
                                         </td>
                                         <td>{{ $produk->tipe->kode_tipe . '-' . explode('-', $produk->id)[0] }}</td>
                                         <td>{{ ucwords($produk->tipe->nama) }}</td>
