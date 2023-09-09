@@ -44,6 +44,7 @@ class TransaksiController extends Controller
             ->where('cabang_id', Auth::user()->cabang_id)
             ->where('jenis_transaksi_id', 1)
             ->whereDate('created_at', $today)
+            ->orderBY('created_at', 'desc')
             ->get();
         return view('kasir.jual.histori', compact('data'));
     }
@@ -105,6 +106,7 @@ class TransaksiController extends Controller
             ->where('cabang_id', Auth::user()->cabang_id)
             ->where('jenis_transaksi_id', 2)
             ->whereDate('created_at', $today)
+            ->orderBY('created_at', 'desc')
             ->get();
         return view('kasir.beli.histori', compact('data'));
     }
