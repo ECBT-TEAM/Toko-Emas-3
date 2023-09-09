@@ -11,7 +11,7 @@ class Produk extends Model
     use HasFactory;
     protected $primaryKey = 'id';
     protected $keyType = 'string';
-    protected $fillable = ['id', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'harga_rugi', 'kotak_id', 'status_id', 'kondisi'];
+    protected $fillable = ['id', 'barcode', 'berat', 'tipe_id', 'karat_id', 'supplier_id', 'harga_rugi', 'kotak_id', 'status_id', 'kondisi'];
     public $incrementing = false;
 
     protected static function boot()
@@ -20,8 +20,17 @@ class Produk extends Model
 
         self::creating(function ($model) {
             $model->id = Uuid::uuid4()->toString();
+            $model->barcode = self::generateRandomNumber();
         });
     }
+
+    public static function generateRandomNumber($length = 12)
+    {
+        $min = pow(10, $length - 1);
+        $max = pow(10, $length) - 1;
+        return mt_rand($min, $max);
+    }
+
 
     public function tipe()
     {

@@ -59,8 +59,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            <img src="{{ generateBarcode($produk->tipe->kode_tipe . '-' . explode('-', $produk->id)[0]) }}"
-                                                alt="">
+                                            <img src="{{ generateBarcode($produk->barcode) }}" alt="">
                                         </td>
                                         <td>{{ $produk->tipe->kode_tipe . '-' . explode('-', $produk->id)[0] }}</td>
                                         <td>{{ ucwords($produk->tipe->nama) }}</td>

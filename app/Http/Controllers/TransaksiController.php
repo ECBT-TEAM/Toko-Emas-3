@@ -185,7 +185,6 @@ class TransaksiController extends Controller
         try {
             $validated = $request->validated();
             $user_id = Auth::user()->id;
-
             $keranjang = Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 2)->get();
 
             if ($keranjang->isEmpty()) {

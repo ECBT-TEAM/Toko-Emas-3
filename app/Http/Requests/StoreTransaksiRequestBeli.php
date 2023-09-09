@@ -22,7 +22,6 @@ class StoreTransaksiRequestBeli extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:Rusak Ringan,Rusak Sedang,Rusak Berat',
             'seller' => 'required|exists:users,id',
             'metodeBayar' => 'required|in:Cash,Debit',
             'norek' => function ($attribute, $value, $fail) {
@@ -41,8 +40,6 @@ class StoreTransaksiRequestBeli extends FormRequest
     public function messages(): array
     {
         return [
-            'status.required' => 'Status harus diisi.',
-            'status.in' => 'Status harus salah satu dari: Rusak Ringan, Rusak Sedang, Rusak Berat.',
             'seller.required' => 'Seller wajib diisi.',
             'seller.exists' => 'Seller tidak valid.',
             'metodeBayar.required' => 'Metode pembayaran wajib diisi.',

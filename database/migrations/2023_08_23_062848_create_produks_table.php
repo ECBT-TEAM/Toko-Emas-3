@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('produks', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('barcode', 14);
             $table->double('berat', $places = 2);
             $table->string('harga_rugi')->nullable();
             $table->unsignedBigInteger('tipe_id');

@@ -150,8 +150,8 @@
                 </div>
             </div>
             <form action="{{ route('store.transaksi.beli', ['transaksi' => $data['kodeTransaksi']]) }}" method="POST">
+                @csrf
                 <div class="row row-cols-1">
-                    @csrf
                     <div class="col-12 col-lg-6">
                         <div class="card">
                             <!-- /.card-header -->

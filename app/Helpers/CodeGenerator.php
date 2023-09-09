@@ -22,9 +22,9 @@ function generateBarcode($text)
 {
     $generator = new BarcodeGeneratorPNG();
 
-    $barcode = $generator->getBarcode($text, $generator::TYPE_CODE_128);
+    $barcode = $generator->getBarcode($text, $generator::TYPE_EAN_13);
     $image = Image::make('data:image/png;base64,' . base64_encode($barcode));
-    $image->resize(400, 50);
+    $image->resize(300);
 
     // Mengembalikan gambar dalam bentuk data base64 yang lebih kecil
     return $image->encode('data-url');
