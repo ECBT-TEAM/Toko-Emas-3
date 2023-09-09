@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\StoreTransaksiRequestBeli;
+use App\Http\Requests\StoreTransaksiRequestTukarTambah;
 use App\Http\Requests\UpdateTransaksiRequest;
 
 class TransaksiController extends Controller
@@ -122,9 +123,15 @@ class TransaksiController extends Controller
             ->where('kode_transaksi', $kodeTransaksi)
             ->get();
         $data['seller'] = User::where('role_id', 3)->get();
-        $data['keranjang'] = Keranjang::with('produk', 'produk.karat', 'produk.tipe')
+        $data['keranjangMasuk'] = Keranjang::with('produk', 'produk.karat', 'produk.tipe')
             ->where('user_id', Auth::user()->id)
             ->where('jenis_transaksi_id', 3)
+            ->where('status', 1)
+            ->get();
+        $data['keranjangKeluar'] = Keranjang::with('produk', 'produk.karat', 'produk.tipe')
+            ->where('user_id', Auth::user()->id)
+            ->where('jenis_transaksi_id', 3)
+            ->where('status', 2)
             ->get();
 
 
@@ -183,6 +190,105 @@ class TransaksiController extends Controller
      * Store a newly created sales transaction in storage.
      */
     public function storeBeli(StoreTransaksiRequestBeli $request, $kodeTransaksi)
+    {
+        try {
+            $validated = $request->validated();
+            $user_id = Auth::user()->id;
+            $keranjang = Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 2)->get();
+
+            if ($keranjang->isEmpty()) {
+                Alert::warning('Warning', 'Keranjang belanja kosong. Silakan tambahkan produk ke dalam keranjang.');
+                return redirect()->back();
+            }
+
+            $member = Transaksi::where('kode_transaksi', $kodeTransaksi)->first()->member_id;
+
+            DB::beginTransaction();
+
+            $transaksi = Transaksi::create([
+                'metode_pembayaran' => $validated['metodeBayar'],
+                'norek' => $validated['norek'],
+                'member_id' => $member,
+                'kasir_id' => $validated['seller'],
+                'cabang_id' => Auth::user()->cabang_id,
+                'jenis_transaksi_id' => 2,
+            ]);
+
+            $transaksiDetails = [];
+
+            foreach ($keranjang as $item) {
+                $copiedProduct = new Produk($item->produk->toArray());
+                $copiedProduct->id = Uuid::uuid4()->toString();
+                $copiedProduct->status_id = 5;
+                $copiedProduct->kotak_id = null;
+                $copiedProduct->save();
+
+                $item->produk->status_id = 4;
+                $item->produk->save();
+
+                $transaksiDetails[] = [
+                    'kode_transaksi' => $transaksi->kode_transaksi,
+                    'harga' => $item->harga,
+                    'produk_id' => $copiedProduct->id,
+                    'jenis_transaksi_id' => 2,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
+                Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
+            }
+
+            $produkIds = $keranjang->pluck('produk_id')->toArray();
+            $sisaProduk = TransaksiDetail::whereNotIn('produk_id', $produkIds)
+                ->where('kode_transaksi', $kodeTransaksi)
+                ->get()
+                ->pluck('produk_id')
+                ->toArray();
+
+            $oldProduk = Produk::whereIn('id', $sisaProduk)->where('status_id', 3)->get();
+
+            if (!$oldProduk->isEmpty()) {
+                foreach ($oldProduk as $produk) {
+                    $copiedProduct = new Produk($produk->toArray());
+                    $copiedProduct->id = Uuid::uuid4()->toString();
+                    $copiedProduct->save();
+
+                    $copiedProductId = $copiedProduct->id;
+
+                    $produk->status_id = 6;
+                    $produk->save();
+
+                    $oldTransaksi = TransaksiDetail::where('produk_id', $produk->id)
+                        ->where('kode_transaksi', $kodeTransaksi)
+                        ->first();
+                    $newTransaksi = $oldTransaksi->replicate();
+                    $newTransaksi->produk_id = $copiedProductId;
+                    $newTransaksi->kode_transaksi = $transaksi->kode_transaksi;
+                    $newTransaksi->jenis_transaksi_id = 4;
+                    $newTransaksi->save();
+                }
+            }
+
+            TransaksiDetail::insert($transaksiDetails);
+            Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 2)->delete();
+            DB::commit();
+
+            Alert::success('Success', 'Data berhasil disimpan.');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+
+            Alert::warning('Warning', 'Gagal menyimpan database.\n' . $e);
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Store a newly created sales transaction in storage.
+     */
+    public function storeTukarTambah(StoreTransaksiRequestTukarTambah $request, $kodeTransaksi)
     {
         try {
             $validated = $request->validated();

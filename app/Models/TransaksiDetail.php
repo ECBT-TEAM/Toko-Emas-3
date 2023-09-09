@@ -13,6 +13,7 @@ class TransaksiDetail extends Model
         'produk_id',
         'harga',
         'jenis_transaksi_id',
+        'status'
     ];
 
     public function transaksi()

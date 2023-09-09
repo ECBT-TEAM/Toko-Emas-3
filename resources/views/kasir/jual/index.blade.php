@@ -124,6 +124,7 @@
                                 </div>
                             </div>
                             <input type="hidden" name="kodeBarcode" id="kodeBarcode">
+                            <input type="hidden" name="jenisTransaksi" id="jenisTransaksi" value="1">
                         </form>
                     </div>
                     <!-- /.card-body -->

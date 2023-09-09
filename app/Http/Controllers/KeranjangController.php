@@ -28,6 +28,8 @@ class KeranjangController extends Controller
             ->where('status_id', 1)
             ->first();
 
+        $status = $validated['jenisTransaksi'] == 3 ? '2' : null;
+
         if ($searchProduk) {
             $hargaRugi = rupiahToInt($validated['hargaRugi']);
             $harga = rupiahToInt($validated['harga']);
@@ -36,8 +38,9 @@ class KeranjangController extends Controller
                 ['produk_id' => $searchProduk->id],
                 [
                     'harga' => $harga,
-                    'jenis_transaksi_id' => 1,
-                    'user_id' => Auth::user()->id
+                    'jenis_transaksi_id' => $validated['jenisTransaksi'],
+                    'user_id' => Auth::user()->id,
+                    'status' => $status
                 ]
             );
 
@@ -58,7 +61,6 @@ class KeranjangController extends Controller
         return redirect()->back();
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -77,12 +79,14 @@ class KeranjangController extends Controller
 
         $harga = $transaksiDetail->harga - ($transaksiDetail->produk->harga_rugi * $transaksiDetail->produk->berat);
         $jenisTransaksi = $kategori == 'beli' ? '2' : '3';
+        $status = $kategori == 'beli' ? null : 1;
 
         $keranjang = Keranjang::firstOrCreate([
             'produk_id' => $transaksiDetail->produk->id,
         ], [
             'harga' => $harga,
             'jenis_transaksi_id' => $jenisTransaksi,
+            'status' =>  $status,
             'user_id' => Auth::user()->id
         ]);
 
@@ -109,11 +113,13 @@ class KeranjangController extends Controller
      */
     public function destroy(Keranjang $keranjang)
     {
+
+        $jenisTransaksi = $keranjang->jenis_transaksi_id == 3 && $keranjang->status == 2 ? 1 : $keranjang->jenis_transaksi_id;
         $status = [
             '1' => 1,
             '2' => 3,
             '3' => 3,
-        ][$keranjang->jenis_transaksi_id] ?? null;
+        ][$jenisTransaksi] ?? null;
 
         if ($status !== null) {
             $keranjang->produk->update(['status_id' => $status, 'kondisi' => null]);

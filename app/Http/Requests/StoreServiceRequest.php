@@ -25,7 +25,7 @@ class StoreServiceRequest extends FormRequest
             'status' => 'required|in:Rusak Ringan,Rusak Sedang,Rusak Berat',
             'kondisi' => 'required|array|min:1',
             'kondisi.*' => 'exists:kondisis,id|required',
-            'harga' => 'required',
+            'hargaRusak' => 'required',
         ];
     }
 
@@ -39,7 +39,7 @@ class StoreServiceRequest extends FormRequest
             'kondisi.min' => 'Minimal satu kondisi harus dipilih.',
             'kondisi.*.exists' => 'Salah satu kondisi yang dipilih tidak valid.',
             'kondisi.*.required' => 'Setiap kondisi harus diisi.',
-            'harga.required' => 'Harga wajib diisi.',
+            'hargaRusak.required' => 'Harga wajib diisi.',
         ];
     }
 }

@@ -319,7 +319,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Potongan Harga Rusak</label>
-                                <input type="text" class="form-control" name="harga" id="harga"
+                                <input type="text" class="form-control" name="hargaRusak" id="hargaRusak"
                                     value="{{ formatRupiah($keranjang->produk->service->first()->harga ?? 0) }}">
                             </div>
                         </div>
@@ -366,7 +366,7 @@
 
         $('#bayar').on('input', formatAndCalculate);
 
-        $('#harga').on('input', function() {
+        $('#hargaRusak').on('input', function() {
             $(this).val(formatRupiah(rupiahToInt($(this).val())))
         });
 

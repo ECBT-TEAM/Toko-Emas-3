@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Keranjang extends Model
 {
     use HasFactory;
-    protected $fillable = ['produk_id', 'harga', 'jenis_transaksi_id', 'user_id'];
+    protected $fillable = ['produk_id', 'harga', 'jenis_transaksi_id', 'user_id', 'status'];
 
     public function produk()
     {

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('harga', 125);
             $table->unsignedBigInteger('jenis_transaksi_id');
             $table->unsignedBigInteger('user_id');
+            $table->integer('status')->nullable();
             $table->timestamps();
 
             $table->foreign('produk_id')

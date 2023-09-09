@@ -66,7 +66,7 @@ class ServiceController extends Controller
             Service::create([
                 'produk_id' => $produkId,
                 'kondisi_id' => $kondisi,
-                'harga' => rupiahToInt($validated['harga'])
+                'harga' => rupiahToInt($validated['hargaRusak'])
             ]);
         }
 

@@ -27,6 +27,11 @@
                                                 <button type="button" class="btn btn-info btn-flat" id="searchTransaksi">
                                                     <i class="fas fa-search"></i>
                                                 </button>
+                                                <button type="button"
+                                                    onclick="window.location.href='{{ route('kasir.tukar-tambah.index') }}'"
+                                                    class="btn btn-warning btn-flat">
+                                                    <i class="fas fa-redo-alt"></i>
+                                                </button>
                                             </span>
                                         </div>
                                         @error('kodeBarcode')
@@ -115,7 +120,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data['keranjang'] as $keranjang)
+                                    @foreach ($data['keranjangMasuk'] as $keranjang)
                                         <tr>
                                             <td>{{ $keranjang->produk->tipe->kode_tipe . '-' . explode('-', $keranjang->produk_id)[0] }}
                                             </td>
@@ -152,7 +157,8 @@
                     <!-- /.card -->
                 </div>
                 <div class="col text-center">
-                    <button class="btn btn-lg btn-success mb-3 col-lg-2 col-12">Tambah Produk Tukar</button>
+                    <button class="btn btn-lg btn-success mb-3 col-lg-2 col-12" data-toggle="modal"
+                        data-target="#modalTambahTukar">Tambah Produk Tukar</button>
                 </div>
                 <div class="col">
                     <div class="card card-info">
@@ -161,18 +167,19 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive">
-                            <table id="example1" class="table table-striped">
+                            <table id="example2" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">Kode Produk</th>
                                         <th scope="col">Kategori</th>
                                         <th scope="col">Produk</th>
-                                        <th scope="col">Harga Beli</th>
+                                        <th scope="col">Harga Rugi</th>
+                                        <th scope="col">Harga Jual</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data['keranjang'] as $keranjang)
+                                    @foreach ($data['keranjangKeluar'] as $keranjang)
                                         <tr>
                                             <td>{{ $keranjang->produk->tipe->kode_tipe . '-' . explode('-', $keranjang->produk_id)[0] }}
                                             </td>
@@ -186,8 +193,11 @@
                                                 <span class="badge badge-warning">Karat:
                                                     {{ $keranjang->produk->karat->nama }}k</span>
                                             </td>
-                                            <td id="hargaBeli">
-                                                {{ formatRupiah($keranjang->harga - ($keranjang->produk->service->first()->harga ?? 0)) }}
+                                            <td>
+                                                {{ formatRupiah($keranjang->produk->harga_rugi) }}
+                                            </td>
+                                            <td id="hargaJual">
+                                                {{ formatRupiah($keranjang->harga) }}
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger" type="button"
@@ -333,7 +343,7 @@
             </form>
         @endif
     </div>
-    @foreach ($data['keranjang'] as $keranjang)
+    @foreach ($data['keranjangMasuk'] as $keranjang)
         <div class="modal fade" id="kerusakan-{{ $keranjang->id }}">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -374,7 +384,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Potongan Harga Rusak</label>
-                                <input type="text" class="form-control" name="harga" id="harga"
+                                <input type="text" class="form-control" name="hargaRusak" id="hargaRusak"
                                     value="{{ formatRupiah($keranjang->produk->service->first()->harga ?? 0) }}">
                             </div>
                         </div>
@@ -389,12 +399,198 @@
             <!-- /.modal-dialog -->
         </div>
     @endforeach
+    <div class="modal fade" id="modalTambahTukar">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title">Produk Tukar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('store.keranjang') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row row-cols-lg-1 row-cols-1">
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Kode Barcode</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input class="form-control" name="searchBarcode" id="searchBarcode"
+                                                value="{{ old('kodeBarcode') }}">
+                                            <span class="input-group-append">
+                                                <button type="button" class="btn btn-info btn-flat" id="searchProduk">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        @error('searchBarcode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Nama Barang</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="model" id="model"
+                                            readonly>
+                                        @error('model')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">
+                                        Berat
+                                        <small>
+                                            <i>Satuan : gram(g)</i>
+                                        </small>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="berat" id="berat"
+                                            readonly>
+                                        @error('berat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Karat</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="karat" id="karat"
+                                            readonly>
+                                        @error('karat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Harga Ref</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" style="width: 100%;" name="hargaRef"
+                                            id="hargaRef">
+                                        </select>
+                                        @error('hargaRef')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Quantity</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="qty" id="qty"
+                                                value="1" readonly>
+                                            <span class="input-group-append">
+                                                <button type="button" id="totalStok" name="totalStok"
+                                                    class="btn btn-success btn-flat" value="20">
+                                                    Stok : 0
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Total Harga</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="harga" id="harga">
+                                        @error('harga')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Harga Rugi</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="hargaRugi" id="hargaRugi">
+                                        @error('hargaRugi')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="kodeBarcode" id="kodeBarcode">
+                        <input type="hidden" name="jenisTransaksi" id="jenisTransaksi" value="3">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Tambah</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 @push('css')
 @endpush
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+        function handleAjaxRequest(url, successCallback) {
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: successCallback,
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message :
+                        'API request error';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: errorMessage,
+                        confirmButtonColor: '#17a2b8',
+                    });
+                }
+            });
+        }
+
+        function searchProductByBarcode(kodeBarcode) {
+            if (kodeBarcode != '') {
+                var url = "{{ route('searchProduk', ['kodeProduk' => ':kodeProduk']) }}";
+                url = url.replace(':kodeProduk', kodeBarcode);
+                handleAjaxRequest(url, function(data) {
+                    if (data.status == 'Found') {
+                        var hargaRefSelect = $('#hargaRef');
+                        hargaRefSelect.empty();
+                        $.each(data.data.harga_ref, function(index, item) {
+                            hargaRefSelect.append(new Option(formatRupiah(rupiahToInt(item)), item));
+                        });
+                        hargaRefSelect.trigger('change');
+                        $('#model').val(data.data.tipe);
+                        $('#berat').val(data.data.berat);
+                        $('#karat').val(data.data.karat);
+                        $('#harga').val(formatRupiah($('#hargaRef').val() * data.data.berat));
+                        $('#kodeBarcode').val(kodeBarcode);
+
+                        $('#searchBarcode').val('');
+                        $('#searchBarcode').focus();
+                    } else {
+                        var hargaRefSelect = $('#hargaRef');
+                        hargaRefSelect.empty();
+                        $('#searchBarcode').val('');
+                        $('#model').val('');
+                        $('#berat').val('');
+                        $('#karat').val('');
+                        $('#harga').val('');
+                        $('#kodeBarcode').val(kodeBarcode);
+                        $('#searchBarcode').focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Produk tidak ditemukan.',
+                            confirmButtonColor: '#17a2b8',
+                        });
+                    }
+                });
+            }
+        }
+
         function formatAndCalculate() {
             var inputValue = rupiahToInt($('#bayar').val());
             var total = rupiahToInt($('#total').text());
@@ -403,14 +599,20 @@
         }
 
         function getSubTotal() {
+            var totalHargaBeli = 0;
             var totalHargaJual = 0;
             $('#example1 tbody tr').each(function() {
-                var hargaJual = rupiahToInt($(this).find('#hargaBeli').text())
+                var hargaBeli = rupiahToInt($(this).find('#hargaBeli').text())
+                totalHargaBeli += hargaBeli;
+            });
+            $('#example2 tbody tr').each(function() {
+                var hargaJual = rupiahToInt($(this).find('#hargaJual').text())
                 totalHargaJual += hargaJual;
             });
-            $('#subtotal').text(formatRupiah(totalHargaJual));
-            $('#total').text(formatRupiah(totalHargaJual));
-            $('#bayar').val(formatRupiah(totalHargaJual));
+            var totalHarga = totalHargaBeli - totalHargaJual
+            $('#subtotal').text(formatRupiah(totalHarga));
+            $('#total').text(formatRupiah(totalHarga));
+            $('#bayar').val(formatRupiah(Math.abs(totalHarga)));
         }
 
         getSubTotal();
@@ -421,7 +623,7 @@
 
         $('#bayar').on('input', formatAndCalculate);
 
-        $('#harga').on('input', function() {
+        $('#harga, #hargaRugi, #harga').on('input', function() {
             $(this).val(formatRupiah(rupiahToInt($(this).val())))
         });
 
@@ -441,12 +643,37 @@
             }
         });
 
+        $('#kodeTransaksi').focus();
+
+        $('#kodeTransaksi').on('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var kodeTransaksi = $(this).val();
+                var url = "{{ route('kasir.tukar-tambah.index', ['transaksi' => ':transaksi']) }}";
+                url = url.replace(':transaksi', kodeTransaksi);
+                window.location.href = url
+            }
+        });
+
         $('#searchTransaksi').click(function() {
             var kodeTransaksi = $('#kodeTransaksi').val();
             var url = "{{ route('kasir.tukar-tambah.index', ['transaksi' => ':transaksi']) }}";
             url = url.replace(':transaksi', kodeTransaksi);
 
             window.location.href = url
+        });
+
+        $('#searchBarcode').on('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var kodeBarcode = $(this).val();
+                searchProductByBarcode(kodeBarcode);
+            }
+        });
+
+        $('#searchProduk').click(function() {
+            var kodeBarcode = $('#searchBarcode').val();
+            searchProductByBarcode(kodeBarcode);
         });
     </script>
 @endpush
