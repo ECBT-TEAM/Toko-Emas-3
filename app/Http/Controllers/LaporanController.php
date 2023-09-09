@@ -216,7 +216,8 @@ class LaporanController extends Controller
                 'top' => $topBuyers,
             ];
         }
-        return view('laporan.jual.supplier', compact('data'));
+
+        return view('laporan.jual.konsumen', compact('data'));
     }
 
     /**
@@ -247,16 +248,15 @@ class LaporanController extends Controller
     public function indexKategoriBeli()
     {
         $categories = Kategori::all();
-        $cabang =  Auth::user()->cabang_id;
+        $cabang = Auth::user()->cabang_id;
 
         $data['piechart'] = $categories->map(function ($category) use ($cabang) {
-            $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($category, $cabang) {
+            $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($category) {
                 $query->where('id', $category->id);
             })
                 ->whereHas('transaksi', function ($query) use ($cabang) {
                     $query->where('jenis_transaksi_id', 1)->where('cabang_id', $cabang);
                 })
-                ->where('jenis_transaksi_id', 2)
                 ->count();
 
             return [
@@ -280,10 +280,12 @@ class LaporanController extends Controller
             $totalPurchasesData = [];
             for ($i = 0; $i < 7; $i++) {
                 $day = $sevenDaysAgo->copy()->addDays($i)->format('l'); // Nama hari
-                $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($cabang) {
-                    $query->where('jenis_transaksi_id', 1)->where('cabang_id', $cabang);
+                $totalPurchases = TransaksiDetail::whereHas('produk.tipe.kategori', function ($query) use ($category, $cabang) {
+                    $query->where('id', $category->id);
                 })
-                    ->where('jenis_transaksi_id', 2)
+                    ->whereHas('transaksi', function ($query) use ($cabang) {
+                        $query->where('jenis_transaksi_id', 2)->where('cabang_id', $cabang);
+                    })
                     ->whereDate('created_at', $sevenDaysAgo->copy()->addDays($i)->format('Y-m-d'))
                     ->count();
 
@@ -419,7 +421,7 @@ class LaporanController extends Controller
                 'top' => $topBuyers,
             ];
         }
-        return view('laporan.jual.supplier', compact('data'));
+        return view('laporan.beli.konsumen', compact('data'));
     }
 
     /**

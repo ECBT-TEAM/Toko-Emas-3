@@ -1,24 +1,50 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <div class="row row-cols-2 row-cols-2">
-            @foreach ($data as $index => $item)
-                <div class="col">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Grafik Jual {{ $item['kategori'] }}</h3>
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Filter</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="" class="form-label">Suplier</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <select name="supplier" id="supplier" class="form-control select2bs4">
+                                @foreach ($data['supplier'] as $supplier)
+                                    <option value="{{ $supplier->id }}">{{ strtoupper($supplier->nama) }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <canvas id="pieChart{{ $index }}"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <div class="input-group-append">
+                            <button class="btn btn-info" onclick="serachButton()">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
-            @endforeach
+            </div>
         </div>
+        @if (!empty(request()->supplier))
+            <div class="row row-cols-2 row-cols-2">
+                @foreach ($data['piechart'] as $index => $piechart)
+                    <div class="col">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">Grafik Jual {{ $piechart['kategori'] }}</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <canvas id="pieChart{{ $index }}"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 @endsection
 @push('css')
@@ -39,15 +65,14 @@
             window.location.href = url
         }
 
-        var data = @json($data);
+        var data = @json($data['piechart']);
 
         data.forEach(function(item, index) {
-            console.log(item)
-            var color = generateRandomColors(item.top.length);
+            var color = generateRandomColors(item.tipe.length);
             var donutData = {
-                labels: item.top.map(item => item.nama),
+                labels: item.tipe.map(item => item.nama),
                 datasets: [{
-                    data: item.top.map(item => item.total),
+                    data: item.tipe.map(item => item.total),
                     backgroundColor: color,
                 }]
             };
