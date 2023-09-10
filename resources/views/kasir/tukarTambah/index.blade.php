@@ -219,7 +219,8 @@
                     <!-- /.card -->
                 </div>
             </div>
-            <form action="{{ route('store.transaksi.beli', ['transaksi' => $data['kodeTransaksi']]) }}" method="POST">
+            <form action="{{ route('store.transaksi.tukartTambah', ['transaksi' => $data['kodeTransaksi']]) }}"
+                method="POST">
                 <div class="row row-cols-1">
                     @csrf
                     <div class="col-12 col-lg-6">

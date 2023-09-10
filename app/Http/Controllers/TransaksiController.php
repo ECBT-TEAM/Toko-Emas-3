@@ -143,6 +143,21 @@ class TransaksiController extends Controller
     }
 
     /**
+     * Display the purchase history for today.
+     */
+    public function tukarTambahHistori()
+    {
+        $today = Carbon::now()->toDateString();
+        $data['transaksi'] = Transaksi::with('member', 'user')
+            ->where('cabang_id', Auth::user()->cabang_id)
+            ->where('jenis_transaksi_id', 3)
+            ->whereDate('created_at', $today)
+            ->orderBY('created_at', 'desc')
+            ->get();
+        return view('kasir.tukarTambah.histori', compact('data'));
+    }
+
+    /**
      * Store a newly created sales transaction in storage.
      */
     public function storeJual(StoreTransaksiRequest $request)
@@ -293,7 +308,7 @@ class TransaksiController extends Controller
         try {
             $validated = $request->validated();
             $user_id = Auth::user()->id;
-            $keranjang = Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 2)->get();
+            $keranjang = Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 3)->get();
 
             if ($keranjang->isEmpty()) {
                 Alert::warning('Warning', 'Keranjang belanja kosong. Silakan tambahkan produk ke dalam keranjang.');
@@ -310,32 +325,46 @@ class TransaksiController extends Controller
                 'member_id' => $member,
                 'kasir_id' => $validated['seller'],
                 'cabang_id' => Auth::user()->cabang_id,
-                'jenis_transaksi_id' => 2,
+                'jenis_transaksi_id' => 3,
             ]);
 
             $transaksiDetails = [];
 
             foreach ($keranjang as $item) {
-                $copiedProduct = new Produk($item->produk->toArray());
-                $copiedProduct->id = Uuid::uuid4()->toString();
-                $copiedProduct->status_id = 5;
-                $copiedProduct->kotak_id = null;
-                $copiedProduct->save();
+                if ($item->status == 1) {
+                    $copiedProduct = new Produk($item->produk->toArray());
+                    $copiedProduct->id = Uuid::uuid4()->toString();
+                    $copiedProduct->status_id = 5;
+                    $copiedProduct->kotak_id = null;
+                    $copiedProduct->save();
 
-                $item->produk->status_id = 4;
-                $item->produk->save();
+                    $item->produk->status_id = 4;
+                    $item->produk->save();
 
-                $transaksiDetails[] = [
-                    'kode_transaksi' => $transaksi->kode_transaksi,
-                    'harga' => $item->harga,
-                    'produk_id' => $copiedProduct->id,
-                    'jenis_transaksi_id' => 2,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                    $transaksiDetails[] = [
+                        'kode_transaksi' => $transaksi->kode_transaksi,
+                        'harga' => $item->harga,
+                        'produk_id' => $copiedProduct->id,
+                        'jenis_transaksi_id' => 3,
+                        'status' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
 
-                Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
-                Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
+                    Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
+                    Service::where('produk_id', $item->produk_id)->update(['produk_id' => $copiedProduct->id]);
+                } else {
+                    $transaksiDetails[] = [
+                        'kode_transaksi' => $transaksi->kode_transaksi,
+                        'harga' => $item->harga,
+                        'produk_id' => $item->produk_id,
+                        'jenis_transaksi_id' => 3,
+                        'status' => 2,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    Produk::where('id', $item->produk_id)->update(['status_id' => 3]);
+                }
             }
 
             $produkIds = $keranjang->pluck('produk_id')->toArray();
@@ -370,7 +399,7 @@ class TransaksiController extends Controller
             }
 
             TransaksiDetail::insert($transaksiDetails);
-            Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 2)->delete();
+            Keranjang::where('user_id', $user_id)->where('jenis_transaksi_id', 3)->delete();
             DB::commit();
 
             Alert::success('Success', 'Data berhasil disimpan.');
@@ -400,5 +429,14 @@ class TransaksiController extends Controller
     {
         $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
         return view('kasir.beli.historiDetail', compact('data'));
+    }
+
+    /**
+     * Display the details of a specific sales transaction.
+     */
+    public function showDetailHistoriTukarTambah(Transaksi $transaksi)
+    {
+        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
+        return view('kasir.tukarTambah.historiDetail', compact('data'));
     }
 }

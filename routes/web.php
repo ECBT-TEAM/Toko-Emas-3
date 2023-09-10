@@ -185,7 +185,7 @@ Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
     Route::prefix('tukar-tambah')->as('tukar-tambah.')->group(function () {
         route::get('/', [TransaksiController::class, 'tukarTambah'])->name('index');
         route::get('/histori', [TransaksiController::class, 'tukarTambahHistori'])->name('histori');
-        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriBeli'])->name('histori.detail');
+        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriTukarTambah'])->name('histori.detail');
         route::get('/{transaksi?}', [TransaksiController::class, 'tukarTambah'])->name('index');
     });
 });
