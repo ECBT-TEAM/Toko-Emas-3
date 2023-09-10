@@ -1,13 +1,13 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <button onclick="window.location.href='{{ route('kasir.jual.histori') }}'" type="button"
-            class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i> Kembali</button>
+        <button onclick="history.back()" type="button" class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i>
+            Kembali</button>
         <div class="row row-cols-1">
             <div class="col">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">List Tukar Masuk</h3>
+                        <h3 class="card-title">List Beli</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -15,15 +15,17 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Kode Produk</th>
-                                    <th scope="col">Kategori</th>
+                                    <th scope="col">kategori</th>
                                     <th scope="col">Produk</th>
                                     <th scope="col">Kerusakan</th>
+                                    <th scope="col">Harga Rugi</th>
+                                    <th scope="col">Total Kerusakan</th>
                                     <th scope="col">Harga Beli</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if ($transaksi->status == 1)
+                                    @if ($transaksi->jenis_transaksi_id == 2)
                                         <tr>
                                             <td>
                                                 {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
@@ -45,52 +47,13 @@
                                                     @endforeach
                                                 </ol>
                                             </td>
-                                            <td id="hargaBeli">{{ formatRupiah($transaksi->harga) }}</td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-            </div>
-            <div class="col">
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">List Tukar Keluar</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="example2" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Kode Produk</th>
-                                    <th scope="col">Kategori</th>
-                                    <th scope="col">Produk</th>
-                                    <th scope="col">Harga Rugi</th>
-                                    <th scope="col">Harga Jual</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if ($transaksi->status == 2)
-                                        <tr>
-                                            <td>
-                                                {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
-                                            </td>
-                                            <td>
-                                                {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}
-                                            </td>
-                                            <td>
-                                                {{ ucwords($transaksi->produk->tipe->nama) }}
-                                                <span class="badge badge-info">Berat:
-                                                    {{ $transaksi->produk->berat }}g</span>
-                                                <span class="badge badge-warning">Karat:
-                                                    {{ $transaksi->produk->karat->nama }}k</span>
-                                            </td>
                                             <td>{{ formatRupiah($transaksi->produk->harga_rugi) }}</td>
-                                            <td id="hargaJual">{{ formatRupiah($transaksi->harga) }}</td>
+                                            <td>
+                                                {{ formatRupiah($transaksi->produk->service->first()->harga ?? 0) }}
+                                            </td>
+                                            <td id="hargaJual">
+                                                {{ formatRupiah($transaksi->harga - ($transaksi->produk->service->first()->harga ?? 0)) }}
+                                            </td>
                                         </tr>
                                     @endif
                                 @endforeach
@@ -103,15 +66,15 @@
             <div class="col">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">List Pindah Nota</h3>
+                        <h3 class="card-title">List Pinda Nota</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example3" class="table table-striped">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Kode Produk</th>
-                                    <th scope="col">Kategori</th>
+                                    <th scope="col">kategori</th>
                                     <th scope="col">Produk</th>
                                     <th scope="col">Harga Rugi</th>
                                     <th scope="col">Harga Jual</th>
@@ -119,7 +82,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data['transaksi']->transaksiDetail as $transaksi)
-                                    @if ($transaksi->status == 4)
+                                    @if (in_array($transaksi->jenis_transaksi_id, [4, 1]))
                                         <tr>
                                             <td>
                                                 {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
@@ -145,7 +108,6 @@
                     <!-- /.card-body -->
                 </div>
             </div>
-            <!-- /.card -->
             <div class="col">
                 <div class="card">
                     <!-- /.card-header -->
@@ -265,17 +227,11 @@
 @push('js')
     <script>
         var totalHargaJual = 0;
-        var totalHargaBeli = 0;
-        $('#example2 tbody tr').each(function() {
+        $('#example1 tbody tr').each(function() {
             var hargaJual = rupiahToInt($(this).find('#hargaJual').text())
             totalHargaJual += hargaJual;
         });
-        $('#example1 tbody tr').each(function() {
-            var hargaBeli = rupiahToInt($(this).find('#hargaBeli').text())
-            totalHargaBeli += hargaBeli;
-        });
-        var total = totalHargaBeli - totalHargaJual
-        $('#subtotal').text(formatRupiah(total));
-        $('#total').text(formatRupiah(total));
+        $('#subtotal').text(formatRupiah(totalHargaJual));
+        $('#total').text(formatRupiah(totalHargaJual));
     </script>
 @endpush

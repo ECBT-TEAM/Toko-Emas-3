@@ -14,6 +14,7 @@ class SupplierSeeder extends Seeder
     public function run(): void
     {
         $supplier = [
+            ['nama' => 'Sinar Jaya', 'pabrik' => 'Sinar Jaya', 'alamat' => 'pasuruan'],
             ['nama' => 'ubs', 'pabrik' => 'UBS', 'alamat' => 'pasuruan'],
             ['nama' => 'kr', 'pabrik' => 'KR', 'alamat' => 'pasuruan'],
             ['nama' => 'auva', 'pabrik' => 'AUVA', 'alamat' => 'pasuruan'],

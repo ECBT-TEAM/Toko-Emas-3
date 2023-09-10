@@ -26,15 +26,15 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            {{ $servis->produk->tipe->kode_tipe . '-' . explode('-', $servis->produk->id)[0] }}
+                                            {{ $servis->tipe->kode_tipe . '-' . explode('-', $servis->id)[0] }}
                                         </td>
-                                        <td>{{ $servis->produk->tipe->kategori->nama }}</td>
-                                        <td>{{ $servis->produk->berat }}g</td>
-                                        <td>{{ $servis->produk->karat->nama }}k</td>
-                                        <td>{{ strtoupper($servis->produk->supplier->nama) }}</td>
+                                        <td>{{ $servis->tipe->kategori->nama }}</td>
+                                        <td>{{ $servis->berat }}g</td>
+                                        <td>{{ $servis->karat->nama }}k</td>
+                                        <td>{{ strtoupper($servis->supplier->nama) }}</td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
-                                                <button onclick="kategori('{{ $servis->produk->tipe->kategori_id }}')"
+                                                <button onclick="kategori('{{ $servis->tipe->kategori_id }}')"
                                                     class="btn btn-warning" data-toggle="modal"
                                                     data-target="#kotak-{{ $servis->id }}"">
                                                     <i class="fas fa-edit"></i>
@@ -63,7 +63,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('update.servis.selesai', ['produk' => $servis->produk_id]) }}" method="POST">
+                    <form action="{{ route('update.servis.selesai', ['produk' => $servis->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">

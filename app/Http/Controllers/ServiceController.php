@@ -15,17 +15,8 @@ class ServiceController extends Controller
      */
     public function index($statusSlug)
     {
-        $statusSlug = $statusSlug == 'cuci' ? null : $statusSlug;
-
-        $data['servis'] = Service::with(['produk', 'kondisi'])
-            ->groupBy('produk_id')
-            ->select('produk_id')
-            ->whereHas('produk', function ($query) use ($statusSlug) {
-                $kondisi = ucwords(str_replace('-', ' ', $statusSlug));
-                $query->where('kondisi', $kondisi);
-            })
-            ->get();
-
+        $kondisi = ($statusSlug == 'cuci') ? null : ucwords(str_replace('-', ' ', $statusSlug));
+        $data['servis'] = Produk::where('status_id', 5)->where('kondisi', $kondisi)->get();
         return view('servis.index', compact('data'));
     }
 
@@ -34,14 +25,7 @@ class ServiceController extends Controller
      */
     public function selesai()
     {
-        $data['servis'] = Service::with(['produk', 'kondisi'])
-            ->groupBy('produk_id')
-            ->select('produk_id')
-            ->whereHas('produk', function ($query) {
-                $query->where('kondisi', null)->where('kotak_id', null);
-            })
-            ->get();
-
+        $data['servis'] = Produk::where('status_id', 1)->where('kotak_id', null)->get();
         return view('servis.selesai', compact('data'));
     }
 
@@ -100,7 +84,8 @@ class ServiceController extends Controller
     public function update(Produk $produk)
     {
         $produk->kondisi = null;
-        $produk->status_id = 3;
+        $produk->status_id = 1;
+        $produk->supplier_id = 1;
         $produk->save();
         Alert::success('success', 'Data berhasil disimpan.');
         return redirect()->back();

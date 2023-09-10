@@ -236,6 +236,7 @@ class TransaksiController extends Controller
                 $copiedProduct->id = Uuid::uuid4()->toString();
                 $copiedProduct->status_id = 5;
                 $copiedProduct->kotak_id = null;
+                $copiedProduct->harga_rugi = null;
                 $copiedProduct->save();
 
                 $item->produk->status_id = 4;
@@ -411,32 +412,5 @@ class TransaksiController extends Controller
             Alert::warning('Warning', 'Gagal menyimpan database.\n' . $e);
             return redirect()->back();
         }
-    }
-
-    /**
-     * Display the details of a specific sales transaction.
-     */
-    public function showDetailHistoriJual(Transaksi $transaksi)
-    {
-        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
-        return view('kasir.jual.historiDetail', compact('data'));
-    }
-
-    /**
-     * Display the details of a specific sales transaction.
-     */
-    public function showDetailHistoriBeli(Transaksi $transaksi)
-    {
-        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
-        return view('kasir.beli.historiDetail', compact('data'));
-    }
-
-    /**
-     * Display the details of a specific sales transaction.
-     */
-    public function showDetailHistoriTukarTambah(Transaksi $transaksi)
-    {
-        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
-        return view('kasir.tukarTambah.historiDetail', compact('data'));
     }
 }

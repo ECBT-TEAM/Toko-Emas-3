@@ -15,19 +15,27 @@
                                     <th scope="col">Nomor</th>
                                     <th scope="col">Kategori</th>
                                     <th scope="col">Model</th>
+                                    <th scope="col">Kerusakan</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['servis'] as $index => $servis)
+                                @foreach ($data['servis'] as $index => $produk)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $servis->produk->tipe->kategori->nama }}</td>
-                                        <td>{{ $servis->produk->tipe->nama }}</td>
+                                        <td>{{ ucwords($produk->tipe->kategori->nama) }}</td>
+                                        <td>{{ ucwords($produk->tipe->nama) }}</td>
+                                        <td>
+                                            <ul>
+                                                @foreach ($produk->service as $kondisi)
+                                                    <li>{{ $kondisi->kondisi->nama }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button class="btn btn-info"
-                                                    onclick="window.location.href='{{ route('update.servis', ['produk' => $servis->produk_id]) }}'">
+                                                    onclick="window.location.href='{{ route('update.servis', ['produk' => $produk->id]) }}'">
                                                     <i class="fas fa-clipboard-check"></i>
                                                 </button>
                                             </div>

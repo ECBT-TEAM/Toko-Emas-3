@@ -164,28 +164,30 @@ Route::prefix('laporan')->as('laporan.')->middleware(['auth', 'role:1'])->group(
         route::get('supplier', [LaporanController::class, 'indexSupplierBeli'])->name('supplier');
         route::get('konsumen', [LaporanController::class, 'indexKonsumenBeli'])->name('konsumen');
     });
-    route::get('transaksi/detail/{transaksi}', [LaporanController::class, 'show'])->name('detail');
 });
 
 Route::prefix('kasir')->as('kasir.')->middleware(['auth'])->group(function () {
     Route::prefix('jual')->as('jual.')->group(function () {
         route::get('/', [TransaksiController::class, 'jual'])->name('index');
         route::get('/histori', [TransaksiController::class, 'jualHistori'])->name('histori');
-        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriJual'])->name('histori.detail');
     });
 
     Route::prefix('beli')->as('beli.')->group(function () {
         route::get('/', [TransaksiController::class, 'beli'])->name('index');
         route::get('/manual', [TransaksiController::class, 'beliManual'])->name('manual');
         route::get('/histori', [TransaksiController::class, 'beliHistori'])->name('histori');
-        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriBeli'])->name('histori.detail');
         route::get('/{transaksi?}', [TransaksiController::class, 'beli'])->name('index');
     });
 
     Route::prefix('tukar-tambah')->as('tukar-tambah.')->group(function () {
         route::get('/', [TransaksiController::class, 'tukarTambah'])->name('index');
         route::get('/histori', [TransaksiController::class, 'tukarTambahHistori'])->name('histori');
-        route::get('/histori/detail/{transaksi}', [TransaksiController::class, 'showDetailHistoriTukarTambah'])->name('histori.detail');
         route::get('/{transaksi?}', [TransaksiController::class, 'tukarTambah'])->name('index');
     });
+});
+
+Route::prefix('transaksi')->as('transaksi.')->middleware(['auth'])->group(function () {
+    route::get('/transaksi/jual/detail/{transaksi}', [LaporanController::class, 'showDetailHistoriJual'])->name('jual');
+    route::get('/transaksi/beli/detail/{transaksi}', [LaporanController::class, 'showDetailHistoriBeli'])->name('beli');
+    route::get('/transaksi/tukar-tambah/detail/{transaksi}', [LaporanController::class, 'showDetailHistoriTukarTambah'])->name('tukarTambah');
 });

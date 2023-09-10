@@ -1,8 +1,8 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid">
-        <button onclick="window.location.href='{{ route('kasir.jual.histori') }}'" type="button"
-            class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i> Kembali</button>
+        <button onclick="history.back()" type="button" class="btn btn-warning mb-4"><i class="fas fa-angle-double-left"></i>
+            Kembali</button>
         <div class="row row-cols-1">
             <div class="col">
                 <div class="card ">

@@ -82,7 +82,7 @@
                                         <td>{{ $transaksi->created_at }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-info"
-                                                onclick="window.location.href='{{ route('laporan.detail', ['transaksi' => $transaksi->kode_transaksi]) }}'"><i
+                                                onclick="window.location.href='{{ route('transaksi.beli', ['transaksi' => $transaksi->kode_transaksi]) }}'"><i
                                                     class="fas fa-eye"></i></button>
                                         </td>
                                     </tr>
@@ -149,7 +149,7 @@
             var kodeTransaksi = $('#kodeTransaksi').val();
 
             var url =
-                "{{ route('laporan.detail', ['transaksi' => ':transaksi']) }}";
+                "{{ route('transaksi.beli', ['transaksi' => ':transaksi']) }}";
             url = url.replace(':transaksi', kodeTransaksi);
 
             window.location.href = url;

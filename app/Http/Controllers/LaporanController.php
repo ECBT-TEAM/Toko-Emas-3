@@ -425,11 +425,29 @@ class LaporanController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the details of a specific sales transaction.
      */
-    public function show(Transaksi $transaksi)
+    public function showDetailHistoriJual(Transaksi $transaksi)
     {
         $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
-        return view('laporan.detail', compact('data'));
+        return view('laporan.jual.historiDetail', compact('data'));
+    }
+
+    /**
+     * Display the details of a specific sales transaction.
+     */
+    public function showDetailHistoriBeli(Transaksi $transaksi)
+    {
+        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
+        return view('laporan.beli.historiDetail', compact('data'));
+    }
+
+    /**
+     * Display the details of a specific sales transaction.
+     */
+    public function showDetailHistoriTukarTambah(Transaksi $transaksi)
+    {
+        $data['transaksi'] = $transaksi->load('transaksiDetail', 'member', 'user');
+        return view('laporan.tukarTambah.historiDetail', compact('data'));
     }
 }
