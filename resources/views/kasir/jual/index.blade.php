@@ -152,7 +152,7 @@
                                         <td>{{ $keranjang->produk->tipe->kode_tipe . '-' . explode('-', $keranjang->produk_id)[0] }}
                                         </td>
                                         <td>
-                                            {{ $keranjang->produk->tipe->kategori->first()->nama }}
+                                            {{ $keranjang->produk->tipe->kategori->nama }}
                                         </td>
                                         <td>
                                             {{ ucwords($keranjang->produk->tipe->nama) }}
