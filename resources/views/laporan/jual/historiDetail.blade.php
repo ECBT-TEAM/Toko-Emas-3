@@ -25,7 +25,7 @@
                                             {{ $transaksi->produk->tipe->kode_tipe . '-' . explode('-', $transaksi->produk->id)[0] }}
                                         </td>
                                         <td>
-                                            {{ ucwords($transaksi->produk->tipe->kategori->first()->nama) }}
+                                            {{ ucwords($transaksi->produk->tipe->kategori->nama) }}
                                         </td>
                                         <td>
                                             {{ ucwords($transaksi->produk->tipe->nama) }}

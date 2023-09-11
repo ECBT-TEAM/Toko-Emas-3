@@ -14,6 +14,7 @@
                                 <tr>
                                     <th scope="col">Nomor</th>
                                     <th scope="col">Kode Produk</th>
+                                    <th scope="col">Kategori</th>
                                     <th scope="col">Model</th>
                                     <th scope="col">Berat</th>
                                     <th scope="col">Karat</th>
@@ -29,6 +30,7 @@
                                             {{ $servis->tipe->kode_tipe . '-' . explode('-', $servis->id)[0] }}
                                         </td>
                                         <td>{{ $servis->tipe->kategori->nama }}</td>
+                                        <td>{{ $servis->tipe->nama }}</td>
                                         <td>{{ $servis->berat }}g</td>
                                         <td>{{ $servis->karat->nama }}k</td>
                                         <td>{{ strtoupper($servis->supplier->nama) }}</td>

@@ -66,34 +66,36 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data['detailTransaksi'] as $detailTransaksi)
-                                        <tr>
-                                            <td>{{ $detailTransaksi->produk->tipe->kode_tipe . '-' . explode('-', $detailTransaksi->produk_id)[0] }}
-                                            </td>
-                                            <td>
-                                                {{ $detailTransaksi->produk->tipe->kategori->nama }}
-                                            </td>
-                                            <td>
-                                                {{ ucwords($detailTransaksi->produk->tipe->nama) }}
-                                                <span class="badge badge-info">Berat:
-                                                    {{ $detailTransaksi->produk->berat }}g</span>
-                                                <span class="badge badge-warning">Karat:
-                                                    {{ $detailTransaksi->produk->karat->nama }}k</span>
-                                            </td>
-                                            <td>{{ formatRupiah($detailTransaksi->produk->harga_rugi) }}</td>
-                                            <td class="hargaBeli">{{ formatRupiah($detailTransaksi->harga) }}</td>
-                                            <td>
-                                                @if ($detailTransaksi->produk->status_id == 3)
-                                                    <button class="btn btn-sm btn-info" type="button"
-                                                        onclick="window.location.href='{{ route('store.keranjang.produk', ['kategori' => 'beli', 'transaksi' => $data['kodeTransaksi'], 'produk' => $detailTransaksi->produk_id]) }}'">
-                                                        <i class="fas fa-check-square"></i>
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-sm btn-danger" type="button">
-                                                        <i class="fas fa-ban"></i>
-                                                    </button>
-                                                @endif
-                                            </td>
-                                        </tr>
+                                        @if ($detailTransaksi->produk->status_id == 3)
+                                            <tr>
+                                                <td>{{ $detailTransaksi->produk->tipe->kode_tipe . '-' . explode('-', $detailTransaksi->produk_id)[0] }}
+                                                </td>
+                                                <td>
+                                                    {{ $detailTransaksi->produk->tipe->kategori->nama }}
+                                                </td>
+                                                <td>
+                                                    {{ ucwords($detailTransaksi->produk->tipe->nama) }}
+                                                    <span class="badge badge-info">Berat:
+                                                        {{ $detailTransaksi->produk->berat }}g</span>
+                                                    <span class="badge badge-warning">Karat:
+                                                        {{ $detailTransaksi->produk->karat->nama }}k</span>
+                                                </td>
+                                                <td>{{ formatRupiah($detailTransaksi->produk->harga_rugi) }}</td>
+                                                <td class="hargaBeli">{{ formatRupiah($detailTransaksi->harga) }}</td>
+                                                <td>
+                                                    @if ($detailTransaksi->produk->status_id == 3)
+                                                        <button class="btn btn-sm btn-info" type="button"
+                                                            onclick="window.location.href='{{ route('store.keranjang.produk', ['kategori' => 'beli', 'transaksi' => $data['kodeTransaksi'], 'produk' => $detailTransaksi->produk_id]) }}'">
+                                                            <i class="fas fa-check-square"></i>
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-sm btn-danger" type="button">
+                                                            <i class="fas fa-ban"></i>
+                                                        </button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>

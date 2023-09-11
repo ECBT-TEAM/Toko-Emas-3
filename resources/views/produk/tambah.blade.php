@@ -16,7 +16,9 @@
                                 <select name="kategori" id="kategori" class="form-control select2bs4" style="width: 100%;"
                                     required>
                                     @foreach ($data['kategori'] as $kategori)
-                                        <option value="{{ $kategori->id }}">{{ ucwords($kategori->nama) }}</option>
+                                        <option
+                                            value="{{ $kategori->id }}"{{ $kategori->id == old('kategori') ? 'selected' : '' }}>
+                                            {{ ucwords($kategori->nama) }}</option>
                                     @endforeach
                                 </select>
                                 @error('kategori')
