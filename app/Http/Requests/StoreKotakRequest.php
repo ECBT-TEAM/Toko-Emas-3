@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreKotakRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreKotakRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,6 @@ class StoreKotakRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => 'required|string|max:255',
             'berat' => 'required|numeric|min:0',
             'jenis' => 'required|in:Kotak,Patung',
             'blok' => 'required|integer|exists:bloks,id',
@@ -33,9 +33,6 @@ class StoreKotakRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nama.required' => 'Kolom nama wajib diisi.',
-            'nama.string' => 'Kolom nama harus berupa teks.',
-            'nama.max' => 'Kolom nama tidak boleh lebih dari :max karakter.',
             'berat.required' => 'Kolom berat wajib diisi.',
             'berat.numeric' => 'Kolom berat harus berupa angka.',
             'berat.min' => 'Kolom berat harus memiliki nilai minimum :min.',

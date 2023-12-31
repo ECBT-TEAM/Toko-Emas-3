@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreMemberRequest extends FormRequest
@@ -12,7 +13,7 @@ class StoreMemberRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -23,16 +24,8 @@ class StoreMemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => [
-                'required',
-                'max:125',
-            ],
-            'hp' => [
-                'required',
-                Rule::unique('members', 'hp')->where(function ($query) {
-                    return $query->where('nama', $this->nama);
-                }),
-            ],
+            'nama' => 'required|max:125',
+            'hp' => 'required|unique:members,hp',
             'alamat' => 'required|max:255',
         ];
     }
@@ -43,7 +36,7 @@ class StoreMemberRequest extends FormRequest
             'nama.required' => 'Nama member harus diisi.',
             'nama.max' => 'Nama member tidak boleh lebih dari 125 karakter.',
             'hp.required' => 'Nomor HP member harus diisi.',
-            'hp.unique' => 'Kombinasi nama dan HP sudah terdaftar.',
+            'hp.unique' => 'Nomor HP sudah terdaftar.',
             'alamat.required' => 'Alamat member harus diisi.',
             'alamat.max' => 'Alamat member tidak boleh lebih dari 255 karakter.',
         ];

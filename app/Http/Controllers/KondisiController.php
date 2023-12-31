@@ -6,6 +6,7 @@ use App\Models\Kondisi;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKondisiRequest;
 use App\Http\Requests\UpdateKondisiRequest;
+use Illuminate\Database\QueryException;
 
 class KondisiController extends Controller
 {
@@ -33,7 +34,7 @@ class KondisiController extends Controller
     {
         $validated = $request->validated();
         Kondisi::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat kondisi barang.');
         return redirect()->back();
     }
 
@@ -61,7 +62,7 @@ class KondisiController extends Controller
     {
         $validated = $request->validated();
         $kondisi->update($validated);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit kondisi barang.');
         return redirect()->back();
     }
 
@@ -70,8 +71,13 @@ class KondisiController extends Controller
      */
     public function destroy(Kondisi $kondisi)
     {
-        $kondisi->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $kondisi->delete();
+            Alert::success('Sukses', 'Berhasil menghapus kondisi barang.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Kondisi barang telah digunakan untuk transaksi.');
+            return redirect()->back();
+        }
     }
 }

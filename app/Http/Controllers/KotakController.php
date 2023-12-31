@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKotakRequest;
 use App\Http\Requests\UpdateKotakRequest;
+use Illuminate\Database\QueryException;
 
 class KotakController extends Controller
 {
@@ -57,7 +58,7 @@ class KotakController extends Controller
             'blok_id' => $validated['blok'],
         ]);
 
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat kotak.');
         return redirect()->back();
     }
 
@@ -83,8 +84,6 @@ class KotakController extends Controller
     public function edit($kategoriId, Kotak $kotak)
     {
         $data['kotak'] = $kotak;
-        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->get();
-        $data['kategori'] = Kategori::all();
         $data['kategoriId'] = $kategoriId;
         return view('master-data.barang.kotak.edit', compact('data'));
     }
@@ -94,15 +93,8 @@ class KotakController extends Controller
      */
     public function update(UpdateKotakRequest $request, Kotak $kotak)
     {
-        $validated = $request->validated();
-        $kotak->update([
-            'nomor' => $validated['nomor'],
-            'jenis' => $validated['jenis'],
-            'berat' => $validated['berat'],
-            'blok_id' => $validated['blok'],
-            'kategori_id' => $validated['kategori'],
-        ]);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        $kotak->update($request->validated());
+        Alert::success('Sukses', 'Berhasil mengedit kotak.');
         return redirect()->back();
     }
 
@@ -111,8 +103,13 @@ class KotakController extends Controller
      */
     public function destroy(Kotak $kotak)
     {
-        $kotak->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $kotak->delete();
+            Alert::success('Sukses', 'Berhasil menghapus kotak.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Terdapat produk pada kotak tersebut.');
+            return redirect()->back();
+        }
     }
 }

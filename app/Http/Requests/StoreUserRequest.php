@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreUserRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -27,7 +28,6 @@ class StoreUserRequest extends FormRequest
             'password' => 'required|max:125|min:8',
             'cabang' => 'required|exists:cabangs,id',
             'role' => 'required|exists:roles,id',
-            'status' => 'required|max:125',
         ];
     }
 
@@ -46,8 +46,6 @@ class StoreUserRequest extends FormRequest
             'cabang.exists' => 'Cabang yang dipilih tidak valid.',
             'role.required' => 'Role harus dipilih.',
             'role_id.exists' => 'Role yang dipilih tidak valid.',
-            'status.required' => 'Status harus diisi.',
-            'status.max' => 'Status tidak boleh lebih dari 125 karakter.',
         ];
     }
 }

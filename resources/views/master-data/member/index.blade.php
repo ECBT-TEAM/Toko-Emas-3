@@ -22,7 +22,8 @@
                             <div class="form-group">
                                 <label for=""class="form-label">HP</label>
                                 <input type="text" class="form-control" id="hp" name="hp"
-                                    placeholder="+62xxxxxxxxxxx" value="{{ old('hp') }}">
+                                    placeholder="+62xxxxxxxxxxx"
+                                    value="+62{{ !empty(old('hp')) ? str_replace('+62', '', old('hp')) : '' }}">
                                 @error('hp')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

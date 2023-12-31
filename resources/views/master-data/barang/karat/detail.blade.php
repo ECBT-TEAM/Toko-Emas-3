@@ -30,7 +30,8 @@
                                             <div class="btn-group btn-group-sm">
                                                 <button
                                                     onclick="window.location.href='{{ route('update.harga_ref.status', ['harga_ref' => $harga_ref->id]) }}'"
-                                                    type="button" class="btn btn-success">
+                                                    type="button"
+                                                    class="btn btn-{{ $harga_ref->status == 1 ? 'warning' : 'success' }}">
                                                     <i class="fas fa-power-off"></i>
                                                 </button>
                                                 <button data-toggle="modal" data-target="#editHargaRef-{{ $harga_ref->id }}"

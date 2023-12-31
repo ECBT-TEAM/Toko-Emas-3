@@ -15,7 +15,7 @@
                             <div class="form-group">
                                 <label for=""class="form-label">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
-                                    value="{{ $data['user']->nama }}">
+                                    value="{{ old('nama') }}">
                                 @error('nama')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

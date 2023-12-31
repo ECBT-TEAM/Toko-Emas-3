@@ -17,33 +17,6 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for=""class="form-label">Blok</label>
-                                <select name="blok" id="blok" class="form-control select2bs4" style="width: 100%;">
-                                    @foreach ($data['blok'] as $blok)
-                                        <option value="{{ $blok->id }}"
-                                            {{ $blok->id == $data['kotak']->blok_id ? 'selected' : '' }}>
-                                            Blok
-                                            {{ $blok->nomor }}</option>
-                                    @endforeach
-                                </select>
-                                @error('blok')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for=""class="form-label">Kategori</label>
-                                <select name="kategori" id="kategori" class="form-control select2bs4" style="width: 100%;">
-                                    @foreach ($data['kategori'] as $kategori)
-                                        <option value="{{ $kategori->id }}"
-                                            {{ $kategori->id == $data['kotak']->kategori_id ? 'selected' : '' }}>
-                                            {{ ucwords($kategori->nama) }}</option>
-                                    @endforeach
-                                </select>
-                                @error('kategori')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
                                 <label for=""class="form-label">
                                     Berat Kotak
                                     <small class="text-danger">

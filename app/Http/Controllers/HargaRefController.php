@@ -6,6 +6,7 @@ use App\Models\HargaRef;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Storeharga_refRequest;
 use App\Http\Requests\Updateharga_refRequest;
+use Illuminate\Database\QueryException;
 
 class HargaRefController extends Controller
 {
@@ -35,7 +36,7 @@ class HargaRefController extends Controller
             'harga' => rupiahToInt($validated['harga']),
             'karat_id' => $validated['karat'],
         ]);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat ref harga.');
         return redirect()->back();
     }
 
@@ -63,7 +64,7 @@ class HargaRefController extends Controller
         $validated = $request->validated();
         $validated['harga'] = rupiahToInt($validated['harga']);
         $harga_ref->update($validated);
-        Alert::success('Sukses', 'Status berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit ref harga.');
         return redirect()->back();
     }
 
@@ -75,7 +76,7 @@ class HargaRefController extends Controller
 
         $harga_ref->status = $harga_ref->status == 1 ? 0 : 1;
         $harga_ref->save();
-        Alert::success('Sukses', 'Status berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil merubah status ref harga.');
         return redirect()->back();
     }
 
@@ -84,8 +85,13 @@ class HargaRefController extends Controller
      */
     public function destroy(HargaRef $harga_ref)
     {
-        $harga_ref->delete();
-        Alert::success('Sukses', 'Status berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $harga_ref->delete();
+            Alert::success('Sukses', 'Berhasil menghapus ref harga.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Harga ref sedang digunakan untuk transaksi, non aktif kan status jika ref harga tidak digunakan.');
+            return redirect()->back();
+        }
     }
 }

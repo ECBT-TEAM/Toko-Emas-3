@@ -6,6 +6,7 @@ use App\Models\Cabang;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreCabangRequest;
 use App\Http\Requests\UpdateCabangRequest;
+use Illuminate\Database\QueryException;
 
 class CabangController extends Controller
 {
@@ -33,7 +34,7 @@ class CabangController extends Controller
     {
         $validated = $request->validated();
         Cabang::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat cabang.');
         return redirect()->back();
     }
 
@@ -63,7 +64,7 @@ class CabangController extends Controller
 
         $cabang->update($validated);
 
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit cabang.');
         return redirect()->back();
     }
 
@@ -72,8 +73,13 @@ class CabangController extends Controller
      */
     public function destroy(Cabang $cabang)
     {
-        $cabang->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $cabang->delete();
+            Alert::success('Sukses', 'Berhasil menghapus cabang.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Gagal menghapus cabang.');
+            return redirect()->back();
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karat;
 use App\Http\Requests\StoreKaratRequest;
 use App\Http\Requests\UpdateKaratRequest;
+use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class KaratController extends Controller
@@ -33,7 +34,7 @@ class KaratController extends Controller
     {
         $validated = $request->validated();
         Karat::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat karat.');
         return redirect()->back();
     }
 
@@ -42,7 +43,10 @@ class KaratController extends Controller
      */
     public function show(Karat $karat)
     {
-        $data['karat'] = $karat->harga_ref()->orderBy('harga', 'asc')->get();
+        $data['karat'] = $karat
+            ->harga_ref()
+            ->orderBy('harga', 'asc')
+            ->get();
         return view('master-data.barang.karat.detail', compact('data'));
     }
 
@@ -62,7 +66,7 @@ class KaratController extends Controller
     {
         $validated = $request->validated();
         $karat->update($validated);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit karat.');
         return redirect()->back();
     }
 
@@ -71,8 +75,13 @@ class KaratController extends Controller
      */
     public function destroy(Karat $karat)
     {
-        $karat->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $karat->delete();
+            Alert::success('Sukses', 'Berhasil menghapus karat.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Karat sedang aktif digunakan untuk transaksi.');
+            return redirect()->back();
+        }
     }
 }

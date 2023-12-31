@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreKondisiRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreKondisiRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,7 @@ class StoreKondisiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kode' => 'required|string|max:10',
+            'kode' => 'required|string|max:10|unique:kondisis,kode',
             'nama' => 'required|string|max:20|unique:kondisis,nama',
         ];
     }
@@ -33,10 +34,11 @@ class StoreKondisiRequest extends FormRequest
             'kode.required' => 'Kolom kode wajib diisi.',
             'kode.string' => 'Kolom kode harus berupa teks.',
             'kode.max' => 'Kolom kode tidak boleh lebih dari :max karakter.',
+            'kode.unique' => 'Kode sudah terdaftar.',
             'nama.required' => 'Kolom nama wajib diisi.',
             'nama.string' => 'Kolom nama harus berupa teks.',
             'nama.max' => 'Kolom nama tidak boleh lebih dari :max karakter.',
-            'nama.unique' => 'Kondisi sudah terdaftar.',
+            'nama.unique' => 'Kondisi barang sudah terdaftar.',
         ];
     }
 }

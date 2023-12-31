@@ -15,6 +15,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Nomor Blok</th>
+                                    <th scope="col">Total Kotak</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -22,6 +23,7 @@
                                 @foreach ($data['blok'] as $index => $blok)
                                     <tr>
                                         <td>Blok {{ $blok->nomor }}</td>
+                                        <td class="text-center">{{ $blok->kotak_count }}</td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button

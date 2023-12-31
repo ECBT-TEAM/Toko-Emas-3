@@ -6,6 +6,7 @@ use App\Models\Blok;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreBlokRequest;
 use App\Http\Requests\UpdateBlokRequest;
+use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class BlokController extends Controller
@@ -15,7 +16,7 @@ class BlokController extends Controller
      */
     public function index()
     {
-        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->get();
+        $data['blok'] = Blok::where('cabang_id', Auth::user()->cabang_id)->withCount('kotak')->get();
         return view('master-data.barang.blok.index', compact('data'));
     }
 
@@ -41,7 +42,7 @@ class BlokController extends Controller
             'cabang_id' => Auth::user()->cabang_id,
         ]);
 
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat blok.');
         return redirect()->back();
     }
 
@@ -82,7 +83,7 @@ class BlokController extends Controller
 
         $validated = $request->validated();
         $blok->update($validated);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit blok.');
         return redirect()->back();
     }
 
@@ -98,8 +99,13 @@ class BlokController extends Controller
             abort(404);
         }
 
-        $blok->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $blok->delete();
+            Alert::success('Sukses', 'Berhasil menghapus blok.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Terdapat kotak pada blok ini.');
+            return redirect()->back();
+        }
     }
 }

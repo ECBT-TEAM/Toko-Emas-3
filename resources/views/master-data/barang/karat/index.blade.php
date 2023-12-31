@@ -95,8 +95,9 @@
                                         <td scope="row">{{ $index + 1 }}</td>
                                         <td>{{ strtoupper($karat->kode) }}</td>
                                         <td>{{ ucwords($karat->nama) }}k</td>
-                                        <td>{{ formatRupiah($karat->harga_ref->min('harga')) }}</td>
-                                        <td>{{ formatRupiah($karat->harga_ref->max('harga')) }}</td>
+                                        <td>{{ formatRupiah($karat->harga_ref->where('status', 1)->min('harga')) }}
+                                        </td>
+                                        <td>{{ formatRupiah($karat->harga_ref->where('status', 1)->max('harga')) }}</td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button

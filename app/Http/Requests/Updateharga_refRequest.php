@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Updateharga_refRequest extends FormRequest
@@ -12,7 +13,7 @@ class Updateharga_refRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -24,13 +25,12 @@ class Updateharga_refRequest extends FormRequest
     {
         $karatId = $this->route('harga_ref')->karat_id;
         $inputHarga = rupiahToInt($this->input('harga'));
-
         return [
             'harga' => [
                 'required',
-                Rule::unique('harga_refs', 'harga')
-                    ->where(function ($query) use ($karatId, $inputHarga) {
-                        return $query->where('karat_id', $karatId)
+                Rule::unique('harga_refs')
+                    ->where(function ($query) use ($inputHarga, $karatId) {
+                        $query->where('karat_id', $karatId)
                             ->where('harga', $inputHarga);
                     })
             ],

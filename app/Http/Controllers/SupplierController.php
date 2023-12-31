@@ -6,6 +6,7 @@ use App\Models\Supplier;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use Illuminate\Database\QueryException;
 
 class SupplierController extends Controller
 {
@@ -33,7 +34,7 @@ class SupplierController extends Controller
     {
         $validated = $request->validated();
         Supplier::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat supplier.');
         return redirect()->back();
     }
 
@@ -61,7 +62,7 @@ class SupplierController extends Controller
     {
         $validated = $request->validated();
         $supplier->update($validated);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit supplier.');
         return redirect()->back();
     }
 
@@ -70,8 +71,13 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        $supplier->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $supplier->delete();
+            Alert::success('Sukses', 'Berhasil menghapus supplier.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Supplier sedang digunakan dalam transaksi.');
+            return redirect()->back();
+        }
     }
 }

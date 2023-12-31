@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Cabang;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -45,7 +46,7 @@ class UserController extends Controller
             'role_id' => $validated['role'],
         ]);
 
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat user.');
         return redirect()->back();
     }
 
@@ -92,7 +93,7 @@ class UserController extends Controller
 
         $user->save();
 
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit user.');
         return redirect()->back();
     }
 
@@ -101,8 +102,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $user->delete();
+            Alert::success('Sukses', 'Berhasil menghapus user.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'User sedang digunakan dalam transaksi.');
+            return redirect()->back();
+        }
     }
 }

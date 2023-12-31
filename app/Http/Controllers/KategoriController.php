@@ -6,6 +6,7 @@ use App\Models\Kategori;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use Illuminate\Database\QueryException;
 
 class KategoriController extends Controller
 {
@@ -33,7 +34,7 @@ class KategoriController extends Controller
     {
         $validated = $request->validated();
         Kategori::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat kategori barang.');
         return redirect()->back();
     }
 
@@ -63,7 +64,7 @@ class KategoriController extends Controller
 
         $kategori->update($validated);
 
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit kategori barang.');
         return redirect()->back();
     }
 
@@ -72,8 +73,13 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        $kategori->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $kategori->delete();
+            Alert::success('Sukses', 'Berhasil menghapus kategori barang.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Terdapat kotak pada kategori barang tersebut.');
+            return redirect()->back();
+        }
     }
 }

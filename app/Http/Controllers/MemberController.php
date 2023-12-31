@@ -6,6 +6,7 @@ use App\Models\Member;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+use Illuminate\Database\QueryException;
 
 class MemberController extends Controller
 {
@@ -34,7 +35,7 @@ class MemberController extends Controller
     {
         $validated = $request->validated();
         Member::create($validated);
-        Alert::success('Sukses', 'Data berhasil disimpan.');
+        Alert::success('Sukses', 'Berhasil membuat member.');
         return redirect()->back();
     }
 
@@ -62,7 +63,7 @@ class MemberController extends Controller
     {
         $validated = $request->validated();
         $member->update($validated);
-        Alert::success('Sukses', 'Data berhasil diubah.');
+        Alert::success('Sukses', 'Berhasil mengedit member.');
         return redirect()->back();
     }
 
@@ -71,8 +72,13 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        $member->delete();
-        Alert::success('Sukses', 'Data berhasil dihapus.');
-        return redirect()->back();
+        try {
+            $member->delete();
+            Alert::success('Sukses', 'Berhasil menghapus member.');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            Alert::error('gagal', 'Gagal menghapus member.');
+            return redirect()->back();
+        }
     }
 }

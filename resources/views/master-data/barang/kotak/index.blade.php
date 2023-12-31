@@ -15,7 +15,9 @@
                                 <label for=""class="form-label">Blok</label>
                                 <select name="blok" id="blok" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['blok'] as $blok)
-                                        <option value="{{ $blok->id }}">Blok {{ $blok->nomor }}</option>
+                                        <option value="{{ $blok->id }}"
+                                            {{ !empty(old('blok')) && $blok->id == old('blok') ? 'selected' : '' }}>Blok
+                                            {{ $blok->nomor }}</option>
                                     @endforeach
                                 </select>
                                 @error('blok')
@@ -26,7 +28,9 @@
                                 <label for=""class="form-label">Kategori</label>
                                 <select name="kategori" id="kategori" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['kategori'] as $kategori)
-                                        <option value="{{ $kategori->id }}">{{ ucwords($kategori->nama) }}</option>
+                                        <option value="{{ $kategori->id }}"
+                                            {{ !empty(old('kategori')) && $kategori->id == old('kategori') ? 'selected' : '' }}>
+                                            {{ ucwords($kategori->nama) }}</option>
                                     @endforeach
                                 </select>
                                 @error('kategori')

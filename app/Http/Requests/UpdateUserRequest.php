@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -33,7 +34,6 @@ class UpdateUserRequest extends FormRequest
             ],
             'cabang' => 'required|exists:cabangs,id',
             'role' => 'required|exists:roles,id',
-            'status' => 'required|max:125',
             'password' => 'nullable|min:8'
         ];
     }
@@ -50,8 +50,6 @@ class UpdateUserRequest extends FormRequest
             'cabang.exists' => 'Cabang yang dipilih tidak valid.',
             'role.required' => 'Role harus dipilih.',
             'role_id.exists' => 'Role yang dipilih tidak valid.',
-            'status.required' => 'Status harus diisi.',
-            'status.max' => 'Status tidak boleh lebih dari 125 karakter.',
             'password.min' => 'Password minimal harus memiliki 8 karakter.',
         ];
     }

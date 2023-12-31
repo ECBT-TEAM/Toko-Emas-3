@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateKaratRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class UpdateKaratRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -44,8 +45,8 @@ class UpdateKaratRequest extends FormRequest
             'kode.string' => 'Kolom kode harus berupa teks.',
             'kode.max' => 'Kolom kode tidak boleh lebih dari :max karakter.',
             'nama.required' => 'Kolom jenis wajib diisi.',
-            'nama.integer' => 'Kolom jenis harus berupa angkat.',
-            'nama.unique' => 'Jenis sudah terdaftar.',
+            'nama.integer' => 'Kolom jenis harus berupa angka.',
+            'nama.unique' => 'Jenis karat sudah terdaftar.',
         ];
     }
 }

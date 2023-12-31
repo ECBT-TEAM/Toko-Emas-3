@@ -42,7 +42,9 @@
                                 <label for=""class="form-label">Role</label>
                                 <select name="role" id="role" class="form-control select2bs4" style="width: 100%;">
                                     @foreach ($data['role'] as $role)
-                                        <option value="{{ $role->id }}">{{ ucwords($role->nama) }}</option>
+                                        <option value="{{ $role->id }}"
+                                            {{ $role->id == old('role') ? 'selected' : '' }}>
+                                            {{ ucwords($role->nama) }}</option>
                                     @endforeach
                                 </select>
                                 @error('role')
@@ -86,7 +88,7 @@
                                 @foreach ($data['user'] as $index => $user)
                                     <tr>
                                         <td scope="row">{{ $index + 1 }}</td>
-                                        <td>{{ strtoupper($user->nama) }}</td>
+                                        <td>{{ ucfirst($user->nama) }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>{{ ucwords($user->cabang->nama) }}</td>
                                         <td>{{ ucwords($user->role->nama) }}</td>

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateKotakRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class UpdateKotakRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -28,15 +29,10 @@ class UpdateKotakRequest extends FormRequest
                 'integer',
                 Rule::unique('kotaks')
                     ->where('jenis', request()->input('jenis'))
-                    ->where('blok_id', request()->input('blok'))
-                    ->whereIn('jenis', ['Kotak', 'Patung'])
                     ->ignore($this->kotak)
             ],
-            'nama' => 'required|string|max:255',
             'berat' => 'required|numeric|min:0',
             'jenis' => 'required|in:Kotak,Patung',
-            'blok' => 'required|integer|exists:bloks,id',
-            'kategori' => 'required|integer|exists:kategoris,id'
         ];
     }
 
@@ -46,22 +42,11 @@ class UpdateKotakRequest extends FormRequest
             'nomor.required' => 'Nomor harus diisi.',
             'nomor.integer' => 'Nomor harus berupa angka.',
             'nomor.unique' => 'Nomor :input untuk jenis ' . strtolower(request()->input('jenis')) . ' sudah digunakan.',
-            'nama.required' => 'Kolom nomor wajib diisi.',
-            'nama.integer' => 'Kolom nomor harus berupa bilangan bulat.',
-            'nama.required' => 'Kolom nama wajib diisi.',
-            'nama.string' => 'Kolom nama harus berupa teks.',
-            'nama.max' => 'Kolom nama tidak boleh lebih dari :max karakter.',
             'berat.required' => 'Kolom berat wajib diisi.',
             'berat.numeric' => 'Kolom berat harus berupa angka.',
             'berat.min' => 'Kolom berat harus memiliki nilai minimum :min.',
             'jenis.required' => 'Kolom jenis wajib diisi.',
             'jenis.in' => 'Kolom jenis harus salah satu dari: Kotak, Patung.',
-            'blok.required' => 'Kolom blok wajib diisi.',
-            'blok.integer' => 'Kolom blok harus berupa bilangan bulat.',
-            'blok.exists' => 'Blok yang dipilih tidak valid.',
-            'kategori.required' => 'Kolom kategori wajib diisi.',
-            'kategori.integer' => 'Kolom kategori harus berupa bilangan bulat.',
-            'kategori.exists' => 'Kategori yang dipilih tidak valid.'
         ];
     }
 }
